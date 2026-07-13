@@ -56,30 +56,23 @@ public static class ModEntry
                 AppDomain.CurrentDomain.GetAssemblies()
                     .FirstOrDefault(a => a.GetName().Name == name.Name);
 
-            // Register all custom relics
-            try
-            {
-                ModHelper.AddModelToPool<SharedRelicPool, McpTestRelic>();
-                ModHelper.AddModelToPool<SharedRelicPool, BloodPact>();
-                ModHelper.AddModelToPool<SharedRelicPool, GoldShield>();
-                ModHelper.AddModelToPool<SharedRelicPool, ThornArmor>();
-                ModHelper.AddModelToPool<SharedRelicPool, WarCry>();
-                ModHelper.AddModelToPool<SharedRelicPool, VampiricBlade>();
-                ModHelper.AddModelToPool<SharedRelicPool, SpellEcho>();
-                ModHelper.AddModelToPool<SharedRelicPool, BerserkerRage>();
-                ModHelper.AddModelToPool<SharedRelicPool, CounterStrike>();
-                ModHelper.AddModelToPool<SharedRelicPool, WeakeningAura>();
-                ModHelper.AddModelToPool<SharedRelicPool, HealingTouch>();
-                WriteLog("Registered 11 custom relics in SharedRelicPool.");
-            }
-            catch (Exception ex2)
-            {
-                WriteLog($"Pool registration: {ex2.Message}");
-            }
+            // Demo relics intentionally NOT pooled: this bridge runs alongside a real mod (Alchemist), and
+            // adding test relics to SharedRelicPool would contaminate balance playtesting. The relic classes
+            // stay defined so they can still be spawned via console for targeted tests.
+            // ModHelper.AddModelToPool<SharedRelicPool, McpTestRelic>();  ...and the other 10 (disabled)
+            WriteLog("Demo relic pooling disabled (avoids contaminating co-loaded mods).");
 
             _harmony = new Harmony("com.elliotttate.mcptest");
-            _harmony.PatchAll();
-            WriteLog("Harmony patches applied.");
+            // Patch per-class with try/catch instead of PatchAll(): a single version-drifted target (e.g. a
+            // renamed Hook method like BeforePlayPhaseStart) otherwise aborts the whole init and the bridge
+            // server below never starts. Skip only the broken class; keep the rest (and always reach the server).
+            int patched = 0, skipped = 0;
+            foreach (var type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
+            {
+                try { _harmony.CreateClassProcessor(type).Patch(); patched++; }
+                catch (Exception pe) { skipped++; WriteLog($"Skipped patch class {type.FullName}: {pe.Message}"); }
+            }
+            WriteLog($"Harmony patches applied ({patched} classes ok, {skipped} skipped).");
 
             // Prevent Godot from throttling when window loses focus.
             // By default Godot 4 sleeps heavily when unfocused, blocking bridge transitions.

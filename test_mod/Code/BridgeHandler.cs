@@ -37,6 +37,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Cards.Holders;
+using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Rewards;
 using MegaCrit.Sts2.Core.Nodes.Potions;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
@@ -48,6 +49,14 @@ namespace MCPTest;
 
 public static class BridgeHandler
 {
+    // Game update moved the per-player turn phase to PlayerCombatState.Phase; CombatManager.IsPlayPhase is gone.
+    // True while the local player is in their Play phase (the old IsPlayPhase semantics)
+    public static bool IsPlayerPlayPhase()
+    {
+        var player = RunManager.Instance?.DebugOnlyGetState()?.Players?.FirstOrDefault();
+        return player?.PlayerCombatState?.Phase == PlayerTurnPhase.Play;
+    }
+
     private sealed class HotReloadSession
     {
         public string ModKey { get; }
@@ -256,7 +265,7 @@ public static class BridgeHandler
                 screen = ScreenDetector.GetCurrentScreen(),
                 run_in_progress = RunManager.Instance.IsInProgress,
                 in_combat = CombatManager.Instance?.IsInProgress ?? false,
-                is_player_turn = CombatManager.Instance?.IsPlayPhase ?? false,
+                is_player_turn = IsPlayerPlayPhase(),
             });
         }
         catch (Exception ex)
@@ -486,7 +495,7 @@ public static class BridgeHandler
                 in_combat = true,
                 screen = "COMBAT_PLAYER_TURN",
                 round = combatState.RoundNumber,
-                is_player_turn = cm.IsPlayPhase,
+                is_player_turn = IsPlayerPlayPhase(),
                 enemies,
                 players = playerStates,
             };
@@ -624,7 +633,7 @@ public static class BridgeHandler
             if (screen.StartsWith("COMBAT") || screen == "HAND_SELECT")
             {
                 var cm = CombatManager.Instance;
-                if (cm?.IsInProgress == true && cm.IsPlayPhase)
+                if (cm?.IsInProgress == true && IsPlayerPlayPhase())
                 {
                     var combatState = cm.DebugOnlyGetState();
                     if (combatState != null)
@@ -769,8 +778,9 @@ public static class BridgeHandler
             }
             else if (screen == "CARD_REWARD")
             {
-                // Post-combat card reward selection (3 cards to choose from)
-                actions.Add(new { action = "select_card_reward", description = "Select a card reward" });
+                // Post-combat card reward: enumerate the offered cards (holder fallback handles this screen),
+                // then card_select drives them via NCardHolder.Pressed just like other selection screens.
+                actions.AddRange(GetCardSelectionActionDescriptors());
                 actions.Add(new { action = "skip_card_reward" });
             }
             else if (screen.StartsWith("MENU_"))
@@ -803,7 +813,7 @@ public static class BridgeHandler
         try
         {
             var cm = CombatManager.Instance;
-            if (cm == null || !cm.IsInProgress || !cm.IsPlayPhase)
+            if (cm == null || !cm.IsInProgress || !IsPlayerPlayPhase())
                 return new { error = "Not in combat or not player turn" };
 
             int cardIndex = 0;
@@ -869,7 +879,7 @@ public static class BridgeHandler
         try
         {
             var cm = CombatManager.Instance;
-            if (cm == null || !cm.IsInProgress || !cm.IsPlayPhase)
+            if (cm == null || !cm.IsInProgress || !IsPlayerPlayPhase())
                 return new { error = "Not in combat or not player turn" };
 
             var state = RunManager.Instance.DebugOnlyGetState();
@@ -1326,29 +1336,16 @@ public static class BridgeHandler
             var overlay = NOverlayStack.Instance?.Peek();
             if (overlay is NRewardsScreen rewardsScreen)
             {
-                // Try the proceed button first
-                var proceedBtn = rewardsScreen.GetNodeOrNull<NButton>("%ProceedButton");
-                if (proceedBtn == null) proceedBtn = rewardsScreen.GetNodeOrNull<NButton>("ProceedButton");
-                if (proceedBtn == null)
-                {
-                    // Search all NButton descendants for one named Proceed/Skip
-                    foreach (var child in GetAllDescendants(rewardsScreen))
-                    {
-                        if (child is NButton btn && btn.IsVisibleInTree())
-                        {
-                            var n = btn.Name.ToString().ToLower();
-                            if (n.Contains("proceed") || n.Contains("skip") || n.Contains("continue"))
-                            {
-                                proceedBtn = btn;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (proceedBtn != null && proceedBtn.IsVisibleInTree())
+                // Click the NProceedButton by TYPE, exactly as the game's RewardsScreenHandler does. The old
+                // lookup found a node literally named "ProceedButton" (a wrong/hidden node) and ForceClick'd it,
+                // which hid the screen WITHOUT firing the real proceed — so it stayed on the overlay stack and
+                // blocked all subsequent map navigation. The real proceed control is an NProceedButton ("Skip").
+                var proceedBtn = FindAllSortedByPosition<NProceedButton>(rewardsScreen)
+                    .FirstOrDefault(b => b.IsVisibleInTree());
+                if (proceedBtn != null)
                 {
                     proceedBtn.ForceClick();
-                    return new { success = true, action = "reward_dismiss", invoked = "overlay:ForceClick(ProceedButton)" };
+                    return new { success = true, action = "reward_dismiss", invoked = "NProceedButton.ForceClick()" };
                 }
             }
 
@@ -1456,6 +1453,8 @@ public static class BridgeHandler
                 "card_select" => ExecuteCardSelection(p),
                 "card_confirm" => ConfirmCurrentScreen("card_confirm", "confirm", "proceed"),
                 "card_skip" => DismissCardSelectionScreen(),
+                "combat_select_card" => CombatSelectCard(p),
+                "combat_confirm_selection" => CombatConfirmSelection(),
                 "discard_potion" => DiscardPotion(p),
                 "proceed" => ProceedCurrentScreen("proceed", "proceed", "continue", "leave"),
                 "dismiss" or "back" or "close" => DismissCurrentScreen(),
@@ -1487,7 +1486,7 @@ public static class BridgeHandler
                 screen_context_type = screenInfo.ActiveScreenType,
                 run_in_progress = RunManager.Instance.IsInProgress,
                 in_combat = CombatManager.Instance?.IsInProgress ?? false,
-                is_player_turn = CombatManager.Instance?.IsPlayPhase ?? false,
+                is_player_turn = IsPlayerPlayPhase(),
                 floor = state?.TotalFloor,
                 act = state != null ? state.CurrentActIndex + 1 : (int?)null,
                 current_room = state?.CurrentRoom?.GetType().Name,
@@ -1779,8 +1778,11 @@ public static class BridgeHandler
 
     private static object ExecuteMapTravel(int row, int col)
     {
+        // Trust the live map state, not just the cached screen: a lingering/hidden overlay can make
+        // ScreenDetector report the wrong screen, which used to block travel after every combat reward.
+        var mapOpen = MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.Instance?.IsOpen ?? false;
         var screen = ScreenDetector.GetCurrentScreen();
-        if (screen != "MAP")
+        if (screen != "MAP" && !mapOpen)
             return new { error = $"Not on map (current screen: {screen})" };
 
         if (!RunManager.Instance.IsInProgress)
@@ -1957,7 +1959,7 @@ public static class BridgeHandler
         catch { }
 
         // Use the game's inventory API directly (like STS2MCP does)
-        var inventory = merchantRoom.Inventory;
+        var inventory = merchantRoom.GetLocalInventory();
         var allEntries = inventory.AllEntries.ToList();
 
         if (index < 0 || index >= allEntries.Count)
@@ -2047,10 +2049,41 @@ public static class BridgeHandler
             itemMethods: ["Select", "Choose", "Take", "Open", "Click", "Invoke"]);
     }
 
+    // In-combat hand selection (e.g. Prime's Infuse "Choose a card to Infuse"). The game drives these via
+    // NPlayerHand in SimpleSelect mode — NOT the reward-style CARD_SELECTION screen — so ExecuteCardSelection
+    // (which guards on screen=="CARD_SELECTION") can't reach them. Select the Nth active hand holder; the
+    // caller sends combat_confirm_selection afterward if the pick didn't auto-complete the prompt.
+    private static object CombatSelectCard(JsonElement p)
+    {
+        var hand = NPlayerHand.Instance;
+        if (hand == null) return new { error = "No player hand" };
+        if (!hand.IsInCardSelection) return new { error = "Not in an in-combat hand selection" };
+        int index = p.TryGetProperty("card_index", out var ci) && ci.ValueKind == JsonValueKind.Number ? ci.GetInt32() : 0;
+        var holders = hand.ActiveHolders;
+        if (index < 0 || index >= holders.Count)
+            return new { error = $"card_index {index} out of range (0..{holders.Count - 1})" };
+        var holder = holders[index];
+        var cardName = holder.CardNode?.Model?.GetType().Name ?? "unknown";
+        bool ok = TryInvokeMethod(hand, new[] { "SelectCardInSimpleMode", "SelectCardInUpgradeMode" },
+            new object?[] { holder }, out var invoked);
+        ModEntry.WriteLog($"[CombatSelectCard] index={index} card={cardName} ok={ok} via={invoked} stillSelecting={hand.IsInCardSelection}");
+        return new { success = ok, card_index = index, card = cardName, invoked, still_selecting = hand.IsInCardSelection };
+    }
+
+    private static object CombatConfirmSelection()
+    {
+        var hand = NPlayerHand.Instance;
+        if (hand == null) return new { error = "No player hand" };
+        bool ok = TryInvokeMethod(hand, new[] { "OnSelectModeConfirmButtonPressed" },
+            new object?[] { null }, out var invoked);
+        ModEntry.WriteLog($"[CombatConfirmSelection] ok={ok} via={invoked} stillSelecting={hand.IsInCardSelection}");
+        return new { success = ok, invoked, still_selecting = hand.IsInCardSelection };
+    }
+
     private static object ExecuteCardSelection(JsonElement p)
     {
         var screen = ScreenDetector.GetCurrentScreen();
-        if (screen != "CARD_SELECTION")
+        if (screen != "CARD_SELECTION" && screen != "CARD_REWARD")
             return new { error = $"Not in card selection (current screen: {screen})" };
 
         var confirmAfterSelection = p.TryGetProperty("confirm", out var confirmProp) && confirmProp.GetBoolean();
@@ -2119,11 +2152,34 @@ public static class BridgeHandler
             string? invokedMethod = null;
             string label = index >= 0 && index < cards.Count ? GetReadableLabel(cards[index]) : $"card_{index}";
 
-            var selected =
-                TryInvokeMethod(screenObj, ["SelectCard", "ChooseCard", "ToggleCardSelection", "Select", "Choose", "OnCardClicked"], [index], out invokedMethod)
-                || (index >= 0 && index < cards.Count
-                    && (TryInvokeMethod(screenObj, ["SelectCard", "ChooseCard", "ToggleCardSelection", "Select", "Choose", "OnCardClicked"], [cards[index]], out invokedMethod)
-                        || TryInvokeMethod(cards[index], ["Select", "Choose", "ToggleSelection", "Click", "Invoke"], Array.Empty<object?>(), out invokedMethod)));
+            bool selected = false;
+
+            // Real mechanism: selection screens (reward, choose-a-card, upgrade) select by emitting
+            // NCardHolder.Pressed on the card's holder node — not any Select*/Choose* method. Match the holder
+            // to the CardModel at this index (positional fallback), then emit the signal like the game does.
+            if (screenObj is Godot.Node screenNode)
+            {
+                var holders = FindAllSortedByPosition<NCardHolder>(screenNode);
+                NCardHolder? holder = null;
+                if (index >= 0 && index < cards.Count)
+                    holder = holders.FirstOrDefault(h => ReferenceEquals(h.CardModel, cards[index]));
+                if (holder == null && index >= 0 && index < holders.Count)
+                    holder = holders[index];
+                if (holder != null)
+                {
+                    holder.EmitSignal(NCardHolder.SignalName.Pressed, holder);
+                    selected = true;
+                    invokedMethod = "EmitSignal(NCardHolder.Pressed)";
+                }
+            }
+
+            // Fallback: legacy method-name reflection for screens not backed by card holders.
+            if (!selected)
+                selected =
+                    TryInvokeMethod(screenObj, ["SelectCard", "ChooseCard", "ToggleCardSelection", "Select", "Choose", "OnCardClicked"], [index], out invokedMethod)
+                    || (index >= 0 && index < cards.Count
+                        && (TryInvokeMethod(screenObj, ["SelectCard", "ChooseCard", "ToggleCardSelection", "Select", "Choose", "OnCardClicked"], [cards[index]], out invokedMethod)
+                            || TryInvokeMethod(cards[index], ["Select", "Choose", "ToggleSelection", "Click", "Invoke"], Array.Empty<object?>(), out invokedMethod)));
 
             results.Add(new
             {
@@ -2734,6 +2790,24 @@ public static class BridgeHandler
                     card_index = i,
                     label = GetReadableLabel(cardChoices[i]),
                     card_type = cardChoices[i].GetType().Name,
+                });
+            }
+        }
+
+        // Final fallback: any card-holder-based screen (CARD_REWARD, etc.). Enumerate holders positionally —
+        // ExecuteCardSelection selects the same index-th holder via FindAllSortedByPosition, so they align.
+        if (actions.Count == 0 && screenObj is Godot.Node holderScreen)
+        {
+            var holders = FindAllSortedByPosition<NCardHolder>(holderScreen);
+            for (int i = 0; i < holders.Count; i++)
+            {
+                var model = holders[i].CardModel;
+                actions.Add(new
+                {
+                    action = "card_select",
+                    card_index = i,
+                    label = model != null ? GetReadableLabel(model) : $"card_{i}",
+                    card_type = model?.GetType().Name ?? "unknown",
                 });
             }
         }
@@ -5249,7 +5323,7 @@ public static class BridgeHandler
         snapshot["in_combat"] = cm?.IsInProgress ?? false;
         if (cm?.IsInProgress == true)
         {
-            snapshot["is_player_turn"] = cm.IsPlayPhase;
+            snapshot["is_player_turn"] = IsPlayerPlayPhase();
             var cs = cm.DebugOnlyGetState();
             if (cs != null)
             {
@@ -5953,6 +6027,9 @@ public static class BridgeHandler
     private static System.Threading.CancellationTokenSource? _autoSlayCts;
     private static DateTime _autoSlayStartTime;
     private static string _autoSlayCharacter = "";
+    // The character AutoSlay was asked to play. The stock AutoSlayer picks a random unlocked character and
+    // ignores this, so ForceAutoSlayCharacterPatch reads it to force the char-select onto the target.
+    internal static string AutoSlayCharacter => _autoSlayCharacter;
     private static string _autoSlaySeed = "";
     private static bool _autoSlayRunning;
     private static string? _autoSlayError;

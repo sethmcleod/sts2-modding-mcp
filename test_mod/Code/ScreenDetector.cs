@@ -35,7 +35,7 @@ public static class ScreenDetector
             try
             {
                 var overlay = NOverlayStack.Instance?.Peek();
-                if (overlay != null)
+                if (overlay != null && IsOverlayActive(overlay))
                 {
                     var overlayScreen = DetectOverlayScreen(overlay);
                     if (overlayScreen != null)
@@ -65,7 +65,7 @@ public static class ScreenDetector
 
                 return new CurrentScreenInfo
                 {
-                    Screen = cm.IsPlayPhase ? "COMBAT_PLAYER_TURN" : "COMBAT_ENEMY_TURN",
+                    Screen = BridgeHandler.IsPlayerPlayPhase() ? "COMBAT_PLAYER_TURN" : "COMBAT_ENEMY_TURN",
                     Source = "combat_manager",
                 };
             }
@@ -238,6 +238,22 @@ public static class ScreenDetector
                 => "MAIN_MENU",
             _ => $"MENU_{screenTypeName}",
         };
+    }
+
+    // A popped-but-not-freed overlay (e.g. NRewardsScreen after proceeding to the map) can still be Peek()'d.
+    // Treat it as inactive if disposed or not visible, so it stops masking the live MAP/combat screen — this is
+    // what previously blocked navigate_map after every combat reward.
+    private static bool IsOverlayActive(IOverlayScreen overlay)
+    {
+        try
+        {
+            if (overlay is Godot.Control ctrl)
+                return Godot.GodotObject.IsInstanceValid(ctrl) && ctrl.IsVisibleInTree();
+            if (overlay is Godot.Node node)
+                return Godot.GodotObject.IsInstanceValid(node);
+        }
+        catch { }
+        return true;
     }
 
     private static CurrentScreenInfo? DetectOverlayScreen(IOverlayScreen overlay)
