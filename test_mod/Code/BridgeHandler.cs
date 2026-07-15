@@ -1097,6 +1097,11 @@ public static class BridgeHandler
 
     // ─── Use Potion ─────────────────────────────────────────────────────────
 
+    // The potion belt lives at a fixed HUD path; each child of PotionHolders is one slot.
+    private const string PotionHoldersPath =
+        "/root/Game/RootSceneContainer/Run/GlobalUi/TopBar/LeftAlignedStuff" +
+        "/PotionMarginifier/PotionContainer/MarginContainer/PotionHolders";
+
     private static object UsePotion(JsonElement root)
     {
         try
@@ -1126,35 +1131,36 @@ public static class BridgeHandler
 
             var potionName = potion.GetType().Name;
 
-            // Resolve target for targeted potions
-            Creature? target = null;
-            if (targetIndex >= 0 && CombatManager.Instance?.IsInProgress == true)
-            {
-                var combatState = CombatManager.Instance.DebugOnlyGetState();
-                if (combatState != null)
-                {
-                    if (potion.TargetType == TargetType.AnyEnemy)
-                    {
-                        var enemies = combatState.Enemies.ToList();
-                        if (targetIndex < enemies.Count) target = enemies[targetIndex];
-                    }
-                    else if (potion.TargetType == TargetType.AnyAlly)
-                    {
-                        var allies = combatState.Allies.ToList();
-                        if (targetIndex < allies.Count) target = allies[targetIndex];
-                    }
-                }
-            }
+            // Use the potion by invoking the holder's own UsePotion() Task. The console
+            // `potion use` command reports success but doesn't actually consume/apply the potion.
+            // Belt slots don't compact, so potion_index maps straight to the Nth holder.
+            var tree = Engine.GetMainLoop() as SceneTree;
+            if (tree?.Root == null)
+                return new { error = "No scene tree" };
+            var holders = tree.Root.GetNodeOrNull(PotionHoldersPath);
+            if (holders == null)
+                return new { error = "Potion belt not found (need a run HUD on screen)" };
 
-            // Use the potion via console command as direct API is complex
-            EnsureConsoleAccess();
-            if (_processCommandMethod != null && _devConsole != null)
-            {
-                _processCommandMethod.Invoke(_devConsole, new object[] { $"potion use {potionIndex}" });
-            }
+            var holderChildren = holders.GetChildren();
+            if (potionIndex >= holderChildren.Count)
+                return new { error = $"Potion holder {potionIndex} not present (belt has {holderChildren.Count})" };
+            if (holderChildren[potionIndex] is not NPotionHolder holder)
+                return new { error = $"Node at slot {potionIndex} is not a potion holder" };
+            if (!holder.HasPotion)
+                return new { error = $"Potion holder {potionIndex} has no potion" };
 
-            ModEntry.WriteLog($"[UsePotion] {potionName} index={potionIndex} target={targetIndex}");
-            return new { success = true, potion = potionName, potion_index = potionIndex, target_index = targetIndex };
+            // UsePotion() runs the potion's OnUse (async); the effect resolves over the next frames.
+            _ = holder.UsePotion();
+
+            ModEntry.WriteLog($"[UsePotion] {potionName} index={potionIndex} via NPotionHolder.UsePotion() (async)");
+            return new
+            {
+                success = true,
+                potion = potionName,
+                potion_index = potionIndex,
+                target_index = targetIndex,
+                note = "used via NPotionHolder.UsePotion(); effect resolves asynchronously — poll state to confirm",
+            };
         }
         catch (Exception ex) { return new { error = ex.Message }; }
     }

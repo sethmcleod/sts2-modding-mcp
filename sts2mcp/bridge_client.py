@@ -354,6 +354,14 @@ def act_and_wait(action: str, settle_timeout: float = 5.0, **params: Any) -> dic
 
 
 def use_potion(potion_index: int, target_index: int = -1) -> dict:
+    """Use the potion in belt slot ``potion_index`` via the holder's ``UsePotion()``.
+
+    The effect resolves asynchronously (``UsePotion`` runs the potion's OnUse over the next
+    frames), so poll ``get_player_state`` / ``get_combat_state`` to confirm the outcome rather
+    than trusting the immediate return. Belt slots do not compact after a use, so
+    ``potion_index`` stays a stable slot index. Targeted *throw* potions may need a follow-up
+    target selection.
+    """
     return send_request("use_potion", {"potion_index": potion_index, "target_index": target_index})
 
 
