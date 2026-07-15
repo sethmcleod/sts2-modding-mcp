@@ -4656,6 +4656,8 @@ def _launch_game(remote_debug: bool = False, renderer: str | None = None, extra_
         import platform
         if platform.system() == "Windows":
             os.startfile(f"steam://rungameid/2868840")
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", "steam://rungameid/2868840"])
         else:
             subprocess.Popen(["xdg-open", "steam://rungameid/2868840"])
 
