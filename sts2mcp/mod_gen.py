@@ -1503,7 +1503,7 @@ class ModGenerator:
         ]
 
         passive_body = (
-            "        Trigger();\n"
+            "        ActivatePassive();\n"
             "        // Passive: triggers each turn end\n"
             "        // TODO: Implement passive orb effect\n"
             "        await Task.CompletedTask;"
