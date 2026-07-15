@@ -8,8 +8,12 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) server for **Slay t
 - **Build and deploy** — builds mods, packages Godot PCK files, deploys to the game, validates assets and localization, watches for changes
 - **Live scene inspection** — browses the running Godot scene tree, reads/writes node properties, toggles visibility, animates with Tweens
 - **Automated playtesting** — starts seeded runs, plays cards, navigates every screen, runs at 20x speed, captures screenshots, sets breakpoints
-- **29 built-in guides** — hooks, Harmony, localization, multiplayer, Godot UI, IL transpilers, combat, save files, and more
+- **30 built-in guides** — hooks, Harmony, localization, multiplayer, Godot UI, IL transpilers, combat, save files, gameplay strategy, and more
 
+> [!WARNING]
+> This server and its bundled bridge mods let external programs **read and control your running game**. The MCPTest bridge (`localhost:21337`) and GodotExplorer inspector (`localhost:27020`) can query state, play cards, click UI, run console commands, and hot-reload code while the game is open. The ports bind to localhost only, but treat them like any local debug endpoint — prefer a spare save profile for automated playtesting over a run you care about.
+
+> [!NOTE]
 > Your mileage will vary depending on which LLM you use. This project is a fun experiment — please ping me if you have issues, want to suggest a feature, or find a bug.
 
 ## Prerequisites
@@ -21,7 +25,8 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) server for **Slay t
 - **[GDRE Tools](https://github.com/GDRETools/gdsdecomp/releases)** — for Godot asset extraction (optional, setup wizard can download it)
 - **Slay the Spire 2** — the game itself
 
-> **.NET version note:** `ilspycmd` targets .NET 8.0. If you only have .NET 9.0+ installed, decompilation will fail with a runtime error. The fix is to **also** install the [.NET 8.0 runtime](https://dotnet.microsoft.com/download/dotnet/8.0) alongside your .NET 9.0 SDK. Both can coexist without issues.
+> [!IMPORTANT]
+> `ilspycmd` targets .NET 8.0. If you only have .NET 9.0+ installed, decompilation will fail with a runtime error. The fix is to **also** install the [.NET 8.0 runtime](https://dotnet.microsoft.com/download/dotnet/8.0) alongside your .NET 9.0 SDK. Both can coexist without issues.
 
 ## Quick Start
 
@@ -46,6 +51,7 @@ The setup wizard automatically finds your Steam install, installs `ilspycmd` if 
 
 The MCP server connects to any AI tool that supports the [Model Context Protocol](https://modelcontextprotocol.io/). Point the config at the **venv's Python** so dependencies are always available.
 
+> [!TIP]
 > Replace `/path/to/sts2-modding-mcp` with the actual path where you cloned the repo.
 
 **Claude Code (CLI):**

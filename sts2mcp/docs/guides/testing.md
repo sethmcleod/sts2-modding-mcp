@@ -85,6 +85,7 @@ bridge_reload_localization()
 - **Memory**: Old assembly versions accumulate in memory (cannot be unloaded). Restart the game periodically during long dev sessions.
 - **Existing instances**: Cards/relics already instantiated in the current run still reference old types. Changes appear in the next run or encounter.
 - **Pool discovery**: Automatic `[Pool(typeof(...))]` discovery covers the common case. If your mod registers pools dynamically in code, pass explicit `pool_registrations`.
+- **Combat locks reload**: tiers 2/3 only take effect from the **main menu, before any combat** in that game session. Once you enter a fight, `ModelIdSerializationCache` locks and later model/localization reloads silently won't apply — restart the game to pick up changes after that.
 
 ## AutoSlay (Automated Full Runs)
 Run entire games automatically. See the [AutoSlay guide](autoslay.md) for full details.
@@ -268,6 +269,19 @@ public class TestMyRelicCmd : AbstractConsoleCmd
 - Return `CmdResult(task, true, msg)` to run async operations through the game's action queue
 - Use `Log.Info("[TestName] Step N: ...")` for progress tracking via `bridge_get_game_log`
 - `relic add` skips `AfterObtained()` — use `RelicCmd.Obtain(relic.ToMutable(), player)` instead
+
+## Bridge Driving Gotchas (learned the hard way)
+
+None of these are obvious from the API — each one silently does the wrong thing rather than erroring:
+
+- **Console target-index is offset from `bridge_play_card`.** The console `power`/`damage`/`block` commands index the **player at `0`** and the **first enemy at `1`** (enemy array index + 1). `bridge_play_card`'s `target_index` is 0-based over enemies. Mixing the two hits the wrong creature with no error.
+- **Custom modded entities need full model IDs in console commands.** Use `card MYMOD-SOME_CARD`, not a bare class or display name — a bare name silently no-ops. Discover IDs from the game log or a console `dump`.
+- **`fight <ENCOUNTER>` rosters are not seed-stable** — enemy HP re-rolls each run. Assert player state, block, powers, or pool membership; never assert an absolute enemy HP value.
+- **Enemy power/buff amounts aren't readable over the bridge.** You get enemy HP and block plus the *player's* powers, but not an enemy's Strength/poison/etc. stack — assert via the resulting HP delta instead.
+- **Jump to a room by its integer enum** — e.g. `room 7` for a rest site. Enum *names* like `room REST_SITE` fail to parse (that spelling is the *screen* name, not the console arg).
+- **Deck-removal / card-select screens aren't finalized by `card_confirm`.** Select the card, then ForceClick the screen's own confirm button (e.g. `NDeckCardSelectScreen/PreviewContainer/PreviewConfirm`). See "Key Pattern: NClickableControl.ForceClick()" above.
+- **Potion belt slots don't compact after a use.** Consuming the potion in slot 0 does not shift slot 1 down into slot 0 — address each holder by its own index.
+- **Don't abandon a run mid-combat.** It poisons combat initialization for the rest of the game process (later fights fail to start). End the fight instead — e.g. `die` in the console — and only leave from a non-combat screen. If a run *was* abandoned mid-fight, restart the game.
 
 ## Recommended Test Workflow
 1. **During development**: `watch_project` with `auto_reload=True` for save-and-see iteration

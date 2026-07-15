@@ -16,6 +16,11 @@ tools so you can use it for automated mod testing.
 AutoSlay and bridge actions are complementary. Use AutoSlay for broad stability
 testing, bridge actions for precise behavioral verification.
 
+> [!NOTE]
+> AutoSlay picks reward cards **randomly**, not strategically, so it is **not a balance
+> signal** — it only tells you whether things crash. To judge whether a modded card is over-
+> or under-tuned, pilot the run yourself and apply the [gameplay & balance primer](strategy.md).
+
 ## Quick Start
 
 ### Run a single automated game

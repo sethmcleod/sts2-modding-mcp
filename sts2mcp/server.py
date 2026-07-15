@@ -220,7 +220,7 @@ async def list_tools() -> list[types.Tool]:
                 "BaseLib (custom_keywords_and_piles, mod_config_integration), audio (audio — FMOD custom sounds, replacements, banks), "
                 "advanced (reflection_patterns, advanced_harmony, "
                 "multiplayer_networking, rng_and_determinism, save_file_format, fastmp), and testing/debugging "
-                "(debugging, testing, autoslay, console, bridge_setup, troubleshooting, workflows, game_log_parsing)."
+                "(debugging, testing, autoslay, strategy, console, bridge_setup, troubleshooting, workflows, game_log_parsing)."
             ),
             inputSchema={
                 "type": "object",
@@ -241,6 +241,7 @@ async def list_tools() -> list[types.Tool]:
                             "mod_config_integration", "resource_loading",
                             "rng_and_determinism", "accessibility_patterns",
                             "image_generation", "testing", "autoslay",
+                            "strategy",
                             "enchantments", "orbs", "game_actions",
                             "overlays", "dynamic_vars", "mechanics",
                             "vfx_scenes", "ui_elements", "fastmp",

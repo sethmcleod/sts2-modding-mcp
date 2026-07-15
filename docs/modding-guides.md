@@ -1,4 +1,4 @@
-# Modding Guides (28 Topics)
+# Modding Guides (29 Topics)
 
 The `get_modding_guide` tool provides built-in documentation on these topics. Topics marked with **new** were derived from patterns found across the community mod ecosystem.
 
@@ -34,3 +34,4 @@ The `get_modding_guide` tool provides built-in documentation on these topics. To
 | **`resource_loading`** | PCK vs DLL resources, fallback chains, assembly loading, intent atlas paths |
 | **`rng_and_determinism`** | Rng class, RunRngSet, seed management, deterministic sub-seeds |
 | **`accessibility_patterns`** | TTS integration, focus navigation, screen reader support, high contrast |
+| **`strategy`** | STS2 gameplay & balance primer — core principles, combat sequencing, pathing, bosses, potions; judging whether a modded card is over/under-tuned |

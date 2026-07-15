@@ -105,6 +105,24 @@ Without this, Godot won't find your mod's script classes when instantiating scen
 - `CombatManager.Instance` is null outside of combat
 - Always null-check `player.PlayerCombatState` — it doesn't exist outside combat
 
+### Compendium scroll stutters / `CanonicalModelException`
+Description/tooltip render code that reads `Owner` (or otherwise asserts mutability) throws
+`CanonicalModelException` when the game renders a **canonical (immutable) model** — the copies
+that back the card library / compendium. Because the compendium re-renders every visible card
+**every frame** while scrolling, the exception fires continuously (capturing a stack trace each
+time), which tanks the framerate and can cascade into layout `ArgumentOutOfRangeException` errors.
+
+Guard any `Owner`-dependent preview by short-circuiting on `AbstractModel.IsMutable` first — a
+live preview is only meaningful on a mutable combat instance anyway:
+```csharp
+// Canonical compendium models throw if you touch Owner; only build the
+// live preview on a mutable (in-combat) instance.
+description.Add("FormulaDamage",
+    IsMutable && FormulaDamagePreview is { } d ? $" ([green]{d}[/green])" : "");
+```
+Symptom in the Godot log: repeated `CanonicalModelException ... used in incorrect place` under
+`_Process(delta)` while the compendium is open.
+
 ### PCK not loading
 - `pck_name` in manifest must match the actual `.pck` filename (without extension)
 - `has_pck` must be `true` in manifest
