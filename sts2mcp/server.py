@@ -215,7 +215,7 @@ async def list_tools() -> list[types.Tool]:
             description=(
                 "Get contextual documentation for modding STS2. Covers 40+ topics including content creation "
                 "(cards, relics, powers, potions, monsters, encounters, events, enchantments, orbs, modifiers, custom_characters), "
-                "systems (hooks, pools, combat_deep_dive, dynamic_vars, game_actions, mechanics, vfx_scenes, overlays), "
+                "systems (hooks, pools, combat_deep_dive, dynamic_vars, game_actions, mechanics, timeline_epochs, vfx_scenes, overlays), "
                 "infrastructure (harmony_patches, localization, building, project_structure, resource_loading, godot_ui_construction), "
                 "BaseLib (custom_keywords_and_piles, mod_config_integration), audio (audio — FMOD custom sounds, replacements, banks), "
                 "advanced (reflection_patterns, advanced_harmony, "
@@ -246,6 +246,7 @@ async def list_tools() -> list[types.Tool]:
                             "overlays", "dynamic_vars", "mechanics",
                             "vfx_scenes", "ui_elements", "fastmp",
                             "console_commands", "custom_characters",
+                            "timeline_epochs",
                             "audio", "hot_reload",
                         ],
                     },
@@ -1346,6 +1347,31 @@ async def list_tools() -> list[types.Tool]:
                     "sample_relic_name": {"type": "string", "description": "Name for the sample relic (default: KeywordTalisman)"},
                 },
                 "required": ["mod_namespace", "mod_name", "keyword_name"],
+            },
+        ),
+        types.Tool(
+            name="generate_epoch_progression",
+            description=(
+                "Scaffold base-game-style Timeline epoch progression for a CUSTOM CHARACTER: N chapter epochs "
+                "that reveal one-by-one on milestones and gate the character's cards/relics/potions, plus the "
+                "registration reflection, content-gating helper, award/portrait/Neow/hide Harmony patches, "
+                "a config toggle, pool-override snippets, and localization. Emits `// TODO`s "
+                "where you fill in each chapter's content and milestone criteria. "
+                "See get_modding_guide topic 'timeline_epochs' for the architecture and pitfalls."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "mod_namespace": {"type": "string"},
+                    "character_class": {"type": "string", "description": "Your character class name (e.g. 'Alchemist')"},
+                    "card_pool_class": {"type": "string", "description": "Your character's CardPoolModel class"},
+                    "relic_pool_class": {"type": "string", "description": "Your character's RelicPoolModel class"},
+                    "potion_pool_class": {"type": "string", "description": "Your character's PotionPoolModel class"},
+                    "num_epochs": {"type": "integer", "description": "Number of chapters (default 7, base-game shape)"},
+                    "epoch_id_prefix": {"type": "string", "description": "Epoch id prefix before the number (default {CHAR}-{CHAR})"},
+                    "story_id": {"type": "string", "description": "StoryId (default = character_class)"},
+                },
+                "required": ["mod_namespace", "character_class", "card_pool_class", "relic_pool_class", "potion_pool_class"],
             },
         ),
         types.Tool(
@@ -3878,6 +3904,18 @@ async def _handle_tool(name: str, args: dict):
             keyword_description=args.get("keyword_description", ""),
             sample_card_name=args.get("sample_card_name", ""),
             sample_relic_name=args.get("sample_relic_name", ""),
+        )
+
+    elif name == "generate_epoch_progression":
+        return mod_gen.generate_epoch_progression(
+            mod_namespace=args["mod_namespace"],
+            character_class=args["character_class"],
+            card_pool_class=args["card_pool_class"],
+            relic_pool_class=args["relic_pool_class"],
+            potion_pool_class=args["potion_pool_class"],
+            num_epochs=args.get("num_epochs", 7),
+            epoch_id_prefix=args.get("epoch_id_prefix", ""),
+            story_id=args.get("story_id", ""),
         )
 
     elif name == "generate_custom_tooltip":

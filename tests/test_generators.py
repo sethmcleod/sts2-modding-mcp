@@ -276,3 +276,64 @@ class TestExistingGenerators:
         result = mod_gen.generate_vfx_scene(node_name="FlameExplosion")
         assert "[gd_scene" in result["scene"]
         assert result["file_name"].endswith(".tscn")
+
+
+class TestGenerateEpochProgression:
+    def _gen(self, mod_gen, **kw):
+        return mod_gen.generate_epoch_progression(
+            mod_namespace="TestMod",
+            character_class="Sage",
+            card_pool_class="SageCardPool",
+            relic_pool_class="SageRelicPool",
+            potion_pool_class="SagePotionPool",
+            **kw,
+        )
+
+    def test_emits_valid_files_and_all_chapters(self, mod_gen):
+        result = self._gen(mod_gen)
+        assert_generator_result(result, expect_source=False)
+        files = result["files"]
+        # base + epochs + registration + gating + EpochPatches (no pool isolation)
+        assert len(files) == 5
+        for path, src in files.items():
+            assert_valid_cs(src)  # brace balance etc. on every generated file
+        assert result["components"]["epochs"] == [f"Sage{k}Epoch" for k in range(1, 8)]
+
+    def test_avoids_the_double_reveal_antipattern(self, mod_gen):
+        src = "\n".join(self._gen(mod_gen)["files"].values())
+        # never force-reveal-all (the RevealAllIfFresh bug); hide via the AddEpochSlots prefix instead
+        assert "RevealAllIfFresh" not in src
+        assert "HideWhenDisabled" in src
+        assert "RemoveAll(s => s.Model is SageEpoch)" in src
+
+    def test_content_gating_and_registration(self, mod_gen):
+        result = self._gen(mod_gen)
+        src = "\n".join(result["files"].values())
+        # gating uses compile-time-generic reveal checks per chapter
+        assert "us.IsEpochRevealed<Sage2Epoch>()" in src
+        # the real gate is the pools (snippet), not the stat ids
+        assert "EpochGating.CardUnlocked" in result["pool_overrides_snippet"]
+        # reflection registration into the base private statics
+        assert "_epochTypeDictionary" in src and "_allEpochs" in src
+        # gateway opens the rest
+        assert "Get<Sage7Epoch>()" in src
+
+    def test_no_pool_isolation(self, mod_gen):
+        # pool isolation is intentionally out of scope for the generator
+        result = self._gen(mod_gen)
+        src = "\n".join(result["files"].values())
+        assert "PoolPatches" not in result["files"] and "PoolPatches" not in str(result["components"])
+        assert "CharacterCardPools" not in src and "Kaleidoscope" not in src
+        assert "KeepPoolsSeparate" not in result["config_snippet"]
+
+    def test_localization_shape(self, mod_gen):
+        loc = self._gen(mod_gen)["localization"]
+        assert "SAGE-SAGE1_EPOCH.title" in loc["epochs.json"]
+        assert "SAGE-ENABLE_EPOCHS.title" in loc["settings_ui.json"]
+        assert "SAGE-KEEP_POOLS_SEPARATE.title" not in loc["settings_ui.json"]
+
+    def test_num_epochs_param(self, mod_gen):
+        result = self._gen(mod_gen, num_epochs=3)
+        assert result["components"]["epochs"] == ["Sage1Epoch", "Sage2Epoch", "Sage3Epoch"]
+        for src in result["files"].values():
+            assert_valid_cs(src)

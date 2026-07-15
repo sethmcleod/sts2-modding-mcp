@@ -2754,3 +2754,469 @@ class ModGenerator:
                 f"Test in-game: Start a custom run and look for '{class_name}' in the {modifier_type.lower()} modifiers list.",
             ],
         }
+
+    def generate_epoch_progression(
+        self,
+        mod_namespace: str,
+        character_class: str,
+        card_pool_class: str,
+        relic_pool_class: str,
+        potion_pool_class: str,
+        num_epochs: int = 7,
+        epoch_id_prefix: str = "",
+        story_id: str = "",
+    ) -> dict:
+        """Scaffold base-game-style Timeline epoch progression for a custom character: N chapter
+        epochs that reveal one-by-one on milestones and gate the character's content, plus
+        registration, gating, award/hide patches, a config toggle, and loc.
+        See get_modding_guide topic 'timeline_epochs' for the architecture and pitfalls."""
+        n = max(2, int(num_epochs))
+        char = character_class
+        cu = char.upper()
+        story = story_id or char
+        prefix = epoch_id_prefix or f"{cu}-{cu}"   # ids -> {prefix}{k}_EPOCH, e.g. ALCHEMIST-ALCHEMIST1_EPOCH
+        loc_prefix = f"{cu}-"                        # loc/model-id prefix used for get_epoch_state filtering
+        base = f"{char}Epoch"
+
+        def sub(text: str) -> str:
+            return (text.replace("__NS__", mod_namespace).replace("__CHARUPPER__", cu)
+                    .replace("__CHAR__", char).replace("__CARDPOOL__", card_pool_class)
+                    .replace("__RELICPOOL__", relic_pool_class).replace("__POTIONPOOL__", potion_pool_class)
+                    .replace("__PREFIX__", prefix).replace("__STORY__", story).replace("__EPOCHBASE__", base))
+
+        eid = lambda k: f"{prefix}{k}_EPOCH"
+        files = {}
+
+        # 1. Epoch base class
+        files[f"Code/Epochs/{base}.cs"] = sub("""using System.Collections.Generic;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Screens.Timeline;
+using MegaCrit.Sts2.Core.Timeline;
+
+namespace __NS__.Epochs;
+
+public enum EpochUnlockKind { None, Cards, Relics, Potions }
+
+// One Timeline "chapter". Content-gating chapters expose their unlocks via GatedCards/Relics/Potions
+// so EpochGating can hide that content until this chapter is Revealed.
+public abstract class __EPOCHBASE__ : EpochModel
+{
+    // The base game looks up the story via Slugify(StoryId) == StoryModel.Id
+    public override string StoryId => "__STORY__";
+
+    // Placement is assigned dynamically to avoid colliding with base/other mods' epoch cells
+    public override EpochEra Era => EpochRegistration.SlotFor(GetType()).era;
+    public override int EraPosition => EpochRegistration.SlotFor(GetType()).pos;
+
+    public virtual EpochUnlockKind UnlockKind => EpochUnlockKind.None;
+
+    protected virtual List<CardModel> Cards => new();
+    protected virtual List<RelicModel> Relics => new();
+    protected virtual List<PotionModel> Potions => new();
+
+    public IReadOnlyList<CardModel> GatedCards => Cards;
+    public IReadOnlyList<RelicModel> GatedRelics => Relics;
+    public IReadOnlyList<PotionModel> GatedPotions => Potions;
+
+    public override string UnlockText => UnlockKind switch
+    {
+        EpochUnlockKind.Cards => CreateCardUnlockText(Cards),
+        EpochUnlockKind.Relics => CreateRelicUnlockText(Relics),
+        EpochUnlockKind.Potions => CreatePotionUnlockText(Potions),
+        _ => base.UnlockText,
+    };
+
+    public override void QueueUnlocks()
+    {
+        switch (UnlockKind)
+        {
+            case EpochUnlockKind.Cards: NTimelineScreen.Instance.QueueCardUnlock(Cards); break;
+            case EpochUnlockKind.Relics: NTimelineScreen.Instance.QueueRelicUnlock(Relics); break;
+            case EpochUnlockKind.Potions: NTimelineScreen.Instance.QueuePotionUnlock(Potions); break;
+        }
+    }
+}
+""")
+
+        # 2. The N concrete epochs — chapter 1 is the gateway, 2..N gate content
+        kinds = ["Cards", "Potions", "Relics"]  # rotate so the sample shows all three gate types
+        expansion = ",\n        ".join(f"Get<{char}{k}Epoch>()" for k in range(2, n + 1))
+        epochs_src = [sub(f"""using System.Collections.Generic;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Timeline;
+
+namespace __NS__.Epochs;
+
+// Chapter 1 — the gateway. Earned by finishing any run (see EpochPatches); revealing it opens 2..{n}.
+public class {char}1Epoch : {base}
+{{
+    public override string Id => "{eid(1)}";
+
+    public override EpochModel[] GetTimelineExpansion() => new[]
+    {{
+        {expansion},
+    }};
+
+    public override void QueueUnlocks() => QueueTimelineExpansion(GetTimelineExpansion());
+}}
+""")]
+        for k in range(2, n + 1):
+            kind = kinds[(k - 2) % 3]
+            model = {"Cards": "Card", "Relics": "Relic", "Potions": "Potion"}[kind]
+            listtype = {"Cards": "CardModel", "Relics": "RelicModel", "Potions": "PotionModel"}[kind]
+            epochs_src.append(sub(f"""
+// Chapter {k} — TODO: set the content this chapter unlocks (3 items is the base-game convention).
+public class {char}{k}Epoch : {base}
+{{
+    public override string Id => "{eid(k)}";
+    public override EpochUnlockKind UnlockKind => EpochUnlockKind.{kind};
+    protected override List<{listtype}> {kind} => new()
+    {{
+        // TODO: ModelDb.{model}<YourEntity>(), ModelDb.{model}<...>(), ModelDb.{model}<...>(),
+    }};
+}}
+"""))
+        files[f"Code/Epochs/{char}Epochs.cs"] = epochs_src[0] + "".join(epochs_src[1:])
+
+        # 3. Registration (reflection into base private statics) + collision-free placement
+        types_arr = ", ".join(f"typeof({char}{k}Epoch)" for k in range(1, n + 1))
+        files["Code/Epochs/EpochRegistration.cs"] = sub("""using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using MegaCrit.Sts2.Core.Timeline;
+
+namespace __NS__.Epochs;
+
+// Injects our epochs + story into the base game's private static registries at mod load.
+public static class EpochRegistration
+{
+    public static readonly Type[] EpochTypes = { __TYPES__ };
+
+    private const BindingFlags StaticNonPublic = BindingFlags.Static | BindingFlags.NonPublic;
+    private static readonly FieldInfo EpochById = Require(typeof(EpochModel), "_epochTypeDictionary");
+    private static readonly FieldInfo IdByType = Require(typeof(EpochModel), "_typeToIdDictionary");
+    private static readonly FieldInfo AllEpochs = Require(typeof(EpochModel), "_allEpochs");
+    private static readonly FieldInfo AllEpochIdsCache = Require(typeof(EpochModel), "_allEpochIds");
+    private static readonly FieldInfo StoryById = Require(typeof(StoryModel), "_storyTypeDictionary");
+
+    // Cache FieldInfo; throw loudly if a game update renames a field rather than silently no-op'ing
+    private static FieldInfo Require(Type type, string name) =>
+        type.GetField(name, StaticNonPublic)
+        ?? throw new InvalidOperationException($"[__NS__] Epoch registration: {type.Name}.{name} not found — base game changed.");
+
+    private static bool _registered;
+
+    public static void RegisterEpochs()
+    {
+        if (_registered) return;
+        _registered = true;
+
+        var epochById = (Dictionary<string, Type>)EpochById.GetValue(null)!;
+        var idByType = (Dictionary<Type, string>)IdByType.GetValue(null)!;
+        var allEpochs = (List<Type>)AllEpochs.GetValue(null)!;
+
+        foreach (var type in EpochTypes)
+        {
+            var epoch = (EpochModel)Activator.CreateInstance(type)!;
+            if (epochById.ContainsKey(epoch.Id)) continue;
+            epochById[epoch.Id] = type;
+            idByType[type] = epoch.Id;
+            allEpochs.Add(type);
+        }
+        AllEpochIdsCache.SetValue(null, null); // bust the lazy cache so AllEpochIds rebuilds from _allEpochs
+
+        // TODO: register your StoryModel subtype here if you have one:
+        // var storyById = (Dictionary<string, Type>)StoryById.GetValue(null)!;
+        // storyById[__CHAR__Story.StoryKey] = typeof(__CHAR__Story);
+    }
+
+    public static IEnumerable<string> GatingEpochIds(EpochUnlockKind kind) =>
+        EpochTypes.Select(t => (__EPOCHBASE__)Activator.CreateInstance(t)!)
+            .Where(e => e.UnlockKind == kind).Select(e => e.Id);
+
+    // Collision-free placement: scan every OTHER registered epoch's cell and take free ones.
+    // Lazy (all mods have registered by first access); cached for the session.
+    private static readonly EpochEra[] PreferredEras =
+    {
+        EpochEra.Invitation2, EpochEra.Invitation3, EpochEra.Invitation4,
+        EpochEra.Invitation5, EpochEra.Invitation6, EpochEra.Invitation7,
+    };
+    private const int TopRow = 4; // rows 0 (bottom) .. 4 (top)
+    private static Dictionary<Type, (EpochEra era, int pos)> _slots;
+
+    public static (EpochEra era, int pos) SlotFor(Type epochType)
+    {
+        _slots ??= AssignSlots();
+        return _slots.TryGetValue(epochType, out var s) ? s : (EpochEra.Invitation7, 0);
+    }
+
+    private static Dictionary<Type, (EpochEra, int)> AssignSlots()
+    {
+        var occupied = new HashSet<(EpochEra, int)>();
+        foreach (var type in (List<Type>)AllEpochs.GetValue(null)!)
+        {
+            if (typeof(__EPOCHBASE__).IsAssignableFrom(type)) continue; // skip ours (would recurse)
+            try { var e = (EpochModel)Activator.CreateInstance(type)!; occupied.Add((e.Era, e.EraPosition)); }
+            catch { }
+        }
+        var slots = new Dictionary<Type, (EpochEra, int)>();
+        foreach (var type in EpochTypes) { var cell = FindFreeCell(occupied); slots[type] = cell; occupied.Add(cell); }
+        return slots;
+    }
+
+    private static (EpochEra, int) FindFreeCell(HashSet<(EpochEra, int)> occupied)
+    {
+        for (var pos = TopRow; pos >= 0; pos--)
+            foreach (var era in PreferredEras)
+                if (!occupied.Contains((era, pos))) return (era, pos);
+        return (EpochEra.Invitation7, 0);
+    }
+}
+""").replace("__TYPES__", types_arr)
+
+        # 4. EpochGating — content-id -> "is that chapter revealed?" (compile-time generics, no reflection)
+        revealers = ",\n        ".join(
+            f"(typeof({char}{k}Epoch), us => us.IsEpochRevealed<{char}{k}Epoch>())" for k in range(2, n + 1))
+        files["Code/Epochs/EpochGating.cs"] = sub("""using System;
+using System.Collections.Generic;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Unlocks;
+
+namespace __NS__.Epochs;
+
+// Gates each chapter's cards/relics/potions behind that chapter being Revealed on the Timeline,
+// mirroring how base-game characters unlock content. Ungated content is always available; when the
+// epoch system is disabled in mod config nothing is gated at all.
+public static class EpochGating
+{
+    private static Dictionary<ModelId, Func<UnlockState, bool>> _cardGates, _relicGates, _potionGates;
+
+    // One reveal predicate per gating chapter. IsEpochRevealed<T>() works for our registered epochs.
+    private static readonly (Type Epoch, Func<UnlockState, bool> Revealed)[] Revealers =
+    {
+        __REVEALERS__,
+    };
+
+    public static bool CardUnlocked(ModelId id, UnlockState us) => Unlocked(Cards, id, us);
+    public static bool RelicUnlocked(ModelId id, UnlockState us) => Unlocked(Relics, id, us);
+    public static bool PotionUnlocked(ModelId id, UnlockState us) => Unlocked(Potions, id, us);
+
+    private static bool Unlocked(Dictionary<ModelId, Func<UnlockState, bool>> gates, ModelId id, UnlockState us)
+    {
+        // Disabling the epoch system unlocks everything the Timeline would normally gate
+        if (!__NS__.Config.__CHAR__ModConfig.EnableEpochs) return true;
+        return !gates.TryGetValue(id, out var revealed) || revealed(us);
+    }
+
+    private static Dictionary<ModelId, Func<UnlockState, bool>> Cards { get { Build(); return _cardGates; } }
+    private static Dictionary<ModelId, Func<UnlockState, bool>> Relics { get { Build(); return _relicGates; } }
+    private static Dictionary<ModelId, Func<UnlockState, bool>> Potions { get { Build(); return _potionGates; } }
+
+    private static void Build()
+    {
+        if (_cardGates != null) return;
+        var cards = new Dictionary<ModelId, Func<UnlockState, bool>>();
+        var relics = new Dictionary<ModelId, Func<UnlockState, bool>>();
+        var potions = new Dictionary<ModelId, Func<UnlockState, bool>>();
+        foreach (var (type, revealed) in Revealers)
+        {
+            var epoch = (__EPOCHBASE__)Activator.CreateInstance(type)!;
+            foreach (var c in epoch.GatedCards) cards[c.Id] = revealed;
+            foreach (var r in epoch.GatedRelics) relics[r.Id] = revealed;
+            foreach (var p in epoch.GatedPotions) potions[p.Id] = revealed;
+        }
+        _relicGates = relics; _potionGates = potions;
+        _cardGates = cards; // set last: doubles as the built flag
+    }
+}
+""").replace("__REVEALERS__", revealers)
+
+        # 5. EpochPatches — awards (milestones), gating stat-ids, portraits, Neow attach, and the hide prefix
+        files["Code/Patches/EpochPatches.cs"] = sub("""using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using HarmonyLib;
+using __NS__.Config;
+using __NS__.Epochs;
+using TheChar = __NS__.Character.__CHAR__;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Screens.Timeline;
+using MegaCrit.Sts2.Core.Saves;
+using MegaCrit.Sts2.Core.Saves.Managers;
+using MegaCrit.Sts2.Core.Saves.Runs;
+using MegaCrit.Sts2.Core.Timeline;
+using MegaCrit.Sts2.Core.Timeline.Epochs;
+
+namespace __NS__.Patches;
+
+// BaseLib's Skip* prefixes short-circuit vanilla epoch bookkeeping for custom characters (whose
+// hardcoded switch would throw), but Harmony still runs our postfixes — so we award from postfixes.
+[HarmonyPatch]
+public static class EpochPatches
+{
+    private const BindingFlags InstNonPublic = BindingFlags.Instance | BindingFlags.NonPublic;
+    private static readonly MethodInfo MidRun = Require("TryObtainEpochMidRun");
+    private static readonly MethodInfo PostRun = Require("TryObtainEpochPostRun");
+
+    private static MethodInfo Require(string name) =>
+        typeof(ProgressSaveManager).GetMethod(name, InstNonPublic)
+        ?? throw new InvalidOperationException($"[__NS__] ProgressSaveManager.{name} not found — base game changed.");
+
+    private static void AwardMidRun(ProgressSaveManager m, EpochModel e, Player p) => MidRun.Invoke(m, new object[] { e, p });
+    private static void AwardPostRun(ProgressSaveManager m, EpochModel e, SerializablePlayer sp, SerializableRun sr) => PostRun.Invoke(m, new object[] { e, sp, sr });
+
+    private static bool Enabled => __CHAR__ModConfig.EnableEpochs;
+    private static bool IsOurs(Player p) => p?.Character is TheChar;
+    private static bool IsOurs(SerializablePlayer sp) => ModelDb.GetById<CharacterModel>(sp.CharacterId) is TheChar;
+
+    // Ch1 — finish any run. (Character is already unlocked by the mod; this opens the chapter.)
+    [HarmonyPatch(typeof(ProgressSaveManager), "PostRunUnlockCharacterEpochCheck")] [HarmonyPostfix]
+    private static void AwardFirstRun(ProgressSaveManager __instance, SerializablePlayer sp, SerializableRun sr)
+    {
+        if (Enabled && IsOurs(sp)) AwardPostRun(__instance, EpochModel.Get<__CHAR__1Epoch>(), sp, sr);
+    }
+
+    // Ch2/3/4 — clear Act 1/2/3. TODO: adjust the act->epoch mapping / count for your character.
+    [HarmonyPatch(typeof(ProgressSaveManager), "ObtainCharUnlockEpoch")] [HarmonyPostfix]
+    private static void AwardActEpoch(ProgressSaveManager __instance, Player localPlayer, int act)
+    {
+        if (!Enabled || !IsOurs(localPlayer)) return;
+        EpochModel epoch = act switch
+        {
+            0 => EpochModel.Get<__CHAR__2Epoch>(),
+            1 => EpochModel.Get<__CHAR__3Epoch>(),
+            2 => EpochModel.Get<__CHAR__4Epoch>(),
+            _ => null,
+        };
+        if (epoch != null) AwardMidRun(__instance, epoch, localPlayer);
+    }
+
+    // Ch5 — 15 elites, Ch6 — 15 bosses, Ch7 — Ascension 1. TODO: implement your own criteria; see the
+    // Alchemist reference for counting wins via SaveManager.Progress.EncounterStats + GetEliteEncounters().
+    [HarmonyPatch(typeof(ProgressSaveManager), "CheckFifteenElitesDefeatedEpoch")] [HarmonyPostfix]
+    private static void AwardEliteEpoch(ProgressSaveManager __instance, Player localPlayer)
+    {
+        if (!Enabled || !IsOurs(localPlayer)) return;
+        // if (EliteWins(localPlayer) >= 15) AwardMidRun(__instance, EpochModel.Get<__CHAR__5Epoch>(), localPlayer);
+    }
+
+    [HarmonyPatch(typeof(ProgressSaveManager), "CheckFifteenBossesDefeatedEpoch")] [HarmonyPostfix]
+    private static void AwardBossEpoch(ProgressSaveManager __instance, Player localPlayer)
+    {
+        if (!Enabled || !IsOurs(localPlayer)) return;
+        // if (BossWins(localPlayer) >= 15) AwardMidRun(__instance, EpochModel.Get<__CHAR__6Epoch>(), localPlayer);
+    }
+
+    [HarmonyPatch(typeof(ProgressSaveManager), "CheckAscensionOneCompleted")] [HarmonyPostfix]
+    private static void AwardAscensionEpoch(ProgressSaveManager __instance, SerializablePlayer sp, SerializableRun sr)
+    {
+        if (Enabled && sr.Ascension == 1 && IsOurs(sp)) AwardPostRun(__instance, EpochModel.Get<__CHAR__7Epoch>(), sp, sr);
+    }
+
+    // Feed the unlock-count STAT (this is NOT the real content gate — the pools are; see EpochGating).
+    [HarmonyPatch(typeof(SaveManager), "GetCardUnlockEpochIds")] [HarmonyPostfix]
+    private static void StatCards(ref string[] __result) => Append(ref __result, EpochUnlockKind.Cards);
+    [HarmonyPatch(typeof(SaveManager), "GetRelicUnlockEpochIds")] [HarmonyPostfix]
+    private static void StatRelics(ref string[] __result) => Append(ref __result, EpochUnlockKind.Relics);
+    [HarmonyPatch(typeof(SaveManager), "GetPotionUnlockEpochIds")] [HarmonyPostfix]
+    private static void StatPotions(ref string[] __result) => Append(ref __result, EpochUnlockKind.Potions);
+    private static void Append(ref string[] result, EpochUnlockKind kind)
+    {
+        if (!Enabled) return;
+        result = result.Concat(EpochRegistration.GatingEpochIds(kind)).ToArray();
+    }
+
+    private const string EpochImageDir = "res://__NS__/images/epochs/";
+    [HarmonyPatch(typeof(EpochModel), "ResolvedPortraitPath", MethodType.Getter)] [HarmonyPostfix]
+    private static void Portrait(EpochModel __instance, ref string __result)
+    {
+        if (__instance is __EPOCHBASE__) __result = EpochImageDir + __instance.Id.ToLowerInvariant() + ".png";
+    }
+    [HarmonyPatch(typeof(EpochModel), "PackedPortraitPath", MethodType.Getter)] [HarmonyPostfix]
+    private static void PackedPortrait(EpochModel __instance, ref string __result)
+    {
+        if (__instance is __EPOCHBASE__) __result = EpochImageDir + __instance.Id.ToLowerInvariant() + ".png";
+    }
+
+    // Attach Ch1's slot to Neow's expansion so the locked gateway appears early.
+    [HarmonyPatch(typeof(NeowEpoch), "GetTimelineExpansion")] [HarmonyPostfix]
+    private static void AddGatewaySlot(ref EpochModel[] __result)
+    {
+        if (!Enabled) return;
+        var ch1 = EpochModel.Get<__CHAR__1Epoch>();
+        if (__result.All(e => e.Id != ch1.Id)) __result = __result.Append(ch1).ToArray();
+    }
+
+    // Config OFF hides our epochs: strip them from every slot batch (both the full rebuild and reveal
+    // animations funnel through AddEpochSlots). Display-only — saved states are untouched, so re-enabling
+    // restores prior progress. Runs before the async body reads the list.
+    [HarmonyPatch(typeof(NTimelineScreen), "AddEpochSlots")] [HarmonyPrefix]
+    private static void HideWhenDisabled(List<EpochSlotData> slotsToAdd)
+    {
+        if (Enabled) return;
+        slotsToAdd.RemoveAll(s => s.Model is __EPOCHBASE__);
+    }
+}
+""")
+
+        # Loc: epochs table (title/description/unlockInfo per chapter) + settings toggles
+        epochs_loc = {}
+        for k in range(1, n + 1):
+            epochs_loc[f"{eid(k)}.title"] = f"{char} Chapter {k}"
+            epochs_loc[f"{eid(k)}.description"] = "TODO: lore text for this chapter."
+            epochs_loc[f"{eid(k)}.unlockInfo"] = ("Play a run with the " + char + " to reveal these Epochs."
+                                                  if k == 1 else "TODO: how this chapter is earned.")
+        settings_loc = {
+            f"{cu}-TIMELINE.title": "Timeline",
+            f"{cu}-ENABLE_EPOCHS.title": "Enable Timeline Epochs",
+            f"{cu}-ENABLE_EPOCHS.hover.desc": (
+                f"Adds the {char}'s {n}-chapter story to the Timeline, unlocking content as you progress. "
+                "Disable to hide it and make all content available immediately; re-enabling restores progress."),
+        }
+
+        pool_override = sub(
+            "// Add to __CARDPOOL__:\n"
+            "//   protected override IEnumerable<CardModel> FilterThroughEpochs(UnlockState us, IEnumerable<CardModel> cards) =>\n"
+            "//       cards.Where(c => __NS__.Epochs.EpochGating.CardUnlocked(c.Id, us));\n"
+            "// Add to __RELICPOOL__:\n"
+            "//   public override IEnumerable<RelicModel> GetUnlockedRelics(UnlockState us) =>\n"
+            "//       AllRelics.Where(r => __NS__.Epochs.EpochGating.RelicUnlocked(r.Id, us));\n"
+            "// Add to __POTIONPOOL__:\n"
+            "//   public override IEnumerable<PotionModel> GetUnlockedPotions(UnlockState us) =>\n"
+            "//       AllPotions.Where(p => __NS__.Epochs.EpochGating.PotionUnlocked(p.Id, us));")
+
+        config_snippet = sub(
+            "// Add to __CHAR__ModConfig (BaseLib SimpleModConfig):\n"
+            "//   [ConfigSection(\"Timeline\")] [ConfigHoverTip] public static bool EnableEpochs { get; set; } = true;\n"
+            "// Plus optional buttons: UnlockAll -> ObtainEpochOverride(id, EpochState.Revealed) for every epoch;\n"
+            "// ResetUnlocks -> REMOVE the epoch entries (not NotObtained) so progression restarts clean.")
+
+        return {
+            "files": files,
+            "localization": {"epochs.json": epochs_loc, "settings_ui.json": settings_loc},
+            "components": {
+                "epoch_base": base,
+                "epochs": [f"{char}{k}Epoch" for k in range(1, n + 1)],
+                "registration": "EpochRegistration",
+                "gating": "EpochGating",
+                "patches": ["EpochPatches"],
+            },
+            "pool_overrides_snippet": pool_override,
+            "config_snippet": config_snippet,
+            "notes": [
+                f"Scaffolds {n} Timeline chapters for '{char}' that reveal one-by-one on milestones and gate content.",
+                "Call EpochRegistration.RegisterEpochs() from your ModInitializer (wrap in try/catch).",
+                "FILL IN: (1) each chapter 2+'s content list (the ModelDb.Card/Relic/Potion<>() TODOs), "
+                "(2) the milestone award criteria in EpochPatches (elite/boss counts), "
+                "(3) apply the three pool overrides (see pool_overrides_snippet) and the EnableEpochs config toggle (config_snippet).",
+                "The REAL content gate is the pool overrides (EpochGating), NOT the Get*UnlockEpochIds stat postfixes.",
+                "Do NOT force-reveal all chapters up front — it bypasses progression and double-renders tiles "
+                "(NTimelineScreen.AddEpochSlots has no dedup). Let 2..N stay hidden until Ch1 is revealed.",
+                "Add per-chapter portrait art at res://<mod>/images/epochs/{epoch_id_lowercase}.png (placeholder until then).",
+                "Test with the bridge's set_epoch / get_epoch_state RPCs + the run_suite 'epoch_state' check.",
+                "See get_modding_guide topic 'timeline_epochs' for the full architecture and every pitfall.",
+            ],
+        }

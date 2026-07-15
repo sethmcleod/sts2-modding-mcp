@@ -190,6 +190,8 @@ public static class BridgeHandler
                 "shop_action" => MainThreadDispatcher.Invoke(() => ShopAction(root)),
                 "get_card_piles" => MainThreadDispatcher.Invoke(() => GetCardPiles()),
                 "get_compendium" => MainThreadDispatcher.Invoke(() => GetCompendium()),
+                "set_epoch" => MainThreadDispatcher.Invoke(() => SetEpoch(root)),
+                "get_epoch_state" => MainThreadDispatcher.Invoke(() => GetEpochState(root)),
                 "get_ancient_dialogues" => MainThreadDispatcher.Invoke(() => GetAncientDialogues(root)),
                 "manipulate_state" => MainThreadDispatcher.Invoke(() => ManipulateState(root)),
                 "hot_swap_patches" => MainThreadDispatcher.Invoke(() => HotSwapPatches(root)),
@@ -1455,6 +1457,102 @@ public static class BridgeHandler
         {
             return new { error = $"get_compendium failed: {e.Message}" };
         }
+    }
+
+    // ─── Epoch / timeline unlock state (metaprogression testing) ─────────────
+
+    // Sets one epoch's save state by full model id, or removes its entry with state="remove". On "Revealed"
+    // it also opens the slots for the epoch's timeline-expansion children (mirroring the in-game reveal), so
+    // revealing a parent makes its children appear as locked slots. Generic over any mod's registered epochs.
+    private static object SetEpoch(JsonElement root)
+    {
+        try
+        {
+            if (!root.TryGetProperty("params", out var p) || !p.TryGetProperty("id", out var idProp))
+                return new { error = "set_epoch requires params.id" };
+            var id = idProp.GetString() ?? "";
+            var state = p.TryGetProperty("state", out var sProp) ? (sProp.GetString() ?? "Revealed") : "Revealed";
+
+            var save = SaveManager.Instance;
+            if (save?.Progress == null) return new { error = "No save/progress" };
+
+            if (string.Equals(state, "remove", StringComparison.OrdinalIgnoreCase))
+            {
+                var field = typeof(ProgressState).GetField("_epochs", BindingFlags.Instance | BindingFlags.NonPublic);
+                if (field?.GetValue(save.Progress) is List<SerializableEpoch> epochs)
+                    epochs.RemoveAll(e => e.Id == id);
+                save.SaveProgressFile();
+                return new { ok = true, id, state = "removed" };
+            }
+
+            if (!Enum.TryParse<EpochState>(state, out var epochState))
+                return new { error = $"unknown epoch state '{state}'" };
+
+            save.ObtainEpochOverride(id, epochState);
+            if (epochState >= EpochState.Revealed)
+                foreach (var child in MegaCrit.Sts2.Core.Timeline.EpochModel.Get(id).GetTimelineExpansion())
+                    if (!save.Progress.HasEpoch(child.Id))
+                        save.UnlockSlot(child.Id);
+
+            save.SaveProgressFile();
+            return new { ok = true, id, state = epochState.ToString() };
+        }
+        catch (Exception e) { return new { error = $"set_epoch failed: {e.Message}" }; }
+    }
+
+    // Reports epoch + content unlock state for gated-progression tests. `prefix` filters model ids (e.g.
+    // "ALCHEMIST-"). Per epoch: save state, whether it renders on the Timeline, and whether it's revealed.
+    // Per card/relic/potion: `unlocked` (passes the pools' polymorphic GetUnlocked* gating for the current
+    // progress) and `discovered` (seen in the compendium) — so a test can tell locked vs unlocked-but-unseen
+    // vs seen apart.
+    private static object GetEpochState(JsonElement root)
+    {
+        try
+        {
+            var prefix = root.TryGetProperty("params", out var p) && p.TryGetProperty("prefix", out var pf)
+                ? (pf.GetString() ?? "") : "";
+            // Content ids carry a type prefix (CARD./RELIC./POTION.) while epoch ids don't, so match anywhere
+            bool Match(string id) => prefix.Length == 0 || id.Contains(prefix, StringComparison.Ordinal);
+
+            var save = SaveManager.Instance;
+            if (save?.Progress == null) return new { error = "No save/progress" };
+            var progress = save.Progress;
+
+            var epochs = MegaCrit.Sts2.Core.Timeline.EpochModel.AllEpochIds.Where(Match).Select(eid =>
+            {
+                var entry = progress.Epochs.FirstOrDefault(e => e.Id == eid);
+                // InitScreen renders every epoch state except ObtainedNoSlot (and absent entries)
+                var visible = entry != null && entry.State != EpochState.ObtainedNoSlot;
+                return (object)new { id = eid, state = entry?.State.ToString() ?? "Absent", visible, revealed = progress.IsEpochRevealed(eid) };
+            }).ToList();
+
+            var unlockState = save.GenerateUnlockStateFromProgress();
+
+            // Per-pool isolation: mock/deprecated pools can throw from their enumerators in a live game.
+            HashSet<string> UnlockedIds<TPool>(Func<TPool, IEnumerable<string>> ids) where TPool : AbstractModel
+            {
+                var set = new HashSet<string>();
+                foreach (var pool in ModelDb.All.OfType<TPool>())
+                    try { foreach (var id in ids(pool)) set.Add(id); } catch { }
+                return set;
+            }
+            var unlockedCards = UnlockedIds<CardPoolModel>(pool =>
+                pool.GetUnlockedCards(unlockState, CardMultiplayerConstraint.None).Select(c => c.Id.ToString()));
+            var unlockedRelics = UnlockedIds<RelicPoolModel>(pool =>
+                pool.GetUnlockedRelics(unlockState).Select(r => r.Id.ToString()));
+            var unlockedPotions = UnlockedIds<PotionPoolModel>(pool =>
+                pool.GetUnlockedPotions(unlockState).Select(po => po.Id.ToString()));
+
+            var cards = ModelDb.AllCards.Where(c => Match(c.Id.ToString())).Select(c => (object)new
+            { id = c.Id.ToString(), unlocked = unlockedCards.Contains(c.Id.ToString()), discovered = progress.DiscoveredCards.Contains(c.Id) }).ToList();
+            var relics = ModelDb.AllRelics.Where(r => Match(r.Id.ToString())).Select(r => (object)new
+            { id = r.Id.ToString(), unlocked = unlockedRelics.Contains(r.Id.ToString()), discovered = progress.DiscoveredRelics.Contains(r.Id) }).ToList();
+            var potions = ModelDb.AllPotions.Where(po => Match(po.Id.ToString())).Select(po => (object)new
+            { id = po.Id.ToString(), unlocked = unlockedPotions.Contains(po.Id.ToString()), discovered = progress.DiscoveredPotions.Contains(po.Id) }).ToList();
+
+            return new { epochs, cards, relics, potions };
+        }
+        catch (Exception e) { return new { error = $"get_epoch_state failed: {e.Message}" }; }
     }
 
     // ─── Card Piles ─────────────────────────────────────────────────────────

@@ -103,6 +103,25 @@ def get_compendium() -> dict:
     return send_request("get_compendium")
 
 
+def set_epoch(epoch_id: str, state: str = "Revealed") -> dict:
+    """Set one epoch's save state by full model id, or remove it with state="remove".
+
+    On "Revealed" it also opens the timeline slots for the epoch's expansion children,
+    mirroring the in-game reveal. For testing gated timeline progression.
+    """
+    return send_request("set_epoch", {"id": epoch_id, "state": state})
+
+
+def get_epoch_state(prefix: str = "") -> dict:
+    """Epoch + content unlock state (optionally filtered by model-id prefix).
+
+    Per epoch: state / visible (renders on Timeline) / revealed. Per card/relic/potion:
+    unlocked (passes the pools' GetUnlocked* gating) / discovered (seen). Lets a test tell
+    locked vs unlocked-but-unseen vs seen apart.
+    """
+    return send_request("get_epoch_state", {"prefix": prefix})
+
+
 def get_screen() -> dict:
     return send_request("get_screen")
 
