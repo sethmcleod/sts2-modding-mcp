@@ -89,6 +89,15 @@ def get_player_state() -> dict:
     return send_request("get_player_state")
 
 
+def get_compendium() -> dict:
+    """Model-level compendium: every card/relic/potion pool with its members.
+
+    Same data the Card Library renders (pools drive its filters) but without UI
+    virtualization — use to assert a mod's content is fully registered and titled.
+    """
+    return send_request("get_compendium")
+
+
 def get_screen() -> dict:
     return send_request("get_screen")
 

@@ -188,6 +188,7 @@ public static class BridgeHandler
                 "rest_site_choice" => MainThreadDispatcher.Invoke(() => RestSiteChoice(root)),
                 "shop_action" => MainThreadDispatcher.Invoke(() => ShopAction(root)),
                 "get_card_piles" => MainThreadDispatcher.Invoke(() => GetCardPiles()),
+                "get_compendium" => MainThreadDispatcher.Invoke(() => GetCompendium()),
                 "manipulate_state" => MainThreadDispatcher.Invoke(() => ManipulateState(root)),
                 "hot_swap_patches" => MainThreadDispatcher.Invoke(() => HotSwapPatches(root)),
                 "hot_reload" => MainThreadDispatcher.Invoke(() => HotReload(root)),
@@ -1257,6 +1258,112 @@ public static class BridgeHandler
             return ExecuteShopAction(action, index);
         }
         catch (Exception ex) { return new { error = ex.Message }; }
+    }
+
+    // ─── Compendium ─────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Model-level compendium data: every card/relic/potion pool with its members.
+    /// This is the same data the Card Library renders (pools drive its per-character
+    /// filters), but without UI virtualization — suitable for asserting that a mod's
+    /// content is fully registered and titled. Pools are enumerated from ModelDb.All
+    /// rather than the static AllCharacters array so modded pools are included.
+    /// </summary>
+    private static object GetCompendium()
+    {
+        try
+        {
+            string Safe(Func<object?> get, string fallback)
+            {
+                try { return get()?.ToString() ?? fallback; }
+                catch { return fallback; }
+            }
+
+            // Rendered loc text. Unlike Safe, an exception is surfaced ("!!ERROR: ...")
+            // instead of swallowed — a canonical model whose description render reads
+            // Owner throws, and loc-render tests want to catch exactly that.
+            string Render(Func<object?> get)
+            {
+                try { return get()?.ToString() ?? ""; }
+                catch (Exception e) { return "!!ERROR: " + e.Message; }
+            }
+
+            // Mock/deprecated pools can throw from their member enumerators in a live
+            // game (test-mode-only guards) — isolate per pool so one bad pool doesn't
+            // sink the whole response.
+            List<object> MapPools<TPool>(string memberKey, Func<TPool, IEnumerable<object>> members)
+                where TPool : AbstractModel
+            {
+                var pools = new List<object>();
+                foreach (var p in ModelDb.All.OfType<TPool>())
+                {
+                    var entry = new Dictionary<string, object?>
+                    {
+                        ["pool"] = p.GetType().Name,
+                        ["id"] = Safe(() => p.Id, p.GetType().Name),
+                    };
+                    try { entry[memberKey] = members(p).ToList(); }
+                    catch (Exception e) { entry["error"] = e.Message; }
+                    pools.Add(entry);
+                }
+                return pools;
+            }
+
+            var cardPools = MapPools<CardPoolModel>("cards", p =>
+                p.AllCards.Select(c => (object)new
+                {
+                    name = c.GetType().Name,
+                    id = Safe(() => c.Id, c.GetType().Name),
+                    title = Safe(() => c.Title, c.GetType().Name),
+                    type = Safe(() => c.Type, "?"),
+                    rarity = Safe(() => c.Rarity, "?"),
+                    // the same canonical render path the card library uses
+                    description = Render(() => c.GetDescriptionForPile(PileType.None)),
+                }));
+
+            var relicPools = MapPools<RelicPoolModel>("relics", p =>
+                p.AllRelics.Select(r => (object)new
+                {
+                    name = r.GetType().Name,
+                    id = Safe(() => r.Id, r.GetType().Name),
+                    title = Safe(() => r.Title, r.GetType().Name),
+                    rarity = Safe(() => r.Rarity, "?"),
+                    description = Render(() => r.DynamicDescription.GetFormattedText()),
+                }));
+
+            var potionPools = MapPools<PotionPoolModel>("potions", p =>
+                p.AllPotions.Select(po => (object)new
+                {
+                    name = po.GetType().Name,
+                    id = Safe(() => po.Id, po.GetType().Name),
+                    title = Safe(() => po.Title, po.GetType().Name),
+                    rarity = Safe(() => po.Rarity, "?"),
+                    description = Render(() => po.DynamicDescription.GetFormattedText()),
+                }));
+
+            // Powers aren't pooled; flat list so loc-render tests can sweep them
+            var powers = ModelDb.All.OfType<PowerModel>()
+                .Select(pw => (object)new
+                {
+                    name = pw.GetType().Name,
+                    id = Safe(() => pw.Id, pw.GetType().Name),
+                    title = Render(() => pw.Title),
+                    description = Render(() => pw.Description),
+                    smart_description = Render(() => pw.SmartDescription),
+                }).ToList();
+
+            return new
+            {
+                card_pools = cardPools,
+                relic_pools = relicPools,
+                potion_pools = potionPools,
+                powers,
+            };
+        }
+        catch (Exception e)
+        {
+            return new { error = $"get_compendium failed: {e.Message}" };
+        }
     }
 
     // ─── Card Piles ─────────────────────────────────────────────────────────
