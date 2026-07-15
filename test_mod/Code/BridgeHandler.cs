@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Entities.Ancients;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
@@ -189,6 +190,7 @@ public static class BridgeHandler
                 "shop_action" => MainThreadDispatcher.Invoke(() => ShopAction(root)),
                 "get_card_piles" => MainThreadDispatcher.Invoke(() => GetCardPiles()),
                 "get_compendium" => MainThreadDispatcher.Invoke(() => GetCompendium()),
+                "get_ancient_dialogues" => MainThreadDispatcher.Invoke(() => GetAncientDialogues(root)),
                 "manipulate_state" => MainThreadDispatcher.Invoke(() => ManipulateState(root)),
                 "hot_swap_patches" => MainThreadDispatcher.Invoke(() => HotSwapPatches(root)),
                 "hot_reload" => MainThreadDispatcher.Invoke(() => HotReload(root)),
@@ -1260,6 +1262,89 @@ public static class BridgeHandler
         catch (Exception ex) { return new { error = ex.Message }; }
     }
 
+    // ─── Ancient dialogues ──────────────────────────────────────────────────
+
+    /// <summary>
+    /// Per-ancient dialogue registration for a character: how many dialogue sequences
+    /// exist for the given character entry (default ALCHEMIST-ALCHEMIST) and whether
+    /// every line's LocString renders. Lets tests deterministically verify a mod's
+    /// custom dialogue is wired and renderable — the live pick on a used profile is
+    /// random between character and agnostic repeating dialogues, so screen-scraping
+    /// alone can't regression-test this.
+    /// </summary>
+    private static object GetAncientDialogues(JsonElement root)
+    {
+        try
+        {
+            string character = "ALCHEMIST-ALCHEMIST";
+            if (root.TryGetProperty("params", out var p) && p.TryGetProperty("character", out var c))
+                character = c.GetString() ?? character;
+
+            var ancients = new List<object>();
+            // Anything with ancient-style dialogue: AncientEventModels plus events that
+            // expose their own DialogueSet (e.g. TheArchitect, which is a plain
+            // EventModel). Property-based so both are handled uniformly.
+            var allAncients = ModelDb.All.OfType<EventModel>()
+                .Concat(ModelDb.AllAncients.Cast<EventModel>())
+                .GroupBy(a => a.GetType()).Select(g => g.First())
+                .Where(a => a.GetType().GetProperty("DialogueSet") != null);
+            foreach (var ancient in allAncients)
+            {
+                object entry;
+                try
+                {
+                    var set = (AncientDialogueSet?)ancient.GetType().GetProperty("DialogueSet")!.GetValue(ancient);
+                    if (set == null)
+                    {
+                        ancients.Add(new { ancient = ancient.GetType().Name, dialogue_count = 0 });
+                        continue;
+                    }
+                    if (!set.CharacterDialogues.TryGetValue(character, out var dialogues))
+                    {
+                        entry = new { ancient = ancient.GetType().Name, id = ancient.Id.ToString(), dialogue_count = 0 };
+                    }
+                    else
+                    {
+                        var badLines = new List<string>();
+                        int lineCount = 0;
+                        foreach (var d in dialogues)
+                        {
+                            foreach (var line in d.Lines)
+                            {
+                                lineCount++;
+                                try
+                                {
+                                    var text = line.LineText?.GetFormattedText() ?? "";
+                                    if (text.Length == 0 || text.Contains("LocString table"))
+                                        badLines.Add($"{d.VisitIndex}: {text}");
+                                }
+                                catch (Exception e) { badLines.Add($"{d.VisitIndex}: !!ERROR {e.Message}"); }
+                            }
+                        }
+                        entry = new
+                        {
+                            ancient = ancient.GetType().Name,
+                            id = ancient.Id.ToString(),
+                            dialogue_count = dialogues.Count,
+                            line_count = lineCount,
+                            bad_lines = badLines,
+                        };
+                    }
+                }
+                catch (Exception e)
+                {
+                    entry = new { ancient = ancient.GetType().Name, error = e.Message };
+                }
+                ancients.Add(entry);
+            }
+            return new { character, ancients };
+        }
+        catch (Exception e)
+        {
+            return new { error = $"get_ancient_dialogues failed: {e.Message}" };
+        }
+    }
+
     // ─── Compendium ─────────────────────────────────────────────────────────
 
     /// <summary>
@@ -1326,7 +1411,7 @@ public static class BridgeHandler
                 {
                     name = r.GetType().Name,
                     id = Safe(() => r.Id, r.GetType().Name),
-                    title = Safe(() => r.Title, r.GetType().Name),
+                    title = Render(() => r.Title.GetFormattedText()),
                     rarity = Safe(() => r.Rarity, "?"),
                     description = Render(() => r.DynamicDescription.GetFormattedText()),
                 }));
@@ -1336,7 +1421,7 @@ public static class BridgeHandler
                 {
                     name = po.GetType().Name,
                     id = Safe(() => po.Id, po.GetType().Name),
-                    title = Safe(() => po.Title, po.GetType().Name),
+                    title = Render(() => po.Title.GetFormattedText()),
                     rarity = Safe(() => po.Rarity, "?"),
                     description = Render(() => po.DynamicDescription.GetFormattedText()),
                 }));
@@ -1347,9 +1432,9 @@ public static class BridgeHandler
                 {
                     name = pw.GetType().Name,
                     id = Safe(() => pw.Id, pw.GetType().Name),
-                    title = Render(() => pw.Title),
-                    description = Render(() => pw.Description),
-                    smart_description = Render(() => pw.SmartDescription),
+                    title = Render(() => pw.Title.GetFormattedText()),
+                    description = Render(() => pw.Description.GetFormattedText()),
+                    smart_description = Render(() => pw.SmartDescription.GetFormattedText()),
                 }).ToList();
 
             return new

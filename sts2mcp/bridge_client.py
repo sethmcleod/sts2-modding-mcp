@@ -89,6 +89,11 @@ def get_player_state() -> dict:
     return send_request("get_player_state")
 
 
+def get_ancient_dialogues(character: str = "ALCHEMIST-ALCHEMIST") -> dict:
+    """Per-ancient dialogue registration + line render status for a character."""
+    return send_request("get_ancient_dialogues", {"character": character})
+
+
 def get_compendium() -> dict:
     """Model-level compendium: every card/relic/potion pool with its members.
 
