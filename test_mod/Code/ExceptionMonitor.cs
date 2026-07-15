@@ -41,21 +41,41 @@ public static class ExceptionMonitor
 
     public static void Record(Exception ex, string source = "")
     {
+        // AggregateException / TargetInvocationException wrap the real error in a generic
+        // "a Task's exception was not observed" / "an exception was thrown by the target"
+        // message with no useful stack. Unwrap to the innermost exception so tests see the
+        // actual type, message, and stack (which is what tells a real mod bug apart from
+        // harness noise).
+        var real = Unwrap(ex);
         lock (Lock)
         {
             Buffer.AddLast(new ExceptionRecord
             {
                 Id = _nextId++,
                 Timestamp = DateTime.Now,
-                Type = ex.GetType().FullName ?? ex.GetType().Name,
-                Message = ex.Message,
-                StackTrace = ex.StackTrace ?? "",
+                Type = real.GetType().FullName ?? real.GetType().Name,
+                Message = real.Message,
+                StackTrace = real.StackTrace ?? "",
                 Source = source,
             });
             while (Buffer.Count > MaxEntries)
                 Buffer.RemoveFirst();
         }
-        ModEntry.WriteLog($"[Exception] {source}: {ex.GetType().Name}: {ex.Message}");
+        ModEntry.WriteLog($"[Exception] {source}: {real.GetType().Name}: {real.Message}");
+    }
+
+    private static Exception Unwrap(Exception ex)
+    {
+        while (true)
+        {
+            if (ex is AggregateException agg && agg.InnerExceptions.Count == 1)
+                ex = agg.InnerExceptions[0];
+            else if (ex.InnerException != null &&
+                     (ex is System.Reflection.TargetInvocationException || ex.StackTrace == null))
+                ex = ex.InnerException;
+            else
+                return ex;
+        }
     }
 
     public static List<ExceptionRecord> GetRecent(int maxCount = 20, int sinceId = 0)
