@@ -22,6 +22,7 @@ using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Entities.Merchant;
+using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.MonsterMoves;
@@ -1005,6 +1006,12 @@ public static class BridgeHandler
                 {
                     var nGame = instanceProp.GetValue(null);
                     if (nGame == null) { dispatchError = "NGame.Instance is null"; return; }
+
+                    // Starting a run through NGame skips NCharacterSelectScreen.BeginRun, which is the only
+                    // caller that stops the menu track. The menu music and the run music are separate FMOD
+                    // instances (AudioManagerProxy.music_track vs MusicControllerProxy._musicEv), so without
+                    // this the menu keeps playing underneath the act music once combat starts.
+                    NAudioManager.Instance?.StopMusic();
 
                     var task = startMethod.Invoke(nGame, new object?[] {
                         charModel, true,
@@ -2347,23 +2354,44 @@ public static class BridgeHandler
 
     // In-combat hand selection (e.g. Prime's Infuse "Choose a card to Infuse"). The game drives these via
     // NPlayerHand in SimpleSelect mode — NOT the reward-style CARD_SELECTION screen — so ExecuteCardSelection
-    // (which guards on screen=="CARD_SELECTION") can't reach them. Select the Nth active hand holder; the
-    // caller sends combat_confirm_selection afterward if the pick didn't auto-complete the prompt.
+    // (which guards on screen=="CARD_SELECTION") can't reach them. The caller sends combat_confirm_selection
+    // afterward if the pick didn't auto-complete the prompt.
+    //
+    // Prefer card_name over card_index. ActiveHolders is the visual fan: selecting a card pulls its holder
+    // out of the list, and its order does not track the logical hand from get_combat_state, so an index taken
+    // from combat state can silently land on the wrong card. Always returns `cards` (the holder names, in
+    // holder order) so a caller can see what the prompt is actually offering.
     private static object CombatSelectCard(JsonElement p)
     {
         var hand = NPlayerHand.Instance;
         if (hand == null) return new { error = "No player hand" };
         if (!hand.IsInCardSelection) return new { error = "Not in an in-combat hand selection" };
-        int index = p.TryGetProperty("card_index", out var ci) && ci.ValueKind == JsonValueKind.Number ? ci.GetInt32() : 0;
+
         var holders = hand.ActiveHolders;
-        if (index < 0 || index >= holders.Count)
-            return new { error = $"card_index {index} out of range (0..{holders.Count - 1})" };
+        string NameOf(int i) => holders[i].CardNode?.Model?.GetType().Name ?? "unknown";
+        var names = Enumerable.Range(0, holders.Count).Select(NameOf).ToArray();
+
+        int index;
+        if (p.TryGetProperty("card_name", out var cn) && cn.ValueKind == JsonValueKind.String)
+        {
+            var wanted = cn.GetString();
+            index = Array.FindIndex(names, n => string.Equals(n, wanted, StringComparison.OrdinalIgnoreCase));
+            if (index < 0)
+                return new { error = $"card_name '{wanted}' is not selectable in this prompt", cards = names };
+        }
+        else
+        {
+            index = p.TryGetProperty("card_index", out var ci) && ci.ValueKind == JsonValueKind.Number ? ci.GetInt32() : 0;
+            if (index < 0 || index >= holders.Count)
+                return new { error = $"card_index {index} out of range (0..{holders.Count - 1})", cards = names };
+        }
+
         var holder = holders[index];
-        var cardName = holder.CardNode?.Model?.GetType().Name ?? "unknown";
+        var cardName = names[index];
         bool ok = TryInvokeMethod(hand, new[] { "SelectCardInSimpleMode", "SelectCardInUpgradeMode" },
             new object?[] { holder }, out var invoked);
         ModEntry.WriteLog($"[CombatSelectCard] index={index} card={cardName} ok={ok} via={invoked} stillSelecting={hand.IsInCardSelection}");
-        return new { success = ok, card_index = index, card = cardName, invoked, still_selecting = hand.IsInCardSelection };
+        return new { success = ok, card_index = index, card = cardName, cards = names, invoked, still_selecting = hand.IsInCardSelection };
     }
 
     private static object CombatConfirmSelection()
