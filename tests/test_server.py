@@ -154,6 +154,60 @@ class TestHandlerCoverage:
         assert not missing, f"Tools without handlers: {missing}"
 
 
+class TestImportShadowing:
+    """Guard against function-local imports shadowing module-level ones.
+
+    A local `import x` binds x for the whole enclosing function, so any use of x
+    earlier in that same function raises UnboundLocalError at runtime. This once
+    disabled 7 tools in _handle_tool via a redundant `import asyncio`.
+    """
+
+    def test_no_local_import_shadows_module_import(self):
+        import ast
+        import pathlib
+
+        offenders = []
+        for path in pathlib.Path("sts2mcp").rglob("*.py"):
+            tree = ast.parse(path.read_text())
+
+            module_names = set()
+            for node in tree.body:
+                if isinstance(node, (ast.Import, ast.ImportFrom)):
+                    for alias in node.names:
+                        module_names.add((alias.asname or alias.name).split(".")[0])
+
+            for fn in ast.walk(tree):
+                if not isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    continue
+
+                local_imports = {}
+                for node in ast.walk(fn):
+                    if isinstance(node, (ast.Import, ast.ImportFrom)):
+                        for alias in node.names:
+                            name = (alias.asname or alias.name).split(".")[0]
+                            if name in module_names:
+                                local_imports.setdefault(name, node.lineno)
+
+                for name, import_line in local_imports.items():
+                    used_before = next(
+                        (
+                            node.lineno
+                            for node in ast.walk(fn)
+                            if isinstance(node, ast.Name)
+                            and node.id == name
+                            and node.lineno < import_line
+                        ),
+                        None,
+                    )
+                    if used_before is not None:
+                        offenders.append(
+                            f"{path}:{import_line} local 'import {name}' in {fn.name}() "
+                            f"shadows the module import; {name} is used at line {used_before}"
+                        )
+
+        assert not offenders, "Shadowed module imports:\n" + "\n".join(offenders)
+
+
 class TestModuleImports:
     """Verify all modules import cleanly."""
 

@@ -4361,7 +4361,6 @@ async def _handle_tool(name: str, args: dict):
                 pass  # Notification is best-effort
 
         # Build a sync wrapper that schedules the async notification
-        import asyncio
         _loop = asyncio.get_event_loop()
 
         def _on_notification(data: dict) -> None:
