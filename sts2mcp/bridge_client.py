@@ -876,7 +876,9 @@ _INTERACTIVE_SCREENS = frozenset({
 def wait_for_screen(
     target_screen: str,
     timeout_seconds: float = 15,
-    poll_interval: float = 0.5,
+    # get_screen resolves in about one 60fps frame, so a tight poll costs little and cuts most of
+    # the blind wait off every transition. At 0.5s a scripted run spends most of its time here.
+    poll_interval: float = 0.1,
 ) -> dict:
     """Poll until the game reaches a screen matching *target_screen* (case-insensitive substring)."""
     deadline = time.monotonic() + timeout_seconds
@@ -898,7 +900,7 @@ def wait_for_screen(
 
 def wait_until_idle(
     timeout_seconds: float = 10,
-    poll_interval: float = 0.5,
+    poll_interval: float = 0.1,
 ) -> dict:
     """Poll until the game reaches a stable (interactive) screen."""
     deadline = time.monotonic() + timeout_seconds

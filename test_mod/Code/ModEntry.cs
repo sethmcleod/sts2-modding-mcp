@@ -139,12 +139,12 @@ public static class ModEntry
 
             while (!_shutdownRequested)
             {
-                // Use polling so the loop can check _shutdownRequested
-                if (!_listener.Pending())
-                {
-                    Thread.Sleep(50);
+                // Block until a connection actually arrives, waking every 200ms only so the loop
+                // can still notice _shutdownRequested. Sleeping 50ms between Pending() checks
+                // instead put a ~25-50ms floor on *every* bridge call before the game did any
+                // work, which dominated the wall-clock of a scripted suite run.
+                if (!_listener.Server.Poll(200_000, SelectMode.SelectRead))
                     continue;
-                }
                 var client = _listener.AcceptTcpClient();
                 ThreadPool.QueueUserWorkItem(_ => HandleClient(client));
             }

@@ -24,6 +24,7 @@ using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Entities.Merchant;
 using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Settings;
 using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
@@ -208,6 +209,7 @@ public static class BridgeHandler
                 "save_snapshot" => MainThreadDispatcher.Invoke(() => SaveSnapshot(root)),
                 "restore_snapshot" => MainThreadDispatcher.Invoke(() => RestoreSnapshot(root)),
                 "set_game_speed" => MainThreadDispatcher.Invoke(() => SetGameSpeed(root)),
+                "set_fast_mode" => MainThreadDispatcher.Invoke(() => SetFastMode(root)),
                 "restart_run" => RestartRun(),
                 "debug_pause" => DebugPause(),
                 "debug_resume" => DebugResume(),
@@ -5807,6 +5809,33 @@ public static class BridgeHandler
             ModEntry.WriteLog($"[GameSpeed] Set to {speed}x");
             EventTracker.Record("game_speed", $"{speed}x");
             return new { success = true, speed = (double)Godot.Engine.TimeScale };
+        }
+        catch (Exception ex) { return new { error = ex.Message }; }
+    }
+
+    // Set the game's animation-speed tier. Distinct from set_game_speed: that scales
+    // Engine.TimeScale, whereas Instant makes Cmd.Wait/CustomScaledWait return without waiting at
+    // all, which is where most of a scripted run's wall-clock goes. Prefer this over the `instant`
+    // console command, which toggles and reports its new state only to the in-game console.
+    private static object SetFastMode(JsonElement root)
+    {
+        try
+        {
+            var mode = "Instant";
+            if (root.TryGetProperty("params", out var p) && p.TryGetProperty("mode", out var m)
+                && m.ValueKind == JsonValueKind.String)
+                mode = m.GetString() ?? "Instant";
+
+            if (!Enum.TryParse<FastModeType>(mode, ignoreCase: true, out var parsed))
+                return new { error = $"unknown fast mode '{mode}' (expected Normal, Fast, or Instant)" };
+
+            var prefs = SaveManager.Instance?.PrefsSave;
+            if (prefs == null) return new { error = "PrefsSave not available" };
+
+            var previous = prefs.FastMode;
+            prefs.FastMode = parsed;
+            ModEntry.WriteLog($"[FastMode] {previous} -> {parsed}");
+            return new { success = true, previous = previous.ToString(), mode = parsed.ToString() };
         }
         catch (Exception ex) { return new { error = ex.Message }; }
     }
