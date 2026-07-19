@@ -108,6 +108,10 @@ def set_epoch(epoch_id: str, state: str = "Revealed") -> dict:
 
     On "Revealed" it also opens the timeline slots for the epoch's expansion children,
     mirroring the in-game reveal. For testing gated timeline progression.
+
+    This writes save state directly and never opens the Timeline, so it does NOT run the
+    epoch's QueueUnlocks() or the AddEpochSlots expansion. Use it for setup. To exercise the
+    real reveal flow, use advance_timeline.
     """
     return send_request("set_epoch", {"id": epoch_id, "state": state})
 
@@ -115,11 +119,91 @@ def set_epoch(epoch_id: str, state: str = "Revealed") -> dict:
 def get_epoch_state(prefix: str = "") -> dict:
     """Epoch + content unlock state (optionally filtered by model-id prefix).
 
-    Per epoch: state / visible (renders on Timeline) / revealed. Per card/relic/potion:
-    unlocked (passes the pools' GetUnlocked* gating) / discovered (seen). Lets a test tell
-    locked vs unlocked-but-unseen vs seen apart.
+    Per epoch: state / visible (renders on Timeline) / revealed, plus slot_count and
+    slot_state for the live Timeline tiles. Per card/relic/potion: unlocked (passes the
+    pools' GetUnlocked* gating) / discovered (seen). Lets a test tell locked vs
+    unlocked-but-unseen vs seen apart.
+
+    slot_count is 0 whenever the Timeline screen is closed (top-level timeline_open says
+    which), so assert on it only after you navigate there. slot_count > 1 means the epoch
+    was drawn twice: AddEpochSlots has no dedup, so an epoch that InitScreen already drew
+    gets a second tile when a timeline expansion re-adds it.
     """
     return send_request("get_epoch_state", {"prefix": prefix})
+
+
+def advance_timeline(epoch_id: str | None = None) -> dict:
+    """Take ONE step of the in-game epoch reveal flow. Requires the Timeline screen open.
+
+    Steps, in priority order: confirm a queued unlock screen, close the epoch inspect
+    screen, then click a revealable tile. Pass epoch_id to restrict the tile click to one
+    epoch. Unlike set_epoch this drives the real player path, so it runs the epoch's
+    QueueUnlocks() and the AddEpochSlots expansion.
+
+    Returns one of three shapes:
+      {"ok": true, "done": false, "step": ...}  a step was taken; call again
+      {"ok": true, "retry": true, "reason": ...}  transient; poll and call again
+      {"ok": true, "done": true, "step": ...}   nothing left to do
+
+    A done response with manual_action_required means the pending epochs are ObtainedNoSlot,
+    which draws no tile and so cannot be revealed through the UI at all.
+
+    Prefer run_timeline_reveal() to drive the whole flow to completion.
+    """
+    params: dict = {}
+    if epoch_id is not None:
+        params["id"] = epoch_id
+    return send_request("advance_timeline", params)
+
+
+def run_timeline_reveal(
+    epoch_id: str | None = None,
+    timeout: float = 30.0,
+    poll: float = 0.25,
+    max_steps: int = 60,
+) -> dict:
+    """Drive advance_timeline to completion. Requires the Timeline screen open.
+
+    Loops over the reveal state machine, waiting out the animations, until the bridge
+    reports done or the timeout expires. Returns {"done", "steps", "revealed", "last"} where
+    steps is the ordered list of step names taken and revealed lists the epoch ids clicked.
+
+    Raises RuntimeError if the bridge returns an error, and TimeoutError if the flow does not
+    finish in time.
+    """
+    import time
+
+    deadline = time.monotonic() + timeout
+    steps: list[str] = []
+    revealed: list[str] = []
+    result: dict = {}
+
+    while time.monotonic() < deadline and len(steps) < max_steps:
+        response = advance_timeline(epoch_id)
+        result = response.get("result", response) if isinstance(response, dict) else {}
+
+        if result.get("error"):
+            raise RuntimeError(f"advance_timeline: {result['error']}")
+
+        if result.get("retry"):
+            time.sleep(poll)
+            continue
+
+        step = result.get("step")
+        if step:
+            steps.append(step)
+        if step == "revealed" and result.get("epoch_id"):
+            revealed.append(result["epoch_id"])
+
+        if result.get("done"):
+            return {"done": True, "steps": steps, "revealed": revealed, "last": result}
+
+        # A step landed. Let the resulting animation start before the next poll.
+        time.sleep(poll)
+
+    if len(steps) >= max_steps:
+        raise TimeoutError(f"timeline reveal exceeded {max_steps} steps (steps: {steps})")
+    raise TimeoutError(f"timeline reveal did not finish in {timeout}s (steps so far: {steps})")
 
 
 def get_screen() -> dict:

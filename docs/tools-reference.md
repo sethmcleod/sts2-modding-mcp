@@ -1,6 +1,6 @@
 # Tool Reference
 
-The MCP server exposes **151 tools**. This document lists them all by category.
+The MCP server exposes **176 tools**. This document lists them all by category.
 
 ## Game Data Query
 
@@ -60,6 +60,7 @@ The MCP server exposes **151 tools**. This document lists them all by category.
 | `bridge_get_diagnostics` | Return current screen metadata plus recent bridge/runtime logs |
 | `bridge_tail_log` | Return recent MCPTest bridge log lines |
 | `bridge_get_last_errors` | Return recent bridge error/failure lines |
+| `bridge_advance_timeline` | Reveal epochs through the real Timeline UI, which runs the epoch's `QueueUnlocks` and the `AddEpochSlots` expansion |
 
 Additional bridge combat tools: `bridge_ping`, `bridge_get_screen`, `bridge_get_run_state`, `bridge_get_combat_state`, `bridge_get_player_state`, `bridge_get_map_state`, `bridge_play_card`, `bridge_end_turn`, `bridge_console`, `bridge_use_potion`, `bridge_make_event_choice`, `bridge_navigate_map`, `bridge_rest_site_choice`, `bridge_shop_action`, `bridge_get_card_piles`, and `bridge_manipulate_state`.
 

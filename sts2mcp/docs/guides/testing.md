@@ -12,6 +12,20 @@ The MCP provides three levels of automated testing, from broad to precise:
 Use all three together: AutoSlay catches crashes, test scenarios verify behavior,
 bridge actions let you explore edge cases interactively.
 
+### First check: is the bridge the game loads the one you built?
+
+**On macOS the loaded mods directory is inside the app bundle**, at
+`<game>/SlayTheSpire2.app/Contents/MacOS/mods/`. A `mods/` directory at the game root is NOT
+loaded, and an old install can sit there and look current. On Windows and Linux the mods
+directory is `<game>/mods/`.
+
+Always install through `install_mod` (or the host repo's bridge install script). Do not
+assume a `dotnet build` reaches the game, and do not confirm an install by finding a
+`MCPTest.dll` somewhere under the game directory. The failure is quiet: the game answers on
+:21337 with the OLD bridge, so new RPCs return an unknown-method error and new response
+fields come back absent. If a brand new field reads as null while every existing assertion
+still passes, suspect a stale bridge before you suspect your code.
+
 ## Hot Reload (Live Code Reload)
 For the full hot reload reference — bridge protocol, non-MCP usage, Python/shell
 examples, and technical internals — see `get_modding_guide("hot_reload")`.

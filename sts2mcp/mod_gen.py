@@ -3216,7 +3216,10 @@ public static class EpochPatches
                 "Do NOT force-reveal all chapters up front — it bypasses progression and double-renders tiles "
                 "(NTimelineScreen.AddEpochSlots has no dedup). Let 2..N stay hidden until Ch1 is revealed.",
                 "Add per-chapter portrait art at res://<mod>/images/epochs/{epoch_id_lowercase}.png (placeholder until then).",
-                "Test with the bridge's set_epoch / get_epoch_state RPCs + the run_suite 'epoch_state' check.",
+                "Test with the bridge's set_epoch / get_epoch_state RPCs + the run_suite 'epoch_state' check. "
+                "set_epoch is setup only: it writes save state and never opens the Timeline, so it does NOT run "
+                "your QueueUnlocks or reach AddEpochSlots. Drive at least one reveal with advance_timeline "
+                "(the real UI path) and assert slot_count == 1, or the double-tile bug above stays untested.",
                 "See get_modding_guide topic 'timeline_epochs' for the full architecture and every pitfall.",
             ],
         }

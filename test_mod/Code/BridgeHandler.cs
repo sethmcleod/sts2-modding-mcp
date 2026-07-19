@@ -44,6 +44,8 @@ using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Rewards;
 using MegaCrit.Sts2.Core.Nodes.Potions;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
+using MegaCrit.Sts2.Core.Nodes.Screens.Timeline;
+using MegaCrit.Sts2.Core.Nodes.Screens.Timeline.UnlockScreens;
 using Godot;
 using GodotEngine = Godot.Engine;
 using System.Security.Cryptography;
@@ -194,6 +196,7 @@ public static class BridgeHandler
                 "get_compendium" => MainThreadDispatcher.Invoke(() => GetCompendium()),
                 "set_epoch" => MainThreadDispatcher.Invoke(() => SetEpoch(root)),
                 "get_epoch_state" => MainThreadDispatcher.Invoke(() => GetEpochState(root)),
+                "advance_timeline" => MainThreadDispatcher.Invoke(() => AdvanceTimeline(root)),
                 "get_ancient_dialogues" => MainThreadDispatcher.Invoke(() => GetAncientDialogues(root)),
                 "manipulate_state" => MainThreadDispatcher.Invoke(() => ManipulateState(root)),
                 "hot_swap_patches" => MainThreadDispatcher.Invoke(() => HotSwapPatches(root)),
@@ -1527,12 +1530,27 @@ public static class BridgeHandler
             if (save?.Progress == null) return new { error = "No save/progress" };
             var progress = save.Progress;
 
+            // Live tiles, keyed by epoch id, or null when the Timeline screen is closed. `slot_count`
+            // is what catches the duplicate-tile bug: AddEpochSlots has no dedup, so an epoch that
+            // InitScreen already drew gets a second tile when a timeline expansion re-adds it.
+            var slotStates = LiveEpochSlotStates();
+
             var epochs = MegaCrit.Sts2.Core.Timeline.EpochModel.AllEpochIds.Where(Match).Select(eid =>
             {
                 var entry = progress.Epochs.FirstOrDefault(e => e.Id == eid);
                 // InitScreen renders every epoch state except ObtainedNoSlot (and absent entries)
                 var visible = entry != null && entry.State != EpochState.ObtainedNoSlot;
-                return (object)new { id = eid, state = entry?.State.ToString() ?? "Absent", visible, revealed = progress.IsEpochRevealed(eid) };
+                var tiles = slotStates != null && slotStates.TryGetValue(eid, out var s) ? s : null;
+                return (object)new
+                {
+                    id = eid,
+                    state = entry?.State.ToString() ?? "Absent",
+                    visible,
+                    revealed = progress.IsEpochRevealed(eid),
+                    // 0 whenever the Timeline is closed, so assert these only after you navigate to it
+                    slot_count = tiles?.Count ?? 0,
+                    slot_state = tiles is { Count: > 0 } ? tiles[0] : null,
+                };
             }).ToList();
 
             var unlockState = save.GenerateUnlockStateFromProgress();
@@ -1559,9 +1577,185 @@ public static class BridgeHandler
             var potions = ModelDb.AllPotions.Where(po => Match(po.Id.ToString())).Select(po => (object)new
             { id = po.Id.ToString(), unlocked = unlockedPotions.Contains(po.Id.ToString()), discovered = progress.DiscoveredPotions.Contains(po.Id) }).ToList();
 
-            return new { epochs, cards, relics, potions };
+            return new { epochs, cards, relics, potions, timeline_open = slotStates != null };
         }
         catch (Exception e) { return new { error = $"get_epoch_state failed: {e.Message}" }; }
+    }
+
+    // ─── Timeline reveal automation (the real player path) ───────────────────
+    //
+    // set_epoch writes save state directly. That is fast and deterministic for setup, but it skips
+    // the in-game reveal flow, so it cannot catch bugs that live in that flow. The real path is:
+    //
+    //   NEpochSlot.OnRelease()                     tile is in state Obtained
+    //     -> NEpochSlot.RevealEpoch()              tile goes Complete, SaveManager.RevealEpoch(id)
+    //     -> NTimelineScreen.OpenInspectScreen(slot, playAnimation: true)
+    //         -> NEpochInspectScreen.UnlockAnimation(epoch)
+    //             -> epoch.QueueUnlocks()          <- the mod's own hook, reached ONLY here
+    //             -> SaveManager.SaveProgressFile()
+    //     -> close the inspect screen
+    //         -> NTimelineScreen.OpenQueuedScreen()     one NUnlockScreen per confirm click
+    //             -> NUnlockTimelineScreen -> AddEpochSlots()   <- no dedup, source of double tiles
+    //
+    // advance_timeline takes ONE step of that flow per call and reports which step it took, so the
+    // caller loops until `done`. One step per call keeps every intermediate state observable and
+    // keeps this handler free of waits.
+
+    // The Timeline screen, or null when it is closed. NTimelineScreen.Instance walks
+    // NGame -> MainMenu -> SubmenuStack, so it can throw or return null away from the main menu.
+    private static NTimelineScreen? LiveTimelineScreen()
+    {
+        try
+        {
+            var screen = NTimelineScreen.Instance;
+            return IsAlive(screen) ? screen : null;
+        }
+        catch (Exception) { return null; }
+    }
+
+    /// <summary>
+    /// The standard transient response. `retry` means "poll again", as opposed to an `error` (the
+    /// call was invalid) or `done` (the flow finished). Callers loop while retry is true.
+    /// </summary>
+    private static object Busy(string reason) => new { ok = true, retry = true, done = false, reason };
+
+    /// <summary>
+    /// True while a screen blocks input for an animation. A click in that window either no-ops or
+    /// interleaves two state machines, so callers retry instead. Base-game screens name the node
+    /// "InputBlocker" and toggle it from DisableInput()/EnableInput(), which makes this generic.
+    /// </summary>
+    private static bool IsScreenBusy(Godot.Node? screen)
+    {
+        if (!IsAlive(screen)) return false;
+        var blocker = FindDescendant(screen!, "InputBlocker", 4);
+        return blocker != null && IsNodeVisible(blocker);
+    }
+
+    // True while a screen tweens its modulate, which both NEpochInspectScreen.Close and
+    // NUnlockScreen.Open/Close do. Alpha is the reliable "settled" signal: a screen that is fading
+    // out still reports Visible=true for the whole tween, and clicking it again would run Close()
+    // twice and drain two queued unlock screens at once.
+    private static bool IsFading(Godot.Control? node)
+    {
+        if (!IsAlive(node)) return true;
+        return SafeRead(() => node!.Modulate.A, 0f) < 0.99f;
+    }
+
+    // Ids of every epoch currently in one save state.
+    private static List<string> PendingEpochIds(EpochState state)
+    {
+        try
+        {
+            var progress = SaveManager.Instance?.Progress;
+            if (progress == null) return new List<string>();
+            return progress.Epochs.Where(e => e.State == state).Select(e => e.Id).ToList();
+        }
+        catch (Exception) { return new List<string>(); }
+    }
+
+    // Tile states per epoch id, or null when the Timeline screen is closed. States are read once,
+    // here, so a later disposal cannot corrupt the report.
+    private static Dictionary<string, List<string>>? LiveEpochSlotStates()
+    {
+        var screen = LiveTimelineScreen();
+        if (screen == null) return null;
+
+        var map = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+        foreach (var slot in FindAll<NEpochSlot>(screen))
+        {
+            var id = SafeRead(() => slot.model?.Id.ToString(), null);
+            if (id == null) continue;
+            if (!map.TryGetValue(id, out var tiles)) map[id] = tiles = new List<string>();
+            tiles.Add(SafeRead(() => slot.State, EpochSlotState.None).ToString());
+        }
+        return map;
+    }
+
+    // Takes one step of the reveal flow. Optional params.id restricts the tile click to one epoch.
+    private static object AdvanceTimeline(JsonElement root)
+    {
+        try
+        {
+            var onlyId = root.TryGetProperty("params", out var p) && p.TryGetProperty("id", out var idProp)
+                ? idProp.GetString() : null;
+
+            var screen = LiveTimelineScreen();
+            if (screen == null)
+                return new { error = "advance_timeline needs the Timeline screen open; navigate_menu to \"timeline\" first" };
+
+            // 1. A queued unlock screen owns the input. Confirm it to drain the queue.
+            var unlockScreen = SafeRead(() => screen.CurrentUnlockScreen, null);
+            if (IsAlive(unlockScreen) && IsNodeVisible(unlockScreen))
+            {
+                if (IsFading(unlockScreen)) return Busy("an unlock screen is still animating");
+                var clicked = TryForceClickChildButton(unlockScreen!, new[] { "ConfirmButton" });
+                if (clicked == null) return Busy("an unlock screen is open but its ConfirmButton has not spawned yet");
+                return new { ok = true, done = false, step = "confirmed_unlock", screen = unlockScreen!.GetType().Name };
+            }
+
+            // 2. The inspect screen is open. Closing it is what drains the unlock queue.
+            var inspect = FindFirst<NEpochInspectScreen>(screen);
+            if (inspect != null && IsNodeVisible(inspect))
+            {
+                if (IsFading(inspect)) return Busy("the inspect screen is still animating");
+                var clicked = TryForceClickChildButton(inspect, new[] { "CloseButton" });
+                if (clicked == null) return Busy("the inspect screen is open but its CloseButton has not spawned yet");
+                return new { ok = true, done = false, step = "closed_inspect" };
+            }
+
+            // 3. Click a revealable tile. Sorted by position, so repeat runs reveal in a stable order.
+            var revealable = FindAllSortedByPosition<NEpochSlot>(screen)
+                .Where(s => SafeRead(() => s.State, EpochSlotState.None) == EpochSlotState.Obtained)
+                .Where(s => SafeRead(() => s.HasSpawned, false) && IsNodeVisible(s))
+                .Select(s => (slot: s, id: SafeRead(() => s.model?.Id.ToString(), null)))
+                .Where(x => x.id != null)
+                .Where(x => onlyId == null || string.Equals(x.id, onlyId, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (revealable.Count > 0)
+            {
+                var target = revealable[0];
+                try { target.slot.ForceClick(); }
+                catch (ObjectDisposedException) { return Busy("the tile was freed before the click landed"); }
+                return new { ok = true, done = false, step = "revealed", epoch_id = target.id };
+            }
+
+            // 4. Nothing is clickable. Report why, and separate "wait" from "cannot".
+            if (IsScreenBusy(screen))
+                return Busy("the timeline is still animating");
+
+            // Scope the pending checks to params.id as well. Otherwise a targeted call reports on an
+            // unrelated epoch and the caller waits for work it never asked for.
+            List<string> Pending(EpochState state)
+            {
+                var ids = PendingEpochIds(state);
+                return onlyId == null
+                    ? ids
+                    : ids.Where(id => string.Equals(id, onlyId, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            var obtained = Pending(EpochState.Obtained);
+            if (obtained.Count > 0)
+                return Busy($"obtained epochs are pending but no tile has spawned yet: {string.Join(", ", obtained)}");
+
+            // ObtainedNoSlot is a dead end for UI automation. The epoch is earned, but InitScreen
+            // draws no tile for it, so there is nothing to click. UnlockSlot(id) promotes it to
+            // Obtained, and so does a save reload, because that runs FixMissingSlots.
+            var noSlot = Pending(EpochState.ObtainedNoSlot);
+            if (noSlot.Count > 0)
+                return new
+                {
+                    ok = true,
+                    done = true,
+                    step = "blocked_no_slot",
+                    manual_action_required = true,
+                    pending_epoch_ids = noSlot,
+                    message = "epochs are obtained but have no timeline tile; promote them with set_epoch state=Obtained, or reload the save to run FixMissingSlots",
+                };
+
+            return new { ok = true, done = true, step = "idle", message = "no epoch is waiting to be revealed" };
+        }
+        catch (Exception e) { return new { error = $"advance_timeline failed: {e.Message}" }; }
     }
 
     // ─── Card Piles ─────────────────────────────────────────────────────────
@@ -1998,8 +2192,9 @@ public static class BridgeHandler
                 }
                 if (node == null) continue;
 
-                // Check if visible
-                if (node is Godot.Control ctrl && !ctrl.Visible) continue;
+                // Check if visible. Own visibility only, not IsVisibleInTree: some callers click
+                // buttons that sit under a parent which is mid-transition.
+                if (node is Godot.Control ctrl && !SafeRead(() => ctrl.Visible, false)) continue;
 
                 // Try ForceClick (NClickableControl method)
                 var forceClick = node.GetType().GetMethod("ForceClick",
@@ -2033,12 +2228,65 @@ public static class BridgeHandler
         return null;
     }
 
+    // ─── Safe node access ────────────────────────────────────────────────────
+    //
+    // Godot frees nodes while a poll is in flight. Screen transitions, tween callbacks and
+    // QueueFree all do it. Every read of a freed node throws ObjectDisposedException, and
+    // IsInstanceValid is only accurate at the instant you call it: a node can die between the
+    // check and the next property read. These helpers turn a dead node into a null/false result,
+    // so a handler reports "not ready" instead of a hard error. Prefer them over raw property
+    // reads in anything that walks the scene tree.
+
+    /// <summary>
+    /// True when the object is non-null and still alive. Safe to call on an already-freed object.
+    /// </summary>
+    private static bool IsAlive(Godot.GodotObject? obj)
+    {
+        if (obj is null) return false;
+        try { return Godot.GodotObject.IsInstanceValid(obj); }
+        catch (ObjectDisposedException) { return false; }
+    }
+
+    /// <summary>
+    /// Read a value off a node and fall back if the node dies mid-read.
+    /// </summary>
+    private static T SafeRead<T>(Func<T> read, T fallback)
+    {
+        try { return read(); }
+        catch (ObjectDisposedException) { return fallback; }
+    }
+
+    /// <summary>
+    /// True when the node is alive, visible, and every ancestor is visible too. A node with
+    /// Visible=true under a hidden parent does not render, so the parent chain matters.
+    /// </summary>
+    private static bool IsNodeVisible(Godot.Node? node)
+    {
+        if (!IsAlive(node)) return false;
+        try
+        {
+            if (node is Godot.CanvasItem item) return item.IsVisibleInTree();
+            return true;
+        }
+        catch (ObjectDisposedException) { return false; }
+    }
+
+    /// <summary>
+    /// Children of a node, or an empty array if the node died. Every tree walk goes through this.
+    /// </summary>
+    private static Godot.Node[] SafeChildren(Godot.Node? node)
+    {
+        if (!IsAlive(node)) return Array.Empty<Godot.Node>();
+        try { return node!.GetChildren().ToArray(); }
+        catch (ObjectDisposedException) { return Array.Empty<Godot.Node>(); }
+    }
+
     private static Godot.Node? FindDescendant(Godot.Node parent, string name, int depth)
     {
         if (depth <= 0) return null;
-        foreach (var child in parent.GetChildren())
+        foreach (var child in SafeChildren(parent))
         {
-            if (string.Equals(child.Name.ToString(), name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(SafeRead(() => child.Name.ToString(), ""), name, StringComparison.OrdinalIgnoreCase))
                 return child;
             var found = FindDescendant(child, name, depth - 1);
             if (found != null) return found;
@@ -2049,9 +2297,9 @@ public static class BridgeHandler
     private static void CollectButtons(Godot.Node parent, List<Godot.BaseButton> buttons, int depth)
     {
         if (depth <= 0) return;
-        foreach (var child in parent.GetChildren())
+        foreach (var child in SafeChildren(parent))
         {
-            if (child is Godot.BaseButton btn && btn.Visible)
+            if (child is Godot.BaseButton btn && SafeRead(() => btn.Visible, false))
                 buttons.Add(btn);
             CollectButtons(child, buttons, depth - 1);
         }
@@ -2060,26 +2308,47 @@ public static class BridgeHandler
     /// <summary>
     /// Find all descendant nodes of type T, sorted by visual position (Y then X).
     /// Handles z-order scrambling from NGridCardHolder.OnFocus() calling MoveToFront().
+    /// Nodes that die during the walk are dropped, so the sort never reads a freed position.
     /// </summary>
     private static List<T> FindAllSortedByPosition<T>(Godot.Node start) where T : Godot.Control
     {
         var list = new List<T>();
         FindAllRecursive(start, list);
-        list.Sort((a, b) =>
+        var positioned = list
+            .Where(IsAlive)
+            .Select(n => (node: n, pos: SafeRead(() => n.GlobalPosition, Godot.Vector2.Zero)))
+            .ToList();
+        positioned.Sort((a, b) =>
         {
-            int cmp = a.GlobalPosition.Y.CompareTo(b.GlobalPosition.Y);
-            return cmp != 0 ? cmp : a.GlobalPosition.X.CompareTo(b.GlobalPosition.X);
+            int cmp = a.pos.Y.CompareTo(b.pos.Y);
+            return cmp != 0 ? cmp : a.pos.X.CompareTo(b.pos.X);
         });
-        return list;
+        return positioned.Select(p => p.node).ToList();
     }
 
     private static void FindAllRecursive<T>(Godot.Node node, List<T> found) where T : Godot.Node
     {
-        if (!Godot.GodotObject.IsInstanceValid(node)) return;
+        if (!IsAlive(node)) return;
         if (node is T item) found.Add(item);
-        foreach (var child in node.GetChildren())
+        foreach (var child in SafeChildren(node))
             FindAllRecursive(child, found);
     }
+
+    /// <summary>
+    /// All live descendants of type T under a root, in tree order.
+    /// </summary>
+    private static List<T> FindAll<T>(Godot.Node root) where T : Godot.Node
+    {
+        var list = new List<T>();
+        FindAllRecursive(root, list);
+        return list.Where(IsAlive).ToList();
+    }
+
+    /// <summary>
+    /// First live descendant of type T under a root, or null.
+    /// </summary>
+    private static T? FindFirst<T>(Godot.Node root) where T : Godot.Node
+        => FindAll<T>(root).FirstOrDefault();
 
     private static object ExecuteMapTravel(int row, int col)
     {

@@ -1714,6 +1714,38 @@ async def list_tools() -> list[types.Tool]:
             },
         ),
         types.Tool(
+            name="bridge_advance_timeline",
+            description=(
+                "Drive the in-game epoch reveal flow on the Timeline screen: click a revealable "
+                "epoch tile, close the inspect screen, and confirm each queued unlock screen. "
+                "Navigate to the timeline first (bridge_navigate_menu target='timeline'). "
+                "Unlike the set_epoch bridge RPC, which writes save state directly, this follows "
+                "the real player path, so it runs the epoch's QueueUnlocks() and the AddEpochSlots "
+                "expansion. Use it to verify a custom character's timeline progression end to end, "
+                "including duplicate tiles (check slot_count in get_epoch_state). "
+                "By default it loops to completion; set single_step to take one step and inspect "
+                "the intermediate state. Epochs in state ObtainedNoSlot draw no tile and cannot be "
+                "revealed through the UI; promote them with set_epoch state=Obtained first."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "epoch_id": {
+                        "type": "string",
+                        "description": "Full model id to reveal (e.g. 'ALCHEMIST-ALCHEMIST2_EPOCH'). Omit to reveal whatever is pending.",
+                    },
+                    "single_step": {
+                        "type": "boolean",
+                        "description": "Take exactly one step and return, instead of looping to completion (default false)",
+                    },
+                    "timeout": {
+                        "type": "number",
+                        "description": "Seconds to allow when looping to completion (default 30)",
+                    },
+                },
+            },
+        ),
+        types.Tool(
             name="bridge_click_node",
             description=(
                 "Click a Godot UI node by its scene tree path. Works without window focus. "
@@ -4027,6 +4059,16 @@ async def _handle_tool(name: str, args: dict):
     elif name == "bridge_navigate_menu":
         from . import bridge_client
         return await _call_bridge(bridge_client.navigate_menu, args["target"])
+
+    elif name == "bridge_advance_timeline":
+        from . import bridge_client
+        if args.get("single_step"):
+            return await _call_bridge(bridge_client.advance_timeline, args.get("epoch_id"))
+        return await _call_bridge(
+            bridge_client.run_timeline_reveal,
+            args.get("epoch_id"),
+            args.get("timeout", 30.0),
+        )
 
     elif name == "bridge_click_node":
         from . import bridge_client

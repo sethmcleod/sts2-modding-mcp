@@ -1,6 +1,6 @@
 # STS2 Modding MCP
 
-A [Model Context Protocol](https://modelcontextprotocol.io/) server for **Slay the Spire 2** modding. Connects to any MCP-compatible AI assistant (Claude Code, Claude Desktop, Cursor, Windsurf, etc.) and provides **151 tools** for reverse-engineering the game, generating mod code, building/deploying, live-inspecting the running Godot engine, and autonomously playtesting mods.
+A [Model Context Protocol](https://modelcontextprotocol.io/) server for **Slay the Spire 2** modding. Connects to any MCP-compatible AI assistant (Claude Code, Claude Desktop, Cursor, Windsurf, etc.) and provides **176 tools** for reverse-engineering the game, generating mod code, building/deploying, live-inspecting the running Godot engine, and autonomously playtesting mods.
 
 - **Reverse engineering** — decompiles C# assemblies with Roslyn syntax trees, indexes 3,048+ entities and 144 hooks, extracts 15,000+ Godot assets
 - **Code generation** — production-ready C# for 30+ entity types, Harmony patches, Godot UI, VFX, network messages, and complete mod projects
@@ -110,7 +110,7 @@ When STS2 updates:
 
 Detailed reference material is in the [`docs/`](docs/) directory:
 
-- **[Tool Reference](docs/tools-reference.md)** — all 151 tools organized by category
+- **[Tool Reference](docs/tools-reference.md)** — all 176 tools organized by category
 - **[Complex Workflows](docs/workflows.md)** — multi-step project editing, bridge automation, example sequences
 - **[Advanced Generators](docs/advanced-generators.md)** — community-inspired generators and scaffold tools
 - **[Modding Guides](docs/modding-guides.md)** — all 29 built-in guide topics
