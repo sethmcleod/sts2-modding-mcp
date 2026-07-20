@@ -941,6 +941,43 @@ async def list_tools() -> list[types.Tool]:
             inputSchema={"type": "object", "properties": {}},
         ),
         types.Tool(
+            name="read_run_history",
+            description=(
+                "Read finished runs from the Run History compendium save files (offline, no game "
+                "needed). Covers data the in-game screen shows only partially: per-floor damage "
+                "taken, HP healed, gold, turns per combat, card choices with picked/skipped flags, "
+                "enchantments, rest-site choices, potions used, final deck and relics. "
+                "detail='summary' gives one stat line per run (damage economy, combat pace); "
+                "detail='full' gives the per-floor breakdown, pick rates, and final deck. "
+                "Filter by profile path substring (e.g. 'profile2'), seed, or character name."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "profile": {
+                        "type": "string",
+                        "description": "Filter: substring of the save path (e.g. 'profile2' or 'modded')",
+                    },
+                    "seed": {"type": "string", "description": "Filter: exact run seed"},
+                    "character": {
+                        "type": "string",
+                        "description": "Filter: substring of the character model id (e.g. 'ALCHEMIST')",
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Max runs to return, newest first (default 5)",
+                        "default": 5,
+                    },
+                    "detail": {
+                        "type": "string",
+                        "enum": ["summary", "full"],
+                        "description": "summary = one stat line per run; full = per-floor breakdown",
+                        "default": "summary",
+                    },
+                },
+            },
+        ),
+        types.Tool(
             name="bridge_get_run_state",
             description=(
                 "Get current run state: act, floor, ascension, seed, current room, "
@@ -3776,6 +3813,16 @@ async def _handle_tool(name: str, args: dict):
     elif name == "bridge_get_screen":
         from . import bridge_client
         return await _call_bridge(bridge_client.get_screen)
+
+    elif name == "read_run_history":
+        from . import run_history
+        return run_history.read_run_history(
+            profile=args.get("profile"),
+            seed=args.get("seed"),
+            character=args.get("character"),
+            limit=int(args.get("limit", 5)),
+            detail=args.get("detail", "summary"),
+        )
 
     elif name == "bridge_get_run_state":
         from . import bridge_client
