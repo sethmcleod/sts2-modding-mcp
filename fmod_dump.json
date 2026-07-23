@@ -1,0 +1,4169 @@
+{
+ "events": [
+  {
+   "path": "event:/music/menu/menu_1",
+   "guid": "{5af53d3a-b060-4b94-8af6-b7f190628f6c}",
+   "length_ms": 105365,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "menu_progress",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/music/menu_update",
+   "guid": "{38ed7ba2-fe09-4459-ade3-61700a7f03b0}",
+   "length_ms": 4500,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "menu_progress",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "snapshot:/pause",
+   "guid": "{f2ae3fc3-8cee-4c7e-84e2-89b61eb1c120}",
+   "length_ms": 0,
+   "is_snapshot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/architect/architect_ending_attack",
+   "guid": "{dc4a1000-39a4-4da8-b50a-eaae373e6490}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/globe_head/globe_head_charge",
+   "guid": "{ec957801-add1-4915-a868-3b645c9d7adb}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_flame",
+   "guid": "{a6967a02-e7a8-42c8-a443-d848ec047af1}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_lost/the_lost_cast",
+   "guid": "{3b7d8c02-58d2-4373-9ea8-892d7b69506f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/entomancer/entomancer_die",
+   "guid": "{b55ea402-6e18-43e7-ab1a-1045f23ab49e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/infested_prisms/infested_prisms_buff",
+   "guid": "{c07bde03-e4b4-4485-8697-acfc9fcddd1e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_rocket",
+   "guid": "{6c9b8305-411f-4c4e-a7fa-f3a089e351cf}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_attack_peck",
+   "guid": "{0ea70106-db4d-483c-9266-0fd9a5140432}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_slam",
+   "guid": "{8a626706-98fd-4a50-b8d2-d63b0b76e8cc}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/magi_knight/magi_knight_attack_ram",
+   "guid": "{be9c3707-266a-460f-93e2-e0cfbe73426d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_buff",
+   "guid": "{f491d107-71ae-4c94-ba83-e98bfde46c01}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/haunted_ship/haunted_ship_attack",
+   "guid": "{26c5e808-2721-49fc-9411-002fae436d92}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_attack",
+   "guid": "{1f7e7509-acd7-4937-a3b5-5e846785aff7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/ironclad/ironclad_whirlwind",
+   "guid": "{4887ab09-6db1-44c5-986a-a3fb938fa61e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_cast",
+   "guid": "{25a9ab09-2ef4-47e5-9baa-cfa8573e1068}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/noisebot/noisebot_die",
+   "guid": "{a2d2300a-2a33-407d-8176-78e1f80099a0}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/necrobinder/necrobinder_cast",
+   "guid": "{f084ec0a-4c25-4804-8bed-edebb3a219a5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/silent/silent_attack",
+   "guid": "{5fd1fa0a-1d61-43c5-9063-949e58cd3628}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "weak",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "vulnerable",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "strength",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_die",
+   "guid": "{7f09810b-efee-431b-bc6c-0792bf71de26}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/gold/gold_3",
+   "guid": "{7bf37c0c-76e7-4f84-8020-c08206cd91ba}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_flee",
+   "guid": "{a829a90c-dad6-444d-9f47-ab3e2124fe6a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/devoted_sculptor/devoted_sculptor_die",
+   "guid": "{5718130d-adba-4d36-a7b1-1910973a7ac9}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/shrinker_beetle/shrinker_beetle_die",
+   "guid": "{45d2220d-a1cf-4bc6-b887-37203373358b}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_rock/workbug_rock_spit",
+   "guid": "{fc509c0d-7725-42b5-ab17-d0406a067da6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/skulking_colony/skulking_colony_kick",
+   "guid": "{40a0dc0d-f284-4670-981b-71b05917604a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/terror_eel/terror_eel_die",
+   "guid": "{eb52ff0d-0f9e-4773-b04a-78e8bc90c40a}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_right_die",
+   "guid": "{e2512a0e-a70c-48af-90f2-58dc64af5a70}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_fysh/soul_fysh_intangible",
+   "guid": "{3232920e-37ab-41bd-a778-1d1afff03382}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_extend",
+   "guid": "{702da90e-ed7d-4824-abdd-5f0094bb5e0b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/burrowing_bug/burrowing_bug_die",
+   "guid": "{7e8af20e-bd0e-41e9-95ea-1eefed4c33c0}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_minion/the_kin_minion_buff",
+   "guid": "{0f83250f-8899-4450-b811-98c39db20a13}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_egg/workbug_egg_die",
+   "guid": "{9176530f-e8f2-429e-b8f9-82f124311c7d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_hands",
+   "guid": "{89009f0f-d8c4-4151-8502-deb4f8df628f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/punch_construct/punch_construct_attack_double",
+   "guid": "{f168df0f-ad15-4aac-86ba-8eacb029e840}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/wipe_map",
+   "guid": "{eb6eb510-e06e-475b-b560-58b63c9c4a88}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_base",
+   "guid": "{057fc610-690e-4307-aebc-b4bf72ff2a67}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fabricator/fabricator_hurt",
+   "guid": "{d5c3f710-5561-47f8-9f61-0afb164c3345}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/tanx/tanx_laugh",
+   "guid": "{9b5ff211-3b10-4518-b86c-a9c2f992df23}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/ironclad/ironclad_bloodwall",
+   "guid": "{5a838312-f8c3-41b1-9ff9-2fe201f7e413}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/chomper/chomper_die",
+   "guid": "{2e168b12-f971-420a-b1b2-cb4a293c6b99}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_die",
+   "guid": "{e2974713-ed21-4c04-b678-82d0e2e90446}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_summon",
+   "guid": "{5a7c5413-0c4a-4a09-8115-c8e38ab77182}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phrog_parasite/phrog_parasite_attack",
+   "guid": "{87dfe113-f7d1-4e55-9705-1071d3018e9a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_fly_loop",
+   "guid": "{826b0e16-7c15-41be-b789-e163077b69f0}",
+   "length_ms": 875,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/hunter_killer/hunter_killer_hurt",
+   "guid": "{d07b7016-4255-4664-892f-8e8de31f55dd}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_attack_lick",
+   "guid": "{458da316-f57e-4bd6-8169-2f9949605a32}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slumbering_beetle/slumbering_beetle_sleep_loop",
+   "guid": "{849bd916-7d37-4a82-bc2d-c49e17f7a345}",
+   "length_ms": 3000,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/ui/treasure/treasure_act3_old",
+   "guid": "{fc08b817-83d0-486a-90bd-b1d5011f5f52}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/wipe_silent",
+   "guid": "{86322718-733c-4542-adcc-f4c33bc4eea6}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/hunter_killer/hunter_killer_attack",
+   "guid": "{88b74018-dd0b-4b53-9c31-36bd89ad8217}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/gold/gold_1",
+   "guid": "{b4afa418-61ac-435c-a29a-136fb0d925b6}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_heavy",
+   "guid": "{67a17619-b5a1-4095-a765-f7b9f40b5114}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_attack_blow",
+   "guid": "{878b8d19-7781-484f-9969-b6b429cf66ab}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_die",
+   "guid": "{2c279719-b6d9-4da1-a0db-6bbf10bbddec}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/axebot/axebot_die",
+   "guid": "{7c26041a-38d5-4a07-a072-071c09a5c2d6}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/byrdonis/byrdonis_attack_angry",
+   "guid": "{6949af1a-2ac5-4d21-bea4-ef9efb0050d4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/osty/osty_die",
+   "guid": "{23d3ff1a-05b2-43e4-8d3b-44765b50d287}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_insect",
+   "guid": "{0ba3061b-5efc-4245-8c7d-c31f46a1d95c}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slithering_strangler/slithering_strangler_die",
+   "guid": "{e15b991b-68d6-4883-9fc3-11ae0e2f5349}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/clicks/ui_hover",
+   "guid": "{5798b21b-43e1-4207-9c73-bb702ff9220f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/obscura/obscura_hologram_heal",
+   "guid": "{72ee041c-50e2-4cf9-aacd-66f50d3ae031}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_die",
+   "guid": "{f46aad1c-11ef-4f4b-80de-efe899b11174}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fossil_stalker/fossil_stalker_attack_single",
+   "guid": "{f3fafa1c-b1f9-4b37-965f-d1adee076613}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/obscura/obscura_die",
+   "guid": "{61165d1d-fce8-41a4-ace3-f2e45016be4d}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phrog_parasite/phrog_parasite_cast",
+   "guid": "{63ad7a1d-15f3-40b3-897b-34857d25af1a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_hurt",
+   "guid": "{8bcd991d-342d-4947-8cb8-e340d2c48d3b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_summon",
+   "guid": "{f388ee1d-fd0d-4342-b988-0373c4f55c11}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_hurt",
+   "guid": "{5eb2191e-c0eb-4376-a3d3-4f7b4043af4d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_hover",
+   "guid": "{44f0191e-4f27-496f-97b8-4efc071ca967}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tough_egg/tough_egg_spawn",
+   "guid": "{9fca1e1e-4fa0-43eb-8e98-67a28080fd0f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_goop/workbug_goop_attack",
+   "guid": "{1bbc221e-4c57-4b05-8eeb-12fe353bab85}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/axebot/axebot_cast",
+   "guid": "{cc0aa21e-5940-4f14-b3c7-6c79a96887f5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mechaknight/mechaknight_hurt",
+   "guid": "{58d5d61e-2843-4865-b67e-832effa95499}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_hurt",
+   "guid": "{540ed81e-d7d0-4394-9ea3-30dc198bf59b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_attack",
+   "guid": "{21d20b20-b919-4f68-a8e9-be1a5806f95d}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "vulnerable",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "weak",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/skulking_colony/skulking_colony_spin",
+   "guid": "{f1ac9920-78bd-4ef7-85a5-a5147801a47f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/globe_head/globe_head_die",
+   "guid": "{21fac120-3656-4aea-99a9-f1feac58fc38}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/burrowing_bug/burrowing_bug_hurt",
+   "guid": "{e8c6d420-787e-46f7-8b93-0a26f61b8fa3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_heal",
+   "guid": "{d0570821-4ec0-484c-aabc-6bcfbb998ed4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/reverse_merchant/reverse_merchant_die",
+   "guid": "{b7d20e21-3b67-4012-9e12-0d9d40d480e7}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_hyperbeam",
+   "guid": "{df212921-882d-4760-99ac-59b7d0e35f39}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/torch_head_amalgam/torch_head_amalgam_attack",
+   "guid": "{c3672921-6355-42d4-9482-6d5487a3db64}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/attack_fire",
+   "guid": "{ea005921-5224-4ceb-b4ce-857d00825406}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_attack_kick",
+   "guid": "{b37ea221-ce07-46fa-8340-e931d1ebd4ac}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/treasure/treasure_act2_old",
+   "guid": "{37a04722-97e4-4ad6-b682-8b6bbc7f20fc}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/sludge_spinner/sludge_spinner_attack_spin",
+   "guid": "{a6fdaa22-975d-4b33-a42a-32a975fa6a46}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/entomancer/entomancer_attack_ranged",
+   "guid": "{3156e422-d8e3-4e84-8f73-60ef906b4e48}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cubex_construct/cubex_construct_die",
+   "guid": "{3f34fd22-64ee-452a-8be4-4665745e2022}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/scroll_of_biting/scroll_of_biting_bite",
+   "guid": "{23f91223-3808-4d4d-bec6-2bf317c129d2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_silk/workbug_silk_stun",
+   "guid": "{b3e0ed23-611c-43db-84d7-f8f1ef871346}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/frog_knight/frog_knight_attack",
+   "guid": "{a8f3f723-d7ed-4e18-828b-348c5fe48951}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/pause_close",
+   "guid": "{6b5b6524-c72c-4558-8721-cb124b5153a5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_revive_three_heads",
+   "guid": "{867ae224-fd39-467a-afe5-5c692bcbfed2}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_hurt_hover",
+   "guid": "{04215526-dcbe-42c9-a319-7d88a45ddb37}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/ironclad/ironclad_hellraiser",
+   "guid": "{004e8e26-8973-4529-975e-13b1b5efe9bf}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spiny_toad/spiny_toad_lick",
+   "guid": "{97951627-855a-4b7b-a0ff-f926688428cb}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_explode",
+   "guid": "{cb122727-ed92-429d-892c-8d27afa54a6b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_fysh/soul_fysh_attack",
+   "guid": "{b6868327-d5dc-4d75-9acf-f26dcf34a1cd}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_movement_B_into_deck",
+   "guid": "{55828828-df55-4953-b145-6297154cabec}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/toadpole/toadpole_die",
+   "guid": "{a644a628-9cc5-4d6a-83dd-024fe7dcd7a9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_kick_multi",
+   "guid": "{42fed828-31b2-449f-9b33-da03a5a7fbb7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_land",
+   "guid": "{27c22729-9d24-483b-9591-e9ff433c1cee}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/axebot/axebot_buff",
+   "guid": "{8443562a-7663-4f50-a9af-5a010c96da06}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cultists/cultists_attack",
+   "guid": "{9070d42a-c695-42e8-af51-6de59d89b414}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "enemy_strength",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mite/mite_die",
+   "guid": "{b5ece62a-bce3-4a20-bd53-0a795e41493f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_hover_loop",
+   "guid": "{e776f12b-8a0e-44fd-951e-f17cb2a67026}",
+   "length_ms": 10000,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_retract",
+   "guid": "{b87fff2b-2a20-4f3c-aac8-90817e039c23}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_slime",
+   "guid": "{a5980f2c-d3aa-4b17-8eed-5de3a6d73137}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/leaf_slime_m/leaf_slime_m_cast",
+   "guid": "{1dcb852c-f89b-47ea-9e41-9d9f047fdcc8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_dark_channel",
+   "guid": "{1979052d-e222-400b-bcf6-bd126cde9f42}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/torch_head_amalgam/torch_head_amalgam_die",
+   "guid": "{3d69222d-edde-4af6-8df2-146cbd23cd76}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fogmog/fogmog_die",
+   "guid": "{b03c3c2d-aa8c-4560-b082-fc53ea707781}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_left_attack_scissor",
+   "guid": "{b359402d-5016-4edc-87cf-0dae10a381c6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/wipe_ironclad",
+   "guid": "{25c5892d-dd2b-4d44-b0c1-95e557b8df4e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/nonupeipe/nonupeipe_eeked",
+   "guid": "{2520002e-00fe-43a6-bb9c-e1dd38f5e911}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_awaken",
+   "guid": "{e0f9e02e-1189-40e7-83c1-9e8248e8ae2c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vantom/vantom_inky_lance",
+   "guid": "{96d6852f-85b9-41c7-9895-262fbb71bd75}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vantom/vantom_extend_2",
+   "guid": "{ce910a30-c1cf-4899-bdc3-ae372df70697}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slumbering_beetle/slumbering_beetle_die",
+   "guid": "{8407b430-bccc-4341-b0b7-a3863e9a430e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/wriggler/wriggler_die",
+   "guid": "{7f52c830-fa5f-42d3-be96-b6f4141e2881}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_fysh/soul_fysh_die",
+   "guid": "{0fbe4431-33cc-4055-a7f7-baf353c1f6d8}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/roaches/roaches_attack_heavy",
+   "guid": "{f6f5b231-c2d9-40cd-846a-d120c3d1ac92}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/merchant/merchant_laugh",
+   "guid": "{1837bd31-0009-4f8b-a3f6-9f34aaaadfaa}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/debuff",
+   "guid": "{5b1dfd31-7eb8-40ce-a54e-8816500b2ddf}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_slide",
+   "guid": "{a15b4932-bb92-4f35-adf0-08f3f58d5260}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spectral_knight/spectral_knight_soul_slash",
+   "guid": "{97ec6232-2f12-443d-a05f-d829f3c4d295}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/magi_knight/magi_knight_die",
+   "guid": "{890c6932-85af-47a2-9a8f-ee1e76890df1}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/nonupeipe/nonupeipe_welcome",
+   "guid": "{675c8a32-5177-46aa-80ec-1f83dd01a508}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_clap",
+   "guid": "{18cf8a33-5a3b-4302-aa44-dbaa05d32ca0}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/deck_close",
+   "guid": "{212fbc33-6f81-4275-93e2-e3e8fcc0d04c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vantom/vantom_extend_3",
+   "guid": "{edc75a34-d1d7-44d4-b9cf-b58f8da4e454}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tracker_ruby_raider/tracker_ruby_raider_buff",
+   "guid": "{05469a34-5429-4864-b7f3-58c429c76a1d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/twig_slime_s/twig_slime_s_die",
+   "guid": "{5205c434-7f56-4a1c-9133-51fb22603c08}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/axebot/axebot_attack",
+   "guid": "{ad0def34-9498-43cc-84dc-d1932e6a6b1c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/sludge_spinner/sludge_spinner_die",
+   "guid": "{d3605135-3d49-4b3b-9366-a0968eba2115}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/shrinker_beetle/shrinker_beetle_cast",
+   "guid": "{97408a35-9fea-44b4-a7ec-cc44995de1d7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spiny_toad/spiny_toad_protrude",
+   "guid": "{244a6937-2c0f-401b-bfe9-391b0455dbfc}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/flail_knight/flail_knight_die",
+   "guid": "{58b8b537-64d4-42eb-9c48-b1a0ae5b88a7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_forgotten/the_forgotten_cast",
+   "guid": "{c0f3b138-3b95-4902-9d2d-afb44821599d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/inklet/inklet_attack",
+   "guid": "{c8b56639-e105-47c0-af8d-390ba7bee4ea}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/crossbow_ruby_raider/crossbow_ruby_raider_attack",
+   "guid": "{2daeca3a-c053-4328-8412-affb379d3eaa}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_plant",
+   "guid": "{3904d33a-7221-45aa-a5fe-6a868e24159b}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_flat",
+   "guid": "{8d5bf33b-5e0b-476f-9cff-1da9a1d08952}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mite/mite_suck",
+   "guid": "{f6728e3f-93ea-4f5c-a483-c458357d283a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_thrash",
+   "guid": "{145a7940-f7e4-411d-88ab-26ee582f9a94}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/orb_plant/orb_plant_cast_long",
+   "guid": "{e5a4af40-d056-4209-86e0-7800d097ad13}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slithering_strangler/slithering_strangler_cast",
+   "guid": "{8c8a4641-2805-4219-b302-238a58d8205d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cultists/cultists_die_calcified",
+   "guid": "{a6c45642-67a8-46c9-9334-e8708695c25d}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/obscura/obscura_hologram_attack",
+   "guid": "{22229543-912d-45d0-a859-86572d6d5712}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phrog_parasite/phrog_parasite_die",
+   "guid": "{ef0f7144-1213-4761-8a3d-c64de0aeb2fc}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_hurt",
+   "guid": "{4ceb1f45-5824-4b9e-ab87-f01ef4e4c0d0}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_die",
+   "guid": "{ff5e5545-e179-4571-b1d4-87d805c70c06}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fossil_stalker/fossil_stalker_attack_double",
+   "guid": "{71eba545-7731-466b-bfdc-1c062061a7ca}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mite/mite_attack",
+   "guid": "{3ce2bb45-55bd-42d2-9ada-9ae4fe429119}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/stabbot/stabbot_die",
+   "guid": "{733aec45-2146-484d-9bf9-fb61452d9f74}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/silent/silent_select",
+   "guid": "{114e0746-50aa-4e09-bd06-5d3e0149fb06}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tough_egg/tough_egg_attack",
+   "guid": "{2a324b46-9be7-47b9-b042-23af44707441}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/clicks/ui_left",
+   "guid": "{ba906146-d186-44b5-9f75-944fd9a91eba}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_minion_appear",
+   "guid": "{f5aa7346-75c7-4c24-bb51-0f72fcb838f3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_plasma_channel",
+   "guid": "{f272e146-3122-4205-a7b3-7d221c5146ea}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_magic_dmg",
+   "guid": "{a609f146-4c29-47fa-a199-cce4c4763018}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/inklet/inklet_die",
+   "guid": "{ff293a47-003b-4a08-bb25-557351ef39c4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/roaches/roaches_attack",
+   "guid": "{3cbf8b47-009e-4925-af37-e34126424ed9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/scroll_of_biting/scroll_of_biting_bite_double",
+   "guid": "{0dc20a48-b014-49d6-bd8f-2534cc085e9a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/giant_louse/giant_louse_attack_web",
+   "guid": "{e814c548-9b10-4ff9-80bd-a68c6e1f4e10}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_attack_buff",
+   "guid": "{6a7dfa48-0c26-4544-b1a8-3661f81cc73b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_plant_dmg",
+   "guid": "{6a200449-6bd2-4818-ba2a-9fe3368fc658}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/devoted_sculptor/devoted_sculptor_cast",
+   "guid": "{a69c6f49-4d7c-4f88-a45d-3446a2b735ab}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/queen/queen_die",
+   "guid": "{debd8049-0adb-49aa-892c-dea4c00759a7}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_hurt",
+   "guid": "{78bfbf4a-01e1-47b8-abba-4e8c9ba5fffd}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/burrowing_bug/burrowing_bug_hidden_attack",
+   "guid": "{9736e34a-0348-445e-ad2c-b2d23232747b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fossil_stalker/fossil_stalker_hurt",
+   "guid": "{1c24054b-3ab9-422a-a3b7-a9b68d420288}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_die",
+   "guid": "{d82c3f4b-6f85-4aa9-be34-9cecfd436ba8}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/darv/darv_excited",
+   "guid": "{b59b514b-f175-4255-83cc-3d74acbff178}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cubex_construct/cubex_construct_charge_attack",
+   "guid": "{a497934d-128e-4241-8c5a-59e3341d7fbb}",
+   "length_ms": 22000,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "enemy_hurt",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "skip_start",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_open",
+   "guid": "{45eea34f-7cc1-462c-9a8e-3789fb8c3f47}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_forge",
+   "guid": "{9b26d84f-7e0b-458c-b68e-0b127345b50f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/burrowing_bug/burrowing_bug_unburrow_attack",
+   "guid": "{ceabe64f-1c40-47bd-8f46-b5daeeed243f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/gremlin_merc/gremlin_merc_attack",
+   "guid": "{ce733d50-c7a2-4132-ba2d-210187c5a599}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/frog_knight/frog_knight_charge",
+   "guid": "{85eeb650-ce55-43b6-af64-c8c044eef795}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/leaf_slime_s/leaf_slime_s_die",
+   "guid": "{fb6a4451-784f-46a0-9e79-e558e818725d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_fur",
+   "guid": "{6d869451-18e6-40d8-b8a2-5cbddd0b9a6f}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/scroll_of_biting/scroll_of_biting_die",
+   "guid": "{591b6252-959c-4ae5-9259-beedcc5ee413}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_impatient",
+   "guid": "{4b4fd452-dfb1-4966-a443-4e069ac488f2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/twig_slime_s/twig_slime_s_cast",
+   "guid": "{99d05953-c429-499e-9dcd-c5335f947330}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_die",
+   "guid": "{69fba555-c234-4c7f-9eb7-eb641291e765}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_die_flying",
+   "guid": "{58bc0b56-3019-484f-bcc6-472bc7412d63}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_unlock",
+   "guid": "{1b933a56-5867-450f-ac1d-8b83eb09414b}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_forgotten/the_forgotten_die",
+   "guid": "{860b6956-bf43-4e49-b89a-18bf3cfca61a}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_fysh/soul_fysh_beckon",
+   "guid": "{039d8f57-63f7-42d1-855f-b5aa42d6a8d3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/corpse_slugs/corpse_slugs_ravenous",
+   "guid": "{7613b457-d316-46b2-943e-fe2854528626}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/leaf_slime_s/leaf_slime_s_attack",
+   "guid": "{f3c3be57-0e73-49be-81b8-e57d7e535750}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fogmog/fogmog_hurt",
+   "guid": "{37b9ca58-33a5-4811-9246-08ab3df9e495}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_goop/workbug_goop_stun",
+   "guid": "{f63fb459-6b15-4591-ab25-97fdd847a81e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_movement_B_into_draw",
+   "guid": "{3365895a-fcee-4b07-89e8-ebdae1b0201e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/shrinker_beetle/shrinker_beetle_attack",
+   "guid": "{bdc0bb5a-507c-4cd5-a37e-1082ab94f829}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slimed_berserker/slimed_berserker_slime",
+   "guid": "{40813a5b-b6ad-4604-9bac-7c38c66783ad}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/gremlin_merc/fat_gremlin_escape",
+   "guid": "{85761b5d-5d5b-4e5f-8cfd-190f6b42f2a1}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_attack_dive",
+   "guid": "{62c5515d-0af4-4712-a9ed-6dd6419e97c2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_egg/workbug_egg_buff",
+   "guid": "{ca3b555d-c163-4de4-aa98-2178307ea659}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mechaknight/mechaknight_die",
+   "guid": "{4a6a695d-56a6-4a85-8f7c-b63577aa7013}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/torch_head_amalgam/torch_head_amalgam_beam",
+   "guid": "{f79ed05d-7737-4b9d-bc87-a4deb71a7da5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_glass_channel",
+   "guid": "{1d9fff5d-c716-433e-9e73-3685d9318b22}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_stone_dmg",
+   "guid": "{5fc3405e-4f15-4759-996f-45aeb4dd6ece}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/devoted_sculptor/devoted_sculptor_attack",
+   "guid": "{25d8bd5e-5587-4dd5-b54c-63c6bffbd94b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/infested_prisms/infested_prisms_attack_defend",
+   "guid": "{af49565f-4684-4eba-b24e-282a96c82bd7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_movement_B_play_into_discard",
+   "guid": "{3558825f-faf1-4157-8deb-f4b28d9123ff}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vine_shambler/vine_shambler_die",
+   "guid": "{f3919f5f-da9f-4ee0-a681-d8b11ba1cd9b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slumbering_beetle/slumbering_beetle_attack",
+   "guid": "{c8da0b60-a7ec-4cff-8d0b-67b499399e23}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/sludge_spinner/sludge_spinner_attack_dash",
+   "guid": "{03a36760-6737-4cbb-88f8-d049bdfc80c5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lieutenant/lieutenant_attack",
+   "guid": "{b2ba1a61-b43f-459b-9f69-da7fbcd2aa53}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/frog_knight/frog_knight_tongue_lash",
+   "guid": "{d1d7eb61-27aa-4508-b7b7-9bd557c3070d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tracker_ruby_raider/tracker_ruby_raider_die",
+   "guid": "{485f1863-b049-4aaa-b00e-d8072343654b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/silent/silent_fan_of_knives",
+   "guid": "{d377b063-216f-48f1-aeac-0dc8f893fb1e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/clicks/ui_click",
+   "guid": "{2610f363-4a02-4f30-8925-0d1c12e8dab9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/toadpole/toadpole_attack",
+   "guid": "{93a02d64-6dc9-4e6b-b7a6-af9810a81525}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/twig_slime_s/twig_slime_s_attack",
+   "guid": "{ef239564-7187-4df6-a363-5a2beb481eda}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/toadpole/toadpole_attack_spin",
+   "guid": "{0b40b664-6460-4939-867c-900906e80fa9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_silk/workbug_silk_attack",
+   "guid": "{2243c164-2685-488b-b2e0-ffcb3b83939e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spectral_knight/spectral_knight_hurt",
+   "guid": "{ffaaf664-c19e-44df-bcd5-f499ae6195dd}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_insect_dmg",
+   "guid": "{62571266-26ca-4ca2-922c-f426b0e83fd8}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/npcs/reverse_merchant/reverse_merchant_laugh",
+   "guid": "{722dc466-ab2f-4941-8e5d-6008dab05c62}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/flyconid/flyconid_cast",
+   "guid": "{0a14d766-f718-4a85-b007-e0aaa05b80cf}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/necrobinder/necrobinder_attack",
+   "guid": "{94d2e067-1e24-4242-8298-4355ab79942c}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "vulnerable",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "weak",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "strength",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_goop/workbug_goop_buff",
+   "guid": "{30101469-4ebe-4bf3-b2a6-ebd696528dd8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_guiding_star",
+   "guid": "{697b4d69-0cec-4401-a81c-2bfe9c8d0136}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "vulnerable",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "weak",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "strength",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/giant_louse/giant_louse_die",
+   "guid": "{cefcfd69-2a58-4695-a614-17b21aef4db1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slumbering_beetle/slumbering_beetle_wake_up",
+   "guid": "{bd6dfe69-26d1-412e-a2bc-e798916d9b67}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vantom/vantom_extend_1",
+   "guid": "{46fb826a-5b63-4362-8693-bc5527f2af74}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_rock/workbug_rock_attack",
+   "guid": "{3496fa6b-ff1d-463b-8cd0-748807a098ac}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/darv/darv_outta_the_way",
+   "guid": "{5cd0366f-0b05-4731-a897-ebbdb91739ef}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_stone",
+   "guid": "{785cd76f-5d0a-4bbe-9e13-4c70abab7650}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/characters/silent/silent_cast",
+   "guid": "{d490b070-90a7-477f-9b73-61d2f8123044}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/chomper/chomper_attack",
+   "guid": "{c5f9bd70-b618-440b-bec8-d328ababeb1b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_eruption",
+   "guid": "{d5195171-f670-4e76-bcce-e9a08b69acfb}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_minion/the_kin_minion_quick_slash",
+   "guid": "{1a867372-a93f-4cb1-a0aa-6289bcd15864}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/gremlin_merc/sneaky_gremlin_die",
+   "guid": "{4655fb72-d53b-4a91-96af-16d4cd30ccff}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_attack_stomp",
+   "guid": "{20c71673-4d9d-44b0-9eb3-fefe2791f9d3}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/darv/darv_fear",
+   "guid": "{deac1f73-073e-4153-b3e9-42d884dbda00}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_hurt",
+   "guid": "{e4424e73-5c6e-4966-990e-051e00981464}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/giant_louse/giant_louse_curl",
+   "guid": "{f4fb5873-62d2-4400-a67d-cb095e303b97}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/treasure/treasure_act2",
+   "guid": "{8e57a274-65fa-40de-af9f-493bcf67c6c6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/silent/silent_dagger_spray",
+   "guid": "{9d901375-72d9-4b56-a537-efa2e75095c6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/nonupeipe/nonupeipe_grossed_out",
+   "guid": "{33bd1975-1643-4b46-8633-bec6141cc92e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/noisebot/noisebot_cast",
+   "guid": "{198ff575-d62d-4355-b54f-4b0822ce336e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_armor",
+   "guid": "{a3a13a76-b2db-4494-96fa-c5416f4cbd30}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fossil_stalker/fossil_stalker_attack_buff",
+   "guid": "{95703677-00a5-4a4f-b768-03a32cdc5ef8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_armor_big_dmg",
+   "guid": "{97586f77-3e3d-420d-9f9c-0aa6e166e8b5}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_rock/workbug_rock_stun",
+   "guid": "{a5c88b78-3b08-434a-9e31-1e8273c46032}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/clicks/ui_checkbox_off",
+   "guid": "{65451179-16cc-49b7-9df2-f86152ef979a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_goop/workbug_goop_die",
+   "guid": "{847d5e79-934f-4513-a3d8-62da63786aaf}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_attack_stab",
+   "guid": "{4a24a279-b61f-4613-ac28-862016b0f5e9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_revive_two_heads",
+   "guid": "{f6fb1e7a-8740-4b49-bd79-e22a7634d9e5}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/orb_plant/orb_plant_idle_loop",
+   "guid": "{938c397a-cffa-4bf9-8314-efd62a928182}",
+   "length_ms": 5000,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fabricator/fabricator_fabricate",
+   "guid": "{02cf4e7a-4ec7-4756-84c5-6bed0e846aa6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/nibbit/nibbit_attack",
+   "guid": "{ccd5ac7a-2b7a-4a04-a283-bfc04073fd38}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/eye_with_teeth/eye_with_teeth_attack",
+   "guid": "{bcd0ed7b-fdb7-494c-a028-329112ac0137}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_liquify_ground",
+   "guid": "{b3e6107c-9dac-44ba-af53-0477e690dcb0}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_armor_dmg",
+   "guid": "{194e447c-2dbb-409f-8cd2-ce0517eeacd4}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_rock/workbug_rock_buff",
+   "guid": "{ea34667c-9334-4357-a5bd-2cedd2d85baa}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_hover_locked",
+   "guid": "{80f49b7c-36e4-4007-835b-8db11901555c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/nibbit/nibbit_hurt",
+   "guid": "{d7c0e77c-a2e9-4997-adb0-00e01473d6c4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/bygone_effigy/bygone_effigy_die",
+   "guid": "{a13a3e7d-a829-423b-b69f-99a0dbc5aff0}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/corpse_slugs/corpse_slugs_ravenous_up_double",
+   "guid": "{ecc3607d-26e2-4df0-860d-f01876566930}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_lunging_bite",
+   "guid": "{ef8e6f7d-6eb1-46c7-a9bf-cbe4977c93e9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mechaknight/mechaknight_heavy_attack",
+   "guid": "{7d86067f-58aa-43c0-a834-b8be99ba7a5f}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/byrdonis/byrdonis_die",
+   "guid": "{3d2c487f-2368-4f68-b686-c560c6e46382}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_die",
+   "guid": "{048b6e7f-52d5-497f-be65-d22ee54ebd92}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_die",
+   "guid": "{77184780-4f25-4613-a179-4b9d54b5de6b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_fysh/soul_fysh_wave",
+   "guid": "{ec906780-2188-4126-819d-20166feffd05}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_select",
+   "guid": "{106e6b80-2c01-4275-9f5c-0da746e20b14}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/terror_eel/terror_eel_debuff",
+   "guid": "{f95e6a81-216b-4f3e-a6c5-91d4c4016078}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/sewer_clam/sewer_clam_buff",
+   "guid": "{95fd4f82-8ded-4aff-b411-e82603f7b6bc}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/magi_knight/magi_knight_attack_bomb",
+   "guid": "{5b075182-ea6e-45e8-8ebe-76b5c7795b75}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_egg/workbug_egg_spit",
+   "guid": "{0f0fa782-5524-4b9e-8aeb-561071285f41}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/punch_construct/punch_construct_die",
+   "guid": "{0b6cc682-134c-4c69-a51d-61501299a5a3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_lightning_channel",
+   "guid": "{f4bef682-a064-4658-8a05-d2cca9281186}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/obscura/obscura_hologram_die",
+   "guid": "{c2620983-67a7-4e98-8a62-8fa4fba40762}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/byrdonis/byrdonis_hurt",
+   "guid": "{60590d83-1d51-4f12-91e9-0b2fd8aedc99}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_die",
+   "guid": "{42e31983-eb87-48e6-aa5c-42f0437991ae}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_right_buff",
+   "guid": "{97619383-3683-4d34-8439-0ab1731184a5}",
+   "length_ms": 12000,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_armor_big",
+   "guid": "{7f61cc83-bc5b-44dc-b1fe-1173d2e15b41}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/scroll_of_biting/scroll_of_biting_buff",
+   "guid": "{3de6a784-6ddd-4308-a65e-a8ad1603da94}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/flyconid/flyconid_die",
+   "guid": "{df7edf84-df30-468e-948b-f1da370ba8d6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tough_egg/hatchling_die",
+   "guid": "{bdece885-d990-4a08-a689-79142284e516}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_rally",
+   "guid": "{205eed85-e82b-481d-bc6e-41d79b74f0fd}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/enchant_simple",
+   "guid": "{1f2d3a86-1ada-4172-840c-92799d88c3e1}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/block_gain",
+   "guid": "{9ff17e87-9ee9-4ad7-b998-9f922a989c0a}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "block_amount",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_enemy_size/enemy_impact_magic",
+   "guid": "{a1bbc487-2594-4fe1-942d-34b4f2687bf2}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_Intensity",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/inklet/inklet_attack_triple",
+   "guid": "{3cbff487-6317-426e-b309-7053123cc497}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_attack_weaken",
+   "guid": "{fc700188-5186-4c50-a525-35e4f33ac34d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_transform",
+   "guid": "{295fe188-b5dd-433f-926a-b71d6f88706e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_fysh/soul_fysh_reappear",
+   "guid": "{665fe488-353a-4a64-9a21-7d8f3595ac47}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_cast",
+   "guid": "{a9777389-df3f-40fb-b304-98a5abbb796c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/haunted_ship/haunted_ship_cast",
+   "guid": "{34dcce89-b261-4f80-96c8-2d2c574a8525}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/enchant_shimmer",
+   "guid": "{ee7f768b-36f5-47ab-8633-1a774416b368}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slumbering_beetle/slumbering_beetle_roll",
+   "guid": "{1d057a8b-a69d-4394-891f-b2f1d3a26e02}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_close_epoch",
+   "guid": "{194ae08b-3835-448c-b846-bfcf1bfca773}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_minion/the_kin_minion_die",
+   "guid": "{cec3008c-a078-4202-977a-f4043920923d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/clicks/ui_checkbox_on",
+   "guid": "{045d708c-7759-4615-ae31-8097bbeddf90}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_nexus/soul_nexus_die",
+   "guid": "{b1a47a8c-d6f7-45ba-bc9d-b4e2cdc7edd1}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/axebot/axebot_attack_spin",
+   "guid": "{f84dcf8c-5c49-4509-8648-c144c5cde72d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tracker_ruby_raider/tracker_ruby_raider_attack",
+   "guid": "{b5b0e88c-b018-46fe-897d-9056c0cd3549}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tough_egg/tough_egg_die",
+   "guid": "{00792c8d-a855-427f-940d-1d4bcb68eacd}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_nexus/soul_nexus_attack",
+   "guid": "{240ba68d-8138-4d6c-ba7a-0d84a926461e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/gold/gold_2",
+   "guid": "{0fcdd28d-0d33-4901-825c-6b6a9e9afcee}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/merchant/merchant_passive",
+   "guid": "{75b9f38d-dd9b-4e3c-95d9-53595f06ff40}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_forgotten/the_forgotten_attack",
+   "guid": "{4d7d7b8f-0bed-4554-9c37-d31e7ff09668}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fuzzy_wurm_crawler/fuzzy_wurm_crawler_die",
+   "guid": "{e2fbfd8f-0b0e-45d7-bd09-ada00f5be767}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_silk/workbug_silk_spit",
+   "guid": "{76673d90-6a9c-4321-8aeb-0d43606a1f05}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/frog_knight/frog_knight_hurt",
+   "guid": "{fe92e290-d3fb-4d34-9100-756ff233d747}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/infested_prisms/infested_prisms_die",
+   "guid": "{28ba6291-58e7-407b-a93c-cdb0c550cde8}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_superior",
+   "guid": "{70bb9891-3800-451f-b620-4abfc9bcdfa6}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/chomper/chomper_cast",
+   "guid": "{7f68f491-5dfe-495e-b52a-7c033ddd224c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/deck_open",
+   "guid": "{f72af991-7186-4391-b3b8-39bc02fa41b1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/flail_knight/flail_knight_war_chant",
+   "guid": "{4db56393-2385-4e4c-b2ce-3c01332312f1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/giant_louse/giant_louse_uncurl",
+   "guid": "{502cf593-8bf6-42d8-b33b-c61af1858aca}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/ceremonial_beast/ceremonial_beast_stun",
+   "guid": "{b740fc93-5439-42bb-a171-8bdd3a28866b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_left_buff",
+   "guid": "{dc48f694-72e2-4059-84bf-72700af36192}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/skulking_colony/skulking_colony_die",
+   "guid": "{6f2b7c95-f305-4c73-b0c4-24fca31f9ffb}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/tanx/tanx_roar",
+   "guid": "{bf90f795-e43f-4bce-966b-296ad7ddcf23}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cultists/cultists_buff_damp",
+   "guid": "{07c65596-a669-43c0-b36e-daa89ec25cae}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_lightning_passive",
+   "guid": "{f61c4d97-8e99-427b-a3c5-f0434d7a1b02}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/orb_plant/orb_plant_cast",
+   "guid": "{b3240098-049a-4ebd-931e-e46d9811b017}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/infested_prisms/infested_prisms_attack",
+   "guid": "{7b760098-6f85-465a-bc16-d49560f9e3ea}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/flail_knight/flail_knight_flail",
+   "guid": "{22b99198-3ad8-409f-b2f6-d2d7964efb2d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/leaf_slime_m/leaf_slime_m_die",
+   "guid": "{30249998-b141-4960-b05e-69cbcad6cd73}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slimed_berserker/slimed_berserker_buff",
+   "guid": "{65714699-8970-4343-8793-690230e03dde}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_die",
+   "guid": "{98f5599a-4928-46c2-bb14-c93f396f103a}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mechaknight/mechaknight_dash",
+   "guid": "{a68b859a-d312-44fc-8e27-d7b93aae687a}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_die",
+   "guid": "{baf5159b-1e76-44e9-afd3-d27ddc6ab6e8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_click",
+   "guid": "{5254579b-e9cf-4193-aff7-5feb3488bf53}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mawler/mawler_die",
+   "guid": "{922ad19b-76a6-4b2c-b3af-bec1d3153960}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slimed_berserker/slimed_berserker_die",
+   "guid": "{dbee2b9c-2ab0-4773-be55-227a4a1bb060}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_right_regrow",
+   "guid": "{7e9ddf9c-fd68-4365-9063-770f4baf4e5c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_nexus/soul_nexus_cast",
+   "guid": "{5b26379d-8c70-4a56-ac9a-24a8ddedeb19}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/zapbot/zapbot_attack",
+   "guid": "{ceb5af9d-f37b-42f2-9dea-fa332748d252}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spiny_toad/spiny_toad_die",
+   "guid": "{4fb8c39d-9099-4aeb-bfc8-ba0106220c98}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/soul_fysh/soul_fysh_hurt",
+   "guid": "{6645ce9d-6b69-4f92-854e-6b2f0afb510e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/ceremonial_beast/ceremonial_beast_plow_end",
+   "guid": "{d57b389e-3264-4151-86ee-955876e86133}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_kick",
+   "guid": "{f0dd5a9e-0006-4996-a69d-4c340a2e5f99}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/brute_ruby_raider/brute_ruby_raider_die",
+   "guid": "{43f6de9e-c488-4f0c-8e60-493d15a0bda1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_left_attack_slam",
+   "guid": "{0a96239f-446b-42af-9e45-fec570fb353a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/gremlin_merc/gremlin_merc_attack_buff",
+   "guid": "{119d5aa0-e2ae-4dce-bab9-fea8437ee85e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/assassin_ruby_raider/assassin_ruby_raider_die",
+   "guid": "{20aa81a0-c58c-46c2-8147-5596c6371426}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/gain_energy",
+   "guid": "{68b18ba0-819d-4c9d-bc02-a78fdaaadde8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/twig_slime_m/twig_slime_m_die",
+   "guid": "{efe4b6a0-d36b-4ce3-808b-a112ce39435b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/necrobinder/necrobinder_select",
+   "guid": "{fee0bda0-da24-4de8-9651-3354ee7b51be}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/darv/darv_pain",
+   "guid": "{573bd9a0-3949-4e59-b8c3-f3c342ee48ab}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/barricade/barricade_hurt_shield",
+   "guid": "{443e36a1-fb92-4927-bff0-8b23cce0409d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_lightning_evoke",
+   "guid": "{2677b5a1-ac75-4f38-b7fa-f09514566d1a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_clink",
+   "guid": "{3cfdc5a1-c7a0-4d79-a1c2-72bf0c8b5be3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cultists/cultists_die",
+   "guid": "{29025aa2-a583-4a81-99f6-74607f45a9be}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slimed_berserker/slimed_berserker_hurt",
+   "guid": "{314fe3a2-2dc0-4595-b9fb-df36c482e6c3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_base_dmg",
+   "guid": "{500c0fa3-1232-4ab0-a429-6c25108fbce9}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vine_shambler/vine_shambler_chomp",
+   "guid": "{292993a3-8cd1-4836-86b3-380f3a58daac}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/byrdpip/byrdpip_attack",
+   "guid": "{60a9c8a3-abd4-4dd5-9b55-62be270c822b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/osty/osty_attack",
+   "guid": "{d6e5cca5-dc0e-4c81-a5c3-b872215befd9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_take_off",
+   "guid": "{4b3bf9a5-33ca-4c37-a323-8e8dcac5bc47}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lieutenant/lieutenant_cast",
+   "guid": "{62e423a6-458a-4526-9aeb-9f67c787c9ea}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_rock/workbug_rock_die",
+   "guid": "{5909bba6-60f5-41f4-aa15-6005fcc4ed37}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/ironclad/ironclad_cast",
+   "guid": "{da16d6a6-69fc-46f9-a6b3-5c978696f8e7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/darv/darv_endeared",
+   "guid": "{21ee3ca7-8128-4f39-991e-499b9e5cdc3e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/necrobinder/necrobinder_die",
+   "guid": "{8a2e57a8-b5d5-4ad9-9a2a-2d1f51ffeea1}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_minion/the_kin_hurt",
+   "guid": "{ba6b67a9-e9ae-4cda-8bee-b73033cec551}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vine_shambler/vine_shambler_defensive_swipe",
+   "guid": "{41ab8caa-b265-484b-b65c-344e0dd720db}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/wriggler/wriggler_attack",
+   "guid": "{152fa2aa-01dc-4ee2-8702-07b5123e05f6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/zapbot/zapbot_die",
+   "guid": "{5ee441ab-2a10-4bb0-98cd-870055213929}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_left_die",
+   "guid": "{32c8c2ab-a0b6-404b-93b8-7ca34c0de3cd}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_refine",
+   "guid": "{016123ac-02cd-4934-8c9e-10bb3177d063}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_impact_into_multi",
+   "guid": "{398463ac-eb9e-4795-9193-7e08ab243490}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_bite",
+   "guid": "{b8926aac-8591-46e1-ad03-d445fb7a3185}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_slime_dmg",
+   "guid": "{c117dcac-b9e2-406c-9103-ade7c2305d19}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/assassin_ruby_raider/assassin_ruby_raider_attack",
+   "guid": "{a09edeac-b0b4-47ae-88f1-1c5299fb0753}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_hurt_variable",
+   "guid": "{5dbb3aad-bfbb-4df0-948e-317f8804c191}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "hurt_amount",
+     "minimum": 0,
+     "maximum": 3,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/leaf_slime_m/leaf_slime_m_attack",
+   "guid": "{ce12bfad-0a93-4d57-86ed-fc7acf0066d9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vantom/vantom_dismember",
+   "guid": "{37dcc0ad-64d2-4e1f-ac3d-beb9aed477a2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/merchant/merchant_thank_yous",
+   "guid": "{0411e4ad-319b-4f3d-bf6a-5015284ee017}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/queen/queen_arms_attack",
+   "guid": "{696f38af-ed0b-4b4f-934b-d018b797a38e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/sewer_clam/sewer_clam_attack",
+   "guid": "{942d7eaf-3260-463f-89bc-50d290425285}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/terror_eel/terror_eel_attack",
+   "guid": "{e3428daf-b3ea-451a-85ca-59b0f2ed13b8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/map/map_select",
+   "guid": "{ede301b0-9478-41fe-aac4-96e81be672af}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/turret_operator/turret_operator_attack",
+   "guid": "{93aeedb0-5241-4be7-b312-c22016b37b10}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/ironclad/ironclad_attack",
+   "guid": "{985583b1-dd54-4217-85c5-7a3559dcfb87}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "strength",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "vulnerable",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "weak",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_attack_triple",
+   "guid": "{ccb1c1b1-68e8-44d6-82ab-f28a13d804f0}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/treasure/treasure_act1",
+   "guid": "{2cb739b2-8155-4273-a7d9-9d414693a3af}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/hunter_killer/hunter_killer_die",
+   "guid": "{5c2169b2-871e-4de3-93ee-8da9e79c26b9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_right_attack_slam",
+   "guid": "{0501a5b2-70a0-47b4-9cb4-201ff6411edc}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/ceremonial_beast/ceremonial_beast_die",
+   "guid": "{eee265b3-e5a3-4370-aaab-db3ffa9876ea}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/entomancer/entomancer_attack",
+   "guid": "{dfbc70b3-95eb-465f-aac0-779032d5eb8c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/reverse_merchant/reverse_merchant_hurt",
+   "guid": "{3b87e4b3-96a8-4cbd-8f5b-81d085f4c699}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_lay",
+   "guid": "{a3f73cb4-6057-4130-a9f9-5ee81e0fa5a9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/orb_plant/orb_plant_charged_loop",
+   "guid": "{fc94b4b4-8c71-4c90-8da2-524e75c2a85c}",
+   "length_ms": 8000,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/hunter_killer/hunter_killer_cast",
+   "guid": "{74edcbb4-3693-41e3-90cc-32ed43201a8c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spiny_toad/spiny_toad_explode",
+   "guid": "{ae6607b7-9d9d-47b2-82e0-39ca2278f70d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_left_attack_scoop",
+   "guid": "{36a707b7-c751-49fc-b11e-cb43ab55d6b9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/punch_construct/punch_construct_attack_single",
+   "guid": "{87092fb7-7b51-4ec8-86d9-98121710b19d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_die",
+   "guid": "{784553b7-70fc-47fa-8036-2ffa16c1f587}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/twig_slime_m/twig_slime_m_attack",
+   "guid": "{6c8aefb7-5d75-4247-8d18-0a56c4f30e58}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/ceremonial_beast/ceremonial_beast_plow",
+   "guid": "{365c65b8-5b0c-47d3-824b-0fbdf3f8d245}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_cast",
+   "guid": "{28177bb8-8443-43f6-9d96-57483d20fece}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_buff",
+   "guid": "{172389b8-06f8-48be-b2f5-23721c5dcaf2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/chomper/chomper_hurt",
+   "guid": "{e29ff8b8-1c1e-48b8-8426-6285cb8b60ba}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_select",
+   "guid": "{0932feb8-6c9a-4735-ac4e-b72e2b82aeb0}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_right_attack_snap",
+   "guid": "{8ef51db9-eef2-49d9-aa93-d4d10928f227}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mechaknight/mechaknight_buff",
+   "guid": "{4b5c84b9-2ac7-42c0-9fd0-a33c37044c2a}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/axe_ruby_raider/axe_ruby_raider_attack",
+   "guid": "{b96fb0b9-b6c8-474b-8cbf-ef77eb3864f9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/neow/neow_sleepy",
+   "guid": "{1215bdb9-9aff-45aa-973d-c8cce5c6543e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_attack",
+   "guid": "{975dc4b9-76f3-4484-a38c-ee950c21a864}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_movement_B_into_discard",
+   "guid": "{4c3765bb-0d8c-468f-8c32-be017b1ef2a4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_egg/workbug_egg_attack",
+   "guid": "{00a268bc-cb61-4dba-bd9f-9318b9cd1794}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/burrowing_bug/burrowing_bug_burrow",
+   "guid": "{ce0d9ebc-dafa-4f0a-9dd4-7efc262d2273}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/map/map_erase",
+   "guid": "{69fcb2bc-787c-4d25-8e8b-3679146a9dc1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_die",
+   "guid": "{f3134bbd-dd01-432d-a682-38b6173871f2}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/turret_operator/turret_operator_die",
+   "guid": "{eb1c9cbd-fd56-4e94-9a8f-f8796e811a04}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_attack_hover",
+   "guid": "{0678cebe-f49d-4c6d-9925-3f3ffae88305}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_sovereign_blade",
+   "guid": "{7954f9be-7bd0-487e-9c25-de418c0a3add}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "strength",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "vulnerable",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "weak",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/guardbot/guardbot_cast",
+   "guid": "{f02c30bf-3691-4ec3-96ab-e6f38b5b1cf6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spectral_knight/spectral_knight_soul_flame",
+   "guid": "{c3bb7abf-bf0c-4899-973e-49a10554c172}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slimed_berserker/slimed_berserker_attack",
+   "guid": "{34dccebf-e56d-4872-a527-04c89df86dc1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vantom/vantom_die",
+   "guid": "{bceccebf-8aa8-4638-9f75-270b0a5debfc}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_rocky",
+   "guid": "{940b0ec0-464c-4af5-b75a-402e42010ed1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/crossbow_ruby_raider/crossbow_ruby_raider_reload",
+   "guid": "{cb6115c0-b265-4d72-be7d-16a865b7e9a4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/frog_knight/frog_knight_die",
+   "guid": "{232495c0-0d17-4d8d-a106-8316afa43eeb}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_salivate",
+   "guid": "{4b9fadc0-b3d7-45a8-881d-6be19339dc36}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/haunted_ship/haunted_ship_die",
+   "guid": "{1d3b07c2-e0d2-434c-9607-69abae45eccd}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/ironclad/ironclad_die",
+   "guid": "{649f79c4-3327-4a7b-be4d-bd7677f3d35f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/corpse_slugs/corpse_slugs_attack",
+   "guid": "{e35affc4-921f-4cd9-b6ee-be48bebf5fce}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_lost/the_lost_attack",
+   "guid": "{c8c20fc5-9012-4f97-99ad-e20e56671543}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/nonupeipe/nonupeipe_giggle",
+   "guid": "{706833c5-9848-4940-a9cd-9cdbf11ac0e9}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_egg/workbug_egg_stun",
+   "guid": "{48b93fc5-5532-4f4b-a121-e17c7b388ded}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fabricator/fabricator_attack",
+   "guid": "{ccf893c5-4100-45bc-a512-defd39098ed6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/giant_louse/giant_louse_attack",
+   "guid": "{aff89fc5-ca33-4cbb-a1bb-ccfe18dec467}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/barricade/barricade_die",
+   "guid": "{fc79e3c5-5ff9-458e-b80b-efde0f14a972}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/flyconid/flyconid_attack",
+   "guid": "{d6793cc6-ed7b-4e7c-b3b8-38c7d9b2214c}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/corpse_slugs/corpse_slugs_attack_light",
+   "guid": "{6b3dcfc6-afb9-4ede-b8f3-14a94819e3af}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cubex_construct/cubex_construct_burrow",
+   "guid": "{d35916c7-699e-40b0-99a7-5801afd371d2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/magi_knight/magi_knight_hurt",
+   "guid": "{95a8cdc7-7580-4a2b-bfbb-cd1eef205440}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/skulking_colony/skulking_colony_hurt",
+   "guid": "{bf94ecc8-9ef8-4aca-9f1e-de31ead34013}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_silk/workbug_silk_die",
+   "guid": "{eec625c9-e3b2-43b3-be45-93fd328f265f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/heal",
+   "guid": "{acfd53c9-c3ac-4bd3-b244-fcde20004189}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/gremlin_merc/sneaky_gremlin_attack",
+   "guid": "{b1f9b8c9-9e71-48fb-8ca5-61416e682ce4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/corpse_slugs/corpse_slugs_ravenous_up_single",
+   "guid": "{da64d8c9-51a8-412f-a819-72c0a5d2714f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_goop/workbug_goop_spit",
+   "guid": "{351c59ca-cc44-422b-960e-9746daa8c6ce}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spectral_knight/spectral_knight_hex",
+   "guid": "{907cbdca-0aea-4904-8a4c-70f4c1a181b5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_knock_out",
+   "guid": "{61b7e4ca-921a-4f11-b323-e48051731590}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/byrdonis/byrdonis_attack",
+   "guid": "{9b170ecb-cb1c-4b93-87b0-b725393a23b8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/entomancer/entomancer_cast",
+   "guid": "{948444cb-f8c4-4e06-9b7f-32aa09693e39}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/globe_head/globe_head_slap",
+   "guid": "{3d877fcb-7dcd-4671-9bb7-004c390ced3f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_caxixi",
+   "guid": "{45cb89cb-c1ab-41d5-8068-e93402dc0ff2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/map/map_open",
+   "guid": "{64dd98cb-9470-488d-8980-898273e3c4c6}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/map/map_close",
+   "guid": "{fe45b9cb-3d0d-4439-88a5-b637247cff84}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/enchant_whoosh",
+   "guid": "{76f3f2cb-43bd-4d9e-8472-83414b77518d}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/brute_ruby_raider/brute_ruby_raider_attack",
+   "guid": "{6c0421cc-040d-4d02-8b37-5933679410a7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/tough_egg/tough_egg_hatch",
+   "guid": "{787862cc-95a4-4165-a46d-8ee4d50231ea}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/infested_prisms/infested_prisms_attack_spin",
+   "guid": "{696e76cc-1a8c-43e4-8403-0578f111e65d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/sewer_clam/sewer_clam_die",
+   "guid": "{3b55f2cc-217a-4a1b-a0d2-b939f4bd6845}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_bite",
+   "guid": "{53cc5dcd-3acb-4891-b10b-e8dda0d90268}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slumbering_beetle/slumbering_beetle_cast",
+   "guid": "{17c0cfcd-0845-4704-8487-52e4bbd1a9c1}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/buff",
+   "guid": "{f70c05ce-e20e-4f26-8467-213453fe96c3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_knockout",
+   "guid": "{c1a909ce-4355-4b0a-8e4c-ca8243e44d59}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/ceremonial_beast/ceremonial_beast_shrill",
+   "guid": "{803910ce-3135-4ea1-aae3-90edb323f9b2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/necrobinder/necrobinder_summon",
+   "guid": "{f6f928cf-5d05-47c9-8764-fa37914cd8ec}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/slithering_strangler/slithering_strangler_attack_headbutt",
+   "guid": "{0cec2dcf-3410-4aa2-83eb-9e4fd9fcba18}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/necrobinder/necrobinder_doom_kill",
+   "guid": "{8b8b6dcf-e751-4a31-a5e5-1ca8bdeb32fb}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_take_off",
+   "guid": "{ed360dd0-5d86-4621-b19a-5617c9942dad}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/treasure/treasure_act3",
+   "guid": "{83d03bd0-9b9d-4ec0-949a-6c949007de78}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_die",
+   "guid": "{f20563d0-c872-4915-a906-6ccdf2ecd856}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mawler/mawler_attack",
+   "guid": "{2e3576d0-f67e-4442-9eef-851c93bb71e3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_berimbau",
+   "guid": "{e56479d0-b19e-4d6d-ac0a-8a173c721280}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/gremlin_merc/fat_gremlin_die",
+   "guid": "{97257bd0-5938-4cf8-b9a8-a42bd1231963}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_steal",
+   "guid": "{12a89dd0-a361-4ed3-81ca-bac2cef5a1d8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/nibbit/nibbit_die",
+   "guid": "{38035dd1-2ffd-423c-9d2b-6181ec420c4d}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_question",
+   "guid": "{891484d1-c82a-4d5a-aedd-36cbb603c35d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mite/mite_cast",
+   "guid": "{89a63ad2-a98e-4254-83eb-2f6c4999de6e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_impact_dmg_value/enemy_impact_fur_dmg",
+   "guid": "{5d3090d2-8154-4287-b1fd-aea7122abcbe}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "EnemyImpact_DmgValue",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/lieutenant/lieutenant_die",
+   "guid": "{63d3bbd2-aee2-411a-9b71-14c21bb1c6e7}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/skulking_colony/skulking_colony_thrust",
+   "guid": "{a62fc1d2-966c-4d35-adaf-65949608c43c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fuzzy_wurm_crawler/fuzzy_wurm_crawler_cast",
+   "guid": "{25190ad3-af93-442b-b512-6356722f7b64}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_impact_into_single",
+   "guid": "{81064dd4-77af-4371-9812-75e0ec9ba544}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/magi_knight/magi_knight_cast_shield",
+   "guid": "{a62cb1d4-1b43-4bdc-9809-43d0e07614a9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_lost/the_lost_die",
+   "guid": "{45ed2cd5-1fc1-474a-8874-4c8faa8c2129}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/punch_construct/punch_construct_buff",
+   "guid": "{5607b0d5-63f7-42ac-946f-4c083906b8b8}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/mechaknight/mechaknight_flamethrower",
+   "guid": "{8571c5d5-cbe3-49ac-b180-c7085b389c3b}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/inklet/inklet_hurt",
+   "guid": "{abcd07d6-80d9-41d2-8399-e868a80d2980}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/frog_knight/frog_knight_buff",
+   "guid": "{fb573dd6-d893-4a8c-8661-4e829f623af4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cultists/cultists_die_damp",
+   "guid": "{93907ad7-cd99-4f17-9a9f-6e684283b8de}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/stabbot/stabbot_attack",
+   "guid": "{7f41b4d7-1200-4f57-bd2b-327ca4c48be5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fogmog/fogmog_attack",
+   "guid": "{1d7adbd8-55a2-4501-af10-d21fa6c6bd8b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relic_activate_draw",
+   "guid": "{d4e1ead8-dfb8-4167-a205-fe85c43a844a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/silent/silent_die",
+   "guid": "{423c75d9-5b9d-4237-92d0-2b5c9ebf96c5}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/bygone_effigy/bygone_effigy_attack",
+   "guid": "{88d3eed9-0897-426e-8cb0-3a67f2a65278}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_attack_bite",
+   "guid": "{6d241fda-728e-46ba-a110-7b74b7f5f591}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/orb_plant/orb_plant_die",
+   "guid": "{8a577bda-02cd-4ca0-8983-efa578510c3a}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/map/map_draw",
+   "guid": "{63be86da-8001-45a7-9c8b-89159d5fc3ec}",
+   "length_ms": 10000,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "loop_draw",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fabricator/fabricator_die",
+   "guid": "{e06ae4db-ee9a-4287-b15c-5d00b229d650}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/pause_open",
+   "guid": "{0e6084dc-370e-4940-829f-0c98103dc27e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/clicks/ui_right",
+   "guid": "{a1a48fdc-09f5-490a-a726-b3b02f0e3b62}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/turret_operator/turret_operator_hurt",
+   "guid": "{17303edd-2396-4a62-be6b-ca3dae232b42}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vantom/vantom_buff",
+   "guid": "{057c5ddd-4f44-4663-b724-c19033f7c6db}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/block_hit",
+   "guid": "{65d774dd-bc4b-4657-970e-2336d6fca446}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_triumph",
+   "guid": "{2dc3c5dd-70c8-4d90-90e5-a13479930e0e}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_soul_grenade",
+   "guid": "{774be7de-f34e-4240-b484-e21b79a2b455}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_greeting",
+   "guid": "{caf2a9df-d649-4df1-958d-3cf318364c59}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_hurt",
+   "guid": "{41d1cddf-10c8-48ed-9f03-6983714dd733}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/obscura/obscura_buff",
+   "guid": "{2cc0dadf-3bab-45c8-9d54-3f5777eb9e6a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/obscura/obscura_attack",
+   "guid": "{6bc8fddf-f1d2-407e-bfe5-4048fe8be1b7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/vine_shambler/vine_shambler_grasping_vines",
+   "guid": "{c6072be0-dfcf-4ca2-8c47-98bbcbc45e3f}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/toadpole/toadpole_buff",
+   "guid": "{7550bfe0-1a1a-4e95-bf71-f17ef1ab0a68}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/tanx/tanx_curiosity",
+   "guid": "{c364d5e0-69ed-4a8e-9579-3e4b07020915}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/workbug_silk/workbug_silk_buff",
+   "guid": "{fbfa3ee3-1a54-4904-b3a1-b6652b7a070d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_heal",
+   "guid": "{fffa53e5-aa99-448c-8642-4c3364b667f9}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_cast",
+   "guid": "{d6c009e6-1a37-4510-b22d-42f73d98ba53}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_minion_die",
+   "guid": "{d96638e7-9b61-4221-872b-5c8bd217827a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relic_activate_general",
+   "guid": "{1b6d9de7-3a2d-4a86-aaa7-92d2de345ea2}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/block_break",
+   "guid": "{2f31d4e8-d3c7-417e-a3c1-9a987db8ae53}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_finisher",
+   "guid": "{7b006ce9-ab73-49cd-a635-3f2772da9d48}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/merchant/merchant_welcome",
+   "guid": "{39ed41ea-a820-438b-aaa4-fb37533b6fce}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/skulking_colony/skulking_colony_slap",
+   "guid": "{3d104bea-2162-4616-893f-236590b04478}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/timeline/ui_timeline_open_epoch",
+   "guid": "{abcb84eb-a2b8-4b54-8cbb-681ca512dcf2}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_flee_hover",
+   "guid": "{700a2bec-4389-425d-89c9-1efedf895537}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_magical",
+   "guid": "{ba9632ec-283c-42ff-9b27-56abf5ea5cac}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/spectral_knight/spectral_knight_die",
+   "guid": "{ba1287ec-0073-4569-9405-04c38352882a}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_ambient",
+   "guid": "{d6ee8fec-db61-447d-b69d-21cc54c59eb6}",
+   "length_ms": 58625,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "waterfall_giant_sfx",
+     "minimum": 0,
+     "maximum": 3,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/ui/treasure/treasure_act1_old",
+   "guid": "{db01a8ec-58b2-4ca0-9b96-d634fa54315e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_fade",
+   "guid": "{6850b4ed-8e28-4474-b4a1-0f9abd552971}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/roaches/roaches_die",
+   "guid": "{54fbe4ed-b81c-4ec5-a92b-e66a1e19d51a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_idle_loop",
+   "guid": "{f45707ee-23cb-4c3d-92fa-ea0c0abc97db}",
+   "length_ms": 10000,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_hurt_flying",
+   "guid": "{19a34bee-caaa-4302-ae15-5f5a6f3947ae}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fogmog/fogmog_summon",
+   "guid": "{5a37a7ee-5d6c-42b6-800f-a42461cab0ce}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/owl_magistrate/owl_magistrate_die",
+   "guid": "{89f70def-5ba1-4732-bb29-870555f5f978}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_soul_beam",
+   "guid": "{e0109bef-f75a-4237-90a9-6bd928565933}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_slash",
+   "guid": "{292ec3ef-eb60-4a69-8953-fe3184e0b6f4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/defect/defect_frost_channel",
+   "guid": "{212e32f1-d6c0-4f7f-9414-5aca5bdfc06e}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/roaches/roaches_buff",
+   "guid": "{dac886f1-e861-4a39-bd81-4513815f2ce5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/neow/neow_welcome",
+   "guid": "{33f505f2-b8a2-4855-8367-de2c8da3cd92}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/ironclad/ironclad_select",
+   "guid": "{7e074bf2-c787-4079-a2b6-6c9513a9b500}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/ceremonial_beast/ceremonial_beast_attack",
+   "guid": "{d9507ef2-48ab-4992-952a-d6dd68d5d2a9}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fuzzy_wurm_crawler/fuzzy_wurm_crawler_attack",
+   "guid": "{e71792f2-d87e-46ef-be89-3793c1590a49}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/corpse_slugs/corpse_slugs_die",
+   "guid": "{98f557f3-9583-4b41-84a6-b90367008a72}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/terror_eel/terror_eel_attack_multi",
+   "guid": "{eb65def3-eb1d-4d9e-9219-0995351ddea3}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/clicks/ui_back",
+   "guid": "{e643fcf4-efec-46b0-b403-6da7c132ce7b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/flail_knight/flail_knight_ram",
+   "guid": "{faa14cf6-4de0-41c4-aba2-4338b7caaa6b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/twig_slime_m/twig_slime_m_cast",
+   "guid": "{0225fbf6-fc44-44d6-8fc1-a636baf94161}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/kaiser_crab/kaiser_crab_slam_vfx",
+   "guid": "{fe6a6df7-407b-41fd-8ede-4656ca04cc9d}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_tingsha",
+   "guid": "{b8cdd8f7-8fdb-4f75-9592-b072a0bfd3b4}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/cultists/cultists_buff_calcified",
+   "guid": "{bd54aef9-f4f5-4513-af0a-364a2b25c87b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_slap",
+   "guid": "{e06fdaf9-77be-45b5-a5c6-9848665784bf}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/cards/card_movement_B_power",
+   "guid": "{db390ffa-32ae-45e4-a568-b6093fddfa48}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/burrowing_bug/burrowing_bug_attack",
+   "guid": "{d52d14fa-74c0-4123-8d68-08d76ee6ef92}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/turret_operator/turret_operator_buff",
+   "guid": "{009b22fa-d9fa-41b7-8289-2fd78db735eb}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/the_kin_minion/the_kin_minion_boomerang_slash",
+   "guid": "{553c52fa-d798-4a5f-837b-285eb0337e9c}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/devoted_sculptor/devoted_sculptor_hurt",
+   "guid": "{edc4d1fa-d09d-4510-ba52-72c83e0b2af7}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/obscura/obscura_summon",
+   "guid": "{232512fb-e00b-4dc5-a295-cac13428656a}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/byrdonis/byrdonis_get_angry",
+   "guid": "{a4602efc-82d5-4884-a7f2-6e64c0196af0}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/characters/regent/regent_attack",
+   "guid": "{21e09bfc-554e-4151-b7f5-d19f7a129e01}",
+   "length_ms": 0,
+   "is_one_shot": true,
+   "parameters": [
+    {
+     "name": "strength",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "vulnerable",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    },
+    {
+     "name": "weak",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/npcs/merchant/merchant_dissapointment",
+   "guid": "{69f466fd-2c47-403e-9df0-6e239469e181}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/crossbow_ruby_raider/crossbow_ruby_raider_die",
+   "guid": "{fd404afe-2283-4ed2-a391-daa64ed76a53}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/darv/darv_introduction",
+   "guid": "{a0d981fe-41ab-4a85-9112-570a665838b0}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/queen/queen_cast",
+   "guid": "{c2b69dfe-4f39-4eb2-89e6-8093f5db23a5}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/guardbot/guardbot_die",
+   "guid": "{7f86a3fe-04be-4e14-b5cd-5fcbd4ce5edc}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/axe_ruby_raider/axe_ruby_raider_die",
+   "guid": "{6499c5fe-ec12-46e6-9afc-8c6c5a989417}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/npcs/neow/neow_curious",
+   "guid": "{7e9edbfe-7c7d-433c-a645-e34a1c473c0d}",
+   "length_ms": 0,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/enemy/enemy_attacks/fossil_stalker/fossil_stalker_die",
+   "guid": "{2c32a9ff-4642-4fa4-8c39-5080afc49c9b}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/sfx/ui/relics/relic_prayer_bowl",
+   "guid": "{676ed5ff-1473-4684-a3cd-03673ae26811}",
+   "length_ms": 0,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/temp/sfx/game_over",
+   "guid": "{750c3346-c742-49cb-9992-f84cb30e0166}",
+   "length_ms": 11254,
+   "is_stream": true,
+   "is_one_shot": true
+  },
+  {
+   "path": "event:/temp/temp_music",
+   "guid": "{601b5fa0-8079-47e3-99d1-0eda85248d44}",
+   "length_ms": 123080,
+   "is_stream": true
+  },
+  {
+   "path": "event:/sfx/ambience/act2_ambience_the_insatiable",
+   "guid": "{5bb8363e-b7fa-4e55-a7fb-06c27255180b}",
+   "length_ms": 0,
+   "is_stream": true
+  },
+  {
+   "path": "event:/sfx/ambience/act2_ambience",
+   "guid": "{19996946-3893-47a4-8333-26ece1629942}",
+   "length_ms": 85000,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "Progress",
+     "minimum": 0,
+     "maximum": 9,
+     "default_value": 0,
+     "is_global": true,
+     "is_discrete": true
+    },
+    {
+     "name": "Campfire",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/ambience/act1_neow",
+   "guid": "{b6414aa9-2837-435d-8e61-450a6d6cdd1c}",
+   "length_ms": 88000,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "loop",
+     "minimum": 0,
+     "maximum": 2,
+     "default_value": 0
+    },
+    {
+     "name": "ancient_map",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/ambience/act3_ambience",
+   "guid": "{370cd9b2-c584-453a-8bea-76067912d4d2}",
+   "length_ms": 85000,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "Campfire",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0,
+     "is_discrete": true
+    },
+    {
+     "name": "Progress",
+     "minimum": 0,
+     "maximum": 9,
+     "default_value": 0,
+     "is_global": true,
+     "is_discrete": true
+    }
+   ]
+  },
+  {
+   "path": "event:/sfx/ambience/act1_ambience",
+   "guid": "{c7ffabc7-905c-4dbd-8df0-a25fba190927}",
+   "length_ms": 85000,
+   "is_stream": true,
+   "parameters": [
+    {
+     "name": "Campfire",
+     "minimum": 0,
+     "maximum": 1,
+     "default_value": 0,
+     "is_discrete": true
+    },
+    {
+     "name": "Progress",
+     "minimum": 0,
+     "maximum": 9,
+     "default_value": 0,
+     "is_global": true,
+     "is_discrete": true
+    }
+   ]
+  }
+ ],
+ "buses": [
+  {
+   "path": "bus:/master",
+   "guid": "{a080420e-7210-41ab-936a-d9a56e426f39}",
+   "volume": 0.25
+  },
+  {
+   "path": "bus:/master/sfx",
+   "guid": "{31a6a70e-1f02-4134-9316-869034f110cd}",
+   "volume": 0.36000001430511475
+  },
+  {
+   "path": "bus:/master/music",
+   "guid": "{47bdc362-622a-498b-8b21-f8d0c11bbb20}",
+   "volume": 0.5625
+  },
+  {
+   "path": "bus:/master/ambience",
+   "guid": "{0fb36de9-e2e9-489c-a488-56a893fae658}",
+   "volume": 0.5625
+  },
+  {
+   "path": "bus:/master/sfx/Reverb",
+   "guid": "{a8b8691f-cf86-426f-a12c-489c55e75218}",
+   "volume": 1
+  },
+  {
+   "path": "bus:/master/sfx_ducking_bass",
+   "guid": "{9062adad-d974-41ef-b812-79c56bb6c25f}",
+   "volume": 1
+  },
+  {
+   "path": "bus:/master/sfx/chorus",
+   "guid": "{25843eb8-0f79-4253-aed6-bee1449d8e7e}",
+   "volume": 1
+  },
+  {
+   "path": "bus:/master/sfx_ducking_big",
+   "guid": "{bfa231d3-c7a0-4395-bb21-4afdf4149043}",
+   "volume": 1
+  },
+  {
+   "path": "bus:/",
+   "guid": "{0684fe4d-66d7-41be-a5f0-466da530675d}",
+   "volume": 1
+  }
+ ],
+ "banks": [
+  {
+   "path": "bank:/Master.strings",
+   "guid": "{c588d001-26c1-095c-0b4c-2ee26a3087a6}",
+   "godot_res_path": "res://banks/desktop/Master.strings.bank",
+   "event_count": 0,
+   "loading_state": 3
+  },
+  {
+   "path": "bank:/Master",
+   "guid": "{5d95f0d5-57ba-451e-8d05-a41c9bc3813e}",
+   "godot_res_path": "res://banks/desktop/Master.bank",
+   "event_count": 3,
+   "loading_state": 3
+  },
+  {
+   "path": "bank:/sfx",
+   "guid": "{49c38fef-3a1c-4436-98d4-9719c0e9ecdf}",
+   "godot_res_path": "res://banks/desktop/sfx.bank",
+   "event_count": 565,
+   "loading_state": 3
+  },
+  {
+   "path": "bank:/temp_sfx",
+   "guid": "{5b546bf5-96ce-4571-b406-779b2cd354dc}",
+   "godot_res_path": "res://banks/desktop/temp_sfx.bank",
+   "event_count": 2,
+   "loading_state": 3
+  },
+  {
+   "path": "bank:/ambience",
+   "guid": "{947a2624-ee44-418e-8e56-229ac921eaaa}",
+   "godot_res_path": "res://banks/desktop/ambience.bank",
+   "event_count": 6,
+   "loading_state": 3
+  }
+ ],
+ "global_parameters": [
+  {
+   "name": "sfx_duck_big",
+   "id_first": 820743007,
+   "id_second": 1926688983,
+   "minimum": 0,
+   "maximum": 1,
+   "default_value": 0
+  },
+  {
+   "name": "Progress",
+   "id_first": 3880043817,
+   "id_second": 1499508740,
+   "minimum": 0,
+   "maximum": 9,
+   "default_value": 0
+  },
+  {
+   "name": "sfx_duck",
+   "id_first": 1580149779,
+   "id_second": 2709847593,
+   "minimum": 0,
+   "maximum": 1,
+   "default_value": 0
+  }
+ ]
+}

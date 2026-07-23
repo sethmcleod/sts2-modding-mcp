@@ -563,7 +563,7 @@ async def list_tools() -> list[types.Tool]:
                 "Get documentation for BaseLib (Alchyr.Sts2.BaseLib) - the community modding library. "
                 "Topics: overview, custom_card, custom_relic, custom_power, custom_potion, "
                 "custom_character, custom_ancient, config, card_variables, common_actions, "
-                "spire_field, weighted_list, il_patching, mod_interop, utilities, fmod_audio."
+                "spire_field, weighted_list, il_patching, mod_interop, utilities."
             ),
             inputSchema={
                 "type": "object",
@@ -575,7 +575,7 @@ async def list_tools() -> list[types.Tool]:
                             "custom_potion", "custom_character", "custom_ancient",
                             "config", "card_variables", "common_actions",
                             "spire_field", "weighted_list", "il_patching",
-                            "mod_interop", "utilities", "fmod_audio",
+                            "mod_interop", "utilities",
                         ],
                     },
                 },
@@ -4885,6 +4885,13 @@ def _parse_args():
 
 _fmod_data: dict | None = None
 
+def _fmod_dump_candidates() -> list[str]:
+    """Places to look for fmod_dump.json; the first entry is also where live dumps are cached."""
+    return [
+        os.path.join(os.path.dirname(__file__), "..", "fmod_dump.json"),
+        os.path.join(os.environ.get("STS2_GAME_DIR", ""), "mods", "fmoddumper", "fmod_dump.json"),
+    ]
+
 def _load_fmod_data() -> dict:
     """Load and cache the FMOD dump JSON."""
     global _fmod_data
@@ -4892,16 +4899,28 @@ def _load_fmod_data() -> dict:
         return _fmod_data
 
     import json
-    # Try multiple locations
-    candidates = [
-        os.path.join(os.path.dirname(__file__), "..", "fmod_dump.json"),
-        os.path.join(os.environ.get("STS2_GAME_DIR", ""), "mods", "fmoddumper", "fmod_dump.json"),
-    ]
+    candidates = _fmod_dump_candidates()
     for path in candidates:
         if os.path.isfile(path):
             with open(path, "r", encoding="utf-8") as f:
                 _fmod_data = json.load(f)
             return _fmod_data
+
+    # No dump file on disk — generate one live via the bridge mod if the game is running.
+    try:
+        from . import bridge_client
+        dump = bridge_client.fmod_dump()
+        if dump.get("success") and dump.get("events"):
+            data = {key: dump.get(key, []) for key in ("events", "buses", "banks", "global_parameters")}
+            try:
+                with open(candidates[0], "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=1)
+            except OSError:
+                pass  # cache file is an optimization; serve from memory regardless
+            _fmod_data = data
+            return _fmod_data
+    except Exception:
+        pass
 
     return {"events": [], "buses": [], "banks": [], "global_parameters": []}
 
@@ -4969,6 +4988,11 @@ def _list_game_audio(query: str, category: str = "events") -> list:
     summary = f"Found {len(results)} results for '{query}'"
     if category != "all":
         summary += f" in {category}"
+    if not any(data.get(k) for k in ("events", "buses", "banks", "global_parameters")):
+        summary += (
+            "\n\nNo FMOD dump is available. Start the game (with the MCPTest bridge mod loaded) "
+            "and retry — the audio index is generated live from the game's loaded banks."
+        )
     return [types.TextContent(type="text", text=summary + "\n\n" + _json.dumps(results, indent=2))]
 
 

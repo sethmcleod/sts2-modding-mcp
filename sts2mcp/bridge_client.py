@@ -378,6 +378,11 @@ def start_run_with_options(
     return start_run(character=character, ascension=ascension, seed=seed, fixture=fixture)
 
 
+def fmod_dump(timeout: float = 30.0) -> dict:
+    """Dump FMOD banks, events, buses, and global parameters from the running game."""
+    return _payload(send_request("fmod_dump", timeout=timeout))
+
+
 def is_connected() -> bool:
     """Check if bridge is reachable."""
     try:

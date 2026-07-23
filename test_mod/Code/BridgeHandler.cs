@@ -242,6 +242,7 @@ public static class BridgeHandler
                 "stop_foil_tilt" => MainThreadDispatcher.Invoke(() => StopFoilTilt()),
                 "click_node" => MainThreadDispatcher.Invoke(() => ClickNode(root)),
                 "fmod_test" => MainThreadDispatcher.Invoke(() => FmodTest(root)),
+                "fmod_dump" => MainThreadDispatcher.Invoke(() => FmodDumper.Dump(root)),
                 _ => new { error = $"Unknown method: {method}" },
             };
 
