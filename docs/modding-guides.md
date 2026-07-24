@@ -35,3 +35,4 @@ The `get_modding_guide` tool provides built-in documentation on these topics. To
 | **`rng_and_determinism`** | Rng class, RunRngSet, seed management, deterministic sub-seeds |
 | **`accessibility_patterns`** | TTS integration, focus navigation, screen reader support, high contrast |
 | **`strategy`** | STS2 gameplay & balance primer — core principles, combat sequencing, pathing, bosses, potions; judging whether a modded card is over/under-tuned |
+| **`dev_workflow`** | Working in a standard mod repo — layout, dev.sh commands, three-way rule, live-game rules, optional local CLAUDE.md |

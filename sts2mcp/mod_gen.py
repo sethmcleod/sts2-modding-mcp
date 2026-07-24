@@ -2774,7 +2774,7 @@ class ModGenerator:
         char = character_class
         cu = char.upper()
         story = story_id or char
-        prefix = epoch_id_prefix or f"{cu}-{cu}"   # ids -> {prefix}{k}_EPOCH, e.g. ALCHEMIST-ALCHEMIST1_EPOCH
+        prefix = epoch_id_prefix or f"{cu}-{cu}"   # ids -> {prefix}{k}_EPOCH, e.g. MYMOD-MYMOD1_EPOCH
         loc_prefix = f"{cu}-"                        # loc/model-id prefix used for get_epoch_state filtering
         base = f"{char}Epoch"
 
@@ -3094,8 +3094,8 @@ public static class EpochPatches
         if (epoch != null) AwardMidRun(__instance, epoch, localPlayer);
     }
 
-    // Ch5 — 15 elites, Ch6 — 15 bosses, Ch7 — Ascension 1. TODO: implement your own criteria; see the
-    // Alchemist reference for counting wins via SaveManager.Progress.EncounterStats + GetEliteEncounters().
+    // Ch5 — 15 elites, Ch6 — 15 bosses, Ch7 — Ascension 1. TODO: implement your own criteria; count wins
+    // via SaveManager.Progress.EncounterStats + GetEliteEncounters().
     [HarmonyPatch(typeof(ProgressSaveManager), "CheckFifteenElitesDefeatedEpoch")] [HarmonyPostfix]
     private static void AwardEliteEpoch(ProgressSaveManager __instance, Player localPlayer)
     {
