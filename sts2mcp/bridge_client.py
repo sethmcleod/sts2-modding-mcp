@@ -89,8 +89,11 @@ def get_player_state() -> dict:
     return send_request("get_player_state")
 
 
-def get_ancient_dialogues(character: str = "ALCHEMIST-ALCHEMIST") -> dict:
-    """Per-ancient dialogue registration + line render status for a character."""
+def get_ancient_dialogues(character: str) -> dict:
+    """Per-ancient dialogue registration + line render status for a character.
+
+    character is the full character model id, e.g. "MYMOD-MY_CHARACTER".
+    """
     return send_request("get_ancient_dialogues", {"character": character})
 
 

@@ -130,7 +130,7 @@ def get_character_asset_paths(char_id: str, mod_name: str) -> dict:
     """Get ALL required asset paths for a character.
 
     Args:
-        char_id: Character class name in lowercase (e.g., "alchemist")
+        char_id: Character class name in lowercase (e.g., "mycharacter")
         mod_name: Mod folder name (e.g., "MyMod")
     """
     cid = char_id.lower()

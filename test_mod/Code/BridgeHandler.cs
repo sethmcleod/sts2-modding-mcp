@@ -1287,19 +1287,22 @@ public static class BridgeHandler
 
     /// <summary>
     /// Per-ancient dialogue registration for a character: how many dialogue sequences
-    /// exist for the given character entry (default ALCHEMIST-ALCHEMIST) and whether
-    /// every line's LocString renders. Lets tests deterministically verify a mod's
-    /// custom dialogue is wired and renderable — the live pick on a used profile is
-    /// random between character and agnostic repeating dialogues, so screen-scraping
-    /// alone can't regression-test this.
+    /// exist for the given character entry (the required "character" param, a full
+    /// model id such as MYMOD-MY_CHARACTER) and whether every line's LocString
+    /// renders. Lets tests deterministically verify a mod's custom dialogue is wired
+    /// and renderable — the live pick on a used profile is random between character
+    /// and agnostic repeating dialogues, so screen-scraping alone can't
+    /// regression-test this.
     /// </summary>
     private static object GetAncientDialogues(JsonElement root)
     {
         try
         {
-            string character = "ALCHEMIST-ALCHEMIST";
+            string? character = null;
             if (root.TryGetProperty("params", out var p) && p.TryGetProperty("character", out var c))
-                character = c.GetString() ?? character;
+                character = c.GetString();
+            if (string.IsNullOrEmpty(character))
+                return new { error = "the 'character' param is required (a full character model id)" };
 
             var ancients = new List<object>();
             // Anything with ancient-style dialogue: AncientEventModels plus events that
@@ -1514,7 +1517,7 @@ public static class BridgeHandler
     }
 
     // Reports epoch + content unlock state for gated-progression tests. `prefix` filters model ids (e.g.
-    // "ALCHEMIST-"). Per epoch: save state, whether it renders on the Timeline, and whether it's revealed.
+    // "MYMOD-"). Per epoch: save state, whether it renders on the Timeline, and whether it's revealed.
     // Per card/relic/potion: `unlocked` (passes the pools' polymorphic GetUnlocked* gating for the current
     // progress) and `discovered` (seen in the compendium) — so a test can tell locked vs unlocked-but-unseen
     // vs seen apart.

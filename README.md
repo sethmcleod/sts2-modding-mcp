@@ -99,6 +99,25 @@ Once connected, ask your AI assistant things like:
 - *"Show me the source code for the Bash card"*
 - *"How do Harmony IL transpilers work?"*
 
+## Agent Skills
+
+The [`skills/`](skills/) directory holds shared Claude Code skills for mod development:
+
+- **card** — add or change a card through the three-way sync (code, localization, cards.csv)
+- **playtest** — drive the live game safely (save profiles, publish order, combat hazards)
+- **getting-started** — orient a new contributor to a mod repo
+- **run-history** — read `.run` save files for balance work
+
+Install them once into your user-level skills directory; they then work in any mod repo
+you open, without committing anything to that repo:
+
+```sh
+skills/install.sh    # symlinks each skill into ~/.claude/skills/
+```
+
+The skills assume the standard mod layout (`<Mod>Code/` for C#, `<Mod>/` for assets,
+`cards.csv` at the root) and discover the mod's name and id prefix from the repo itself.
+
 ## Updating After Game Patches
 
 When STS2 updates:

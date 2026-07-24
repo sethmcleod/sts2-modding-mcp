@@ -56,9 +56,9 @@ public static class ModEntry
                 AppDomain.CurrentDomain.GetAssemblies()
                     .FirstOrDefault(a => a.GetName().Name == name.Name);
 
-            // Demo relics intentionally NOT pooled: this bridge runs alongside a real mod (Alchemist), and
-            // adding test relics to SharedRelicPool would contaminate balance playtesting. The relic classes
-            // stay defined so they can still be spawned via console for targeted tests.
+            // Demo relics intentionally NOT pooled: this bridge runs alongside real mods, and adding test
+            // relics to SharedRelicPool would contaminate balance playtesting. The relic classes stay
+            // defined so they can still be spawned via console for targeted tests.
             // ModHelper.AddModelToPool<SharedRelicPool, McpTestRelic>();  ...and the other 10 (disabled)
             WriteLog("Demo relic pooling disabled (avoids contaminating co-loaded mods).");
 

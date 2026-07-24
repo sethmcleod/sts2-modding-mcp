@@ -248,6 +248,7 @@ async def list_tools() -> list[types.Tool]:
                             "console_commands", "custom_characters",
                             "timeline_epochs",
                             "audio", "hot_reload",
+                            "dev_workflow",
                         ],
                     },
                 },
@@ -961,7 +962,7 @@ async def list_tools() -> list[types.Tool]:
                     "seed": {"type": "string", "description": "Filter: exact run seed"},
                     "character": {
                         "type": "string",
-                        "description": "Filter: substring of the character model id (e.g. 'ALCHEMIST')",
+                        "description": "Filter: substring of the character model id (e.g. 'MYMOD')",
                     },
                     "limit": {
                         "type": "integer",
@@ -1400,7 +1401,7 @@ async def list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "mod_namespace": {"type": "string"},
-                    "character_class": {"type": "string", "description": "Your character class name (e.g. 'Alchemist')"},
+                    "character_class": {"type": "string", "description": "Your character class name (e.g. 'MyCharacter')"},
                     "card_pool_class": {"type": "string", "description": "Your character's CardPoolModel class"},
                     "relic_pool_class": {"type": "string", "description": "Your character's RelicPoolModel class"},
                     "potion_pool_class": {"type": "string", "description": "Your character's PotionPoolModel class"},
@@ -1769,7 +1770,7 @@ async def list_tools() -> list[types.Tool]:
                 "properties": {
                     "epoch_id": {
                         "type": "string",
-                        "description": "Full model id to reveal (e.g. 'ALCHEMIST-ALCHEMIST2_EPOCH'). Omit to reveal whatever is pending.",
+                        "description": "Full model id to reveal (e.g. 'MYMOD-MYMOD2_EPOCH'). Omit to reveal whatever is pending.",
                     },
                     "single_step": {
                         "type": "boolean",
