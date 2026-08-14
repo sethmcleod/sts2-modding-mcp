@@ -950,6 +950,36 @@ public static class BridgeHandler
 
     // ─── Start Run ───────────────────────────────────────────────────────────
 
+    // A run holding more than one Player while the NetService stays Singleplayer is what the game itself
+    // calls fake multiplayer: RunManager.IsSingleplayerOrFakeMultiplayer returns true, so nothing waits on
+    // a peer, but every multiplayer code path now has a second Player to work with. That is enough to load
+    // a rest site in a multiplayer context, which is where the Mend hitbox has to be tested.
+    // NGame.StartRun is private, so it is called the same way StartNewSingleplayerRun would call it
+    private static object? StartFakeMultiplayerRun(
+        Type nGameType, object nGame, CharacterModel local, List<CharacterModel> allies,
+        List<ActModel> acts, List<ModifierModel> modifiers, string seed, object gameMode, int ascension)
+    {
+        var unlockState = SaveManager.Instance.GenerateUnlockStateFromProgress();
+
+        // NetId 1 is the local player, matching StartNewSingleplayerRun, so LocalContext.GetMe still
+        // resolves to the character named by "character"
+        var players = new List<Player> { Player.CreateForNewRun(local, unlockState, 1UL) };
+        ulong netId = 2;
+        foreach (var ally in allies)
+            players.Add(Player.CreateForNewRun(ally, unlockState, netId++));
+
+        var runState = RunState.CreateForNewRun(
+            players, acts.Select(a => a.ToMutable()).ToList(), modifiers,
+            (GameMode)gameMode, ascension, seed);
+
+        // shouldSave false: a fake multiplayer run is a test fixture and must not overwrite a real save
+        RunManager.Instance.SetUpNewSingleplayer(runState, false, null);
+
+        var startRun = nGameType.GetMethod("StartRun", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (startRun == null) throw new InvalidOperationException("NGame.StartRun not found");
+        return startRun.Invoke(nGame, new object?[] { runState });
+    }
+
     private static object StartRun(JsonElement root)
     {
         try
@@ -961,6 +991,7 @@ public static class BridgeHandler
             int ascension = 0;
             string seed = DateTime.Now.Ticks.ToString();
             var fixtureCommands = new List<string>();
+            var allyNames = new List<string>();
             if (root.TryGetProperty("params", out var p))
             {
                 if (p.TryGetProperty("character", out var cProp))
@@ -969,6 +1000,9 @@ public static class BridgeHandler
                     ascension = aProp.GetInt32();
                 if (p.TryGetProperty("seed", out var sProp))
                     seed = sProp.ValueKind == JsonValueKind.String ? (sProp.GetString() ?? seed) : sProp.ToString();
+                if (p.TryGetProperty("allies", out var alProp) && alProp.ValueKind == JsonValueKind.Array)
+                    foreach (var a in alProp.EnumerateArray())
+                        if (a.GetString() is { Length: > 0 } allyName) allyNames.Add(allyName);
 
                 fixtureCommands = BuildFixtureCommands(p);
             }
@@ -984,6 +1018,21 @@ public static class BridgeHandler
             {
                 var available = string.Join(", ", ModelDb.AllCharacters.Select(c => c.GetType().Name));
                 return new { error = $"Character '{characterName}' not found. Available: {available}" };
+            }
+
+            // Each ally becomes a second Player in the run. Unknown names fail loudly rather than
+            // silently starting a solo run that looks like it tested multiplayer
+            var allyModels = new List<CharacterModel>();
+            foreach (var allyName in allyNames)
+            {
+                var match = ModelDb.AllCharacters.FirstOrDefault(
+                    ch => ch.GetType().Name.Equals(allyName, StringComparison.OrdinalIgnoreCase));
+                if (match == null)
+                {
+                    var available = string.Join(", ", ModelDb.AllCharacters.Select(c => c.GetType().Name));
+                    return new { error = $"Ally character '{allyName}' not found. Available: {available}" };
+                }
+                allyModels.Add(match);
             }
 
             var acts = ModelDb.Acts.ToList();
@@ -1019,12 +1068,15 @@ public static class BridgeHandler
                     // this the menu keeps playing underneath the act music once combat starts.
                     NAudioManager.Instance?.StopMusic();
 
-                    var task = startMethod.Invoke(nGame, new object?[] {
-                        charModel, true,
-                        (IReadOnlyList<ActModel>)acts,
-                        (IReadOnlyList<ModifierModel>)emptyModifiers,
-                        seed, gameMode, ascension, null
-                    });
+                    var task = allyModels.Count > 0
+                        ? StartFakeMultiplayerRun(nGameType, nGame, charModel, allyModels, acts,
+                            emptyModifiers, seed, gameMode, ascension)
+                        : startMethod.Invoke(nGame, new object?[] {
+                            charModel, true,
+                            (IReadOnlyList<ActModel>)acts,
+                            (IReadOnlyList<ModifierModel>)emptyModifiers,
+                            seed, gameMode, ascension, null
+                        });
                     if (task is System.Threading.Tasks.Task t)
                     {
                         t.ContinueWith(finishedTask =>

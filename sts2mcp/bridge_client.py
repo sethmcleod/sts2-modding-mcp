@@ -321,6 +321,7 @@ def start_run(
     ascension: int = 0,
     seed: str | int | None = None,
     fixture: dict[str, Any] | None = None,
+    allies: Sequence[str] | None = None,
     modifiers: Sequence[str] | None = None,
     acts: Sequence[str] | None = None,
     relics: Sequence[str] | None = None,
@@ -341,6 +342,8 @@ def start_run(
         params["seed"] = str(seed)
     if fixture:
         params["fixture"] = fixture
+    if allies:
+        params["allies"] = list(allies)
     if modifiers:
         params["modifiers"] = list(modifiers)
     if acts:

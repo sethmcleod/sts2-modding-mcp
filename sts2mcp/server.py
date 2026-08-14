@@ -1124,7 +1124,8 @@ async def list_tools() -> list[types.Tool]:
             description=(
                 "Start a new singleplayer run. Characters: Ironclad, Silent, Regent, Necrobinder, Defect. "
                 "Supports deterministic seeds, optional modifiers/act lists, and fixture commands "
-                "for rapid test setup immediately after the run starts."
+                "for rapid test setup immediately after the run starts. Pass 'allies' to start a fake "
+                "multiplayer run for testing multiplayer-only UI locally."
             ),
             inputSchema={
                 "type": "object",
@@ -1135,6 +1136,16 @@ async def list_tools() -> list[types.Tool]:
                     "fixture": {
                         "type": "object",
                         "description": "Optional bridge fixture payload for deterministic setup",
+                    },
+                    "allies": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": (
+                            "Character names to add as extra players, e.g. [\"Alchemist\"]. Starts a fake "
+                            "multiplayer run: extra Players with no lobby or networking, so multiplayer-only "
+                            "UI such as the Mend rest site option can be reached and tested locally. "
+                            "Not saved, and the allies do not act."
+                        ),
                     },
                     "modifiers": {"type": "array", "items": {"type": "string"}},
                     "acts": {"type": "array", "items": {"type": "string"}},
@@ -3889,6 +3900,7 @@ async def _handle_tool(name: str, args: dict):
             ascension=args.get("ascension", 0),
             seed=args.get("seed"),
             fixture=args.get("fixture"),
+            allies=args.get("allies"),
             modifiers=args.get("modifiers"),
             acts=args.get("acts"),
             relics=args.get("relics"),
