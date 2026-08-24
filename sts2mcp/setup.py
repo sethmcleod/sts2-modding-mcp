@@ -492,6 +492,25 @@ def download_gdre_tools() -> dict:
 # ─── Status ───────────────────────────────────────────────────────────────────
 
 
+def check_skills_installed() -> dict:
+    """Are this repo's shared skills linked into the agent's skills directory?
+
+    The skills live here but are only loaded from ~/.claude/skills (or CLAUDE_SKILLS_DIR).
+    A missing link is silent: the skills simply never trigger, with no error anywhere. That
+    happened for an extended period, so it is worth a check.
+    """
+    src = PROJECT_ROOT / "skills"
+    dest = Path(os.environ.get("CLAUDE_SKILLS_DIR") or (Path.home() / ".claude" / "skills"))
+    available = sorted(d.name for d in src.iterdir() if d.is_dir()) if src.is_dir() else []
+    installed = sorted(n for n in available if (dest / n).exists())
+    return {
+        "skills_dir": str(dest),
+        "available": available,
+        "installed": installed,
+        "missing": [n for n in available if n not in installed],
+    }
+
+
 def get_setup_status(game_dir: str | None = None, decompiled_dir: str | None = None) -> dict:
     """Return comprehensive setup status suitable for display or MCP tools."""
     config = load_config()
@@ -516,6 +535,7 @@ def get_setup_status(game_dir: str | None = None, decompiled_dir: str | None = N
     ilspy = check_ilspycmd()
     decomp = check_decompiled(resolved_decompiled)
     gdre = check_gdre_tools()
+    skills = check_skills_installed()
 
     missing = []
     if not resolved_game_dir or not sts2_dll_exists:
@@ -528,6 +548,12 @@ def get_setup_status(game_dir: str | None = None, decompiled_dir: str | None = N
         missing.append("Game not decompiled — run setup or use decompile_game tool")
     if not gdre["installed"]:
         missing.append("GDRE Tools not found — run setup to download automatically (optional, for asset extraction)")
+    if skills["missing"]:
+        missing.append(
+            "Skills not linked ({}) — run: bash {}/skills/install.sh".format(
+                ", ".join(skills["missing"]), PROJECT_ROOT
+            )
+        )
 
     return {
         "game_found": bool(resolved_game_dir and sts2_dll_exists),
@@ -541,6 +567,9 @@ def get_setup_status(game_dir: str | None = None, decompiled_dir: str | None = N
         "roslyn_index_exists": decomp["has_roslyn_index"],
         "gdre_tools_installed": gdre["installed"],
         "gdre_tools_path": gdre["path"],
+        "skills_installed": skills["installed"],
+        "skills_missing": skills["missing"],
+        "skills_dir": skills["skills_dir"],
         "all_ready": len(missing) == 0 or (len(missing) == 1 and "GDRE" in missing[0]),
         "missing_steps": missing,
     }

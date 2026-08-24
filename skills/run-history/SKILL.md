@@ -1,6 +1,6 @@
 ---
 name: run-history
-description: Read Slay the Spire 2 run data from the Run History save files for balance work. Use this skill when someone asks for a review of a playtest run, pick rates, a comparison against the base characters, or a refreshed baseline. The skill reads the .run files directly, filters to relevant runs, and compares against a base-character baseline.
+description: Review Slay the Spire 2 run data for balance work: a playtest run review, card pick rates, a comparison against the base characters, or a refreshed baseline. Reads the .run save files directly.
 ---
 
 # Read run data for balance work
@@ -29,7 +29,7 @@ is unavailable or too coarse, parse the JSON with a small script. The schema is 
   exclude it.
 - A run is **relevant** when it reached Act 2 or beyond (the run has entries in
   `map_point_history[1]`), was not abandoned (`was_abandoned` false), and is a standard
-  run (`game_mode` == `standard` — exclude daily/custom/multiplayer modes).
+  run (`game_mode` == `standard`, which excludes daily, custom and multiplayer modes).
 - For pick-rate work a cheaper floor filter also works: total floors >= 25.
 
 ## What each .run file holds
@@ -61,7 +61,7 @@ depends on the mod's design; the mod repo's own docs state the design intent.
 ## Recompute the baseline every review
 
 The samples are small and both sides grow with every play session. Recompute the baseline
-from all relevant base-character runs at the start of every review — the pass over the
+from all relevant base-character runs at the start of every review. The pass over the
 files is cheap. Report medians per character and pooled, with the run counts, so the
 reader sees the sample size. Recompute the cumulative pick rates the same way. Never
 quote a stat from an earlier session without recomputing it. If a fresh computation lands
@@ -92,3 +92,8 @@ the floor-anchored findings, pick-rate table (only rows with a finding), suggest
 grouped by mechanic with exact numbers, and the next-run watchlist. A review by itself
 edits nothing: suggestions wait for approval, and approved changes go through the mod's
 three-way rule (see the **card** skill and the repo's CONTRIBUTING.md).
+
+## Framework knowledge lives in the guides
+
+- `save_file_format` for the full `.run` and save schema
+- `strategy` for how the game's own systems price a deck

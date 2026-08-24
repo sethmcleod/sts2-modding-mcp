@@ -1,13 +1,14 @@
 ---
 name: playtest
-description: Run an STS2 mod against the live Slay the Spire 2 game safely. Use this skill to run a regression suite, to spawn a card and check it by hand, or to verify a change in a real run. Use it for any task that needs the live game. The game has three hazards that cost real time. A publish over a live process corrupts the asset loads of that process. A test on the wrong save profile changes real progress. If you abandon a run during a combat, every later combat fails to initialize until you restart the game. This skill gives the safe loop and the recovery steps.
+description: Drive the live Slay the Spire 2 game for an STS2 mod: run the regression suite, spawn and check a card by hand, or verify a change in a real run. Use for any task that touches the running game.
 ---
 
 # Playtest against the live game
 
 The suite and the manual checks drive a **real live game** through the bridge (MCPTest on
-:21337, GodotExplorer on :27020). The toolkit's `testing` and `troubleshooting` guides
-document the mechanics and the failure modes (`get_modding_guide`). This skill is the
+:21337, GodotExplorer on :27020). The toolkit's `testing`, `troubleshooting`,
+`console_commands`, `debugging` and `bridge_setup` guides document the mechanics and the
+failure modes (`get_modding_guide`). This skill is the
 safe procedure. Follow it. Do not drive the game without it.
 
 ## Before you touch the game

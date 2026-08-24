@@ -236,7 +236,8 @@ async def list_tools() -> list[types.Tool]:
                             "bridge_setup", "workflows", "troubleshooting",
                             "multiplayer_networking", "godot_ui_construction",
                             "reflection_patterns", "advanced_harmony",
-                            "save_file_format", "game_log_parsing",
+                            "save_file_format", "game_log_parsing", "smart_format",
+                            "hot_reload", "custom_characters",
                             "combat_deep_dive", "custom_keywords_and_piles",
                             "mod_config_integration", "resource_loading",
                             "rng_and_determinism", "accessibility_patterns",
@@ -576,7 +577,7 @@ async def list_tools() -> list[types.Tool]:
                             "custom_potion", "custom_character", "custom_ancient",
                             "config", "card_variables", "common_actions",
                             "spire_field", "weighted_list", "il_patching",
-                            "mod_interop", "utilities",
+                            "mod_interop", "utilities", "fmod_audio",
                         ],
                     },
                 },
@@ -1141,7 +1142,7 @@ async def list_tools() -> list[types.Tool]:
                         "type": "array",
                         "items": {"type": "string"},
                         "description": (
-                            "Character names to add as extra players, e.g. [\"Alchemist\"]. Starts a fake "
+                            "Character names to add as extra players, e.g. [\"Ironclad\"]. Starts a fake "
                             "multiplayer run: extra Players with no lobby or networking, so multiplayer-only "
                             "UI such as the Mend rest site option can be reached and tested locally. "
                             "Not saved, and the allies do not act."

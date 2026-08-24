@@ -1,6 +1,6 @@
 ---
 name: card
-description: Add a new card to an STS2 mod. Change the numbers, cost, text, or mechanics of an existing card. Use this skill when you create a card or when you edit a card. A card lives in three files that must stay in sync (the C# class, the localization JSON, and cards.csv). A change to one file without the other two files makes the mod go out of sync. This skill covers the full loop through lint, publish, and a regression scenario.
+description: Add, change, rename, or retire a card in an STS2 mod. Use for any edit to a card's numbers, cost, text, art, or mechanics. Covers the three-way sync between the C# class, the localization JSON, and cards.csv.
 ---
 
 # Add or change a card
@@ -30,6 +30,12 @@ conventions, and its docs directory usually has a worked example.
 
 ## How to add a card
 
+**Check the pool size first.** A mod usually holds a set number of cards for each
+rarity. When the repo states a fixed count (generally 20 Common, 35 Uncommon and
+25 Rare for solo play), a new card must replace an existing card. Choose the card
+to retire before you write the new one. Count the rows in `cards.csv`, and look
+at the rows marked `Multiplayer`. Those rows hide a short solo pool.
+
 1. **Pick the display name first.** The class name gives all the other names
    automatically. For example, in a mod with id `MyMod`, the class name `DoubleDose`
    gives:
@@ -38,11 +44,14 @@ conventions, and its docs directory usually has a worked example.
    - the loc keys `MYMOD-DOUBLE_DOSE.title` and `MYMOD-DOUBLE_DOSE.description`.
 
    Make the name correct before you write the files.
+
 2. **Copy another card** from the same rarity folder. Use the copy as your start
    point. The `using` imports and the `namespace` line must agree with the folder. A copy
    makes them correct with no more work. Keep every number in the `With*` builders in the
    constructor, for example `WithDamage(3, 1)`. Do not write a number directly in
-   `OnPlay`.
+   `OnPlay`. Some repos tag each card class with an attribute on the line before the
+   class, to group cards by theme for analytics. When the repo does this, set it for
+   the new card. The lint fails a card that does not carry it.
 3. **Add the two loc keys** to `cards.json` in alphabetical order. Use `{Var:diff()}`
    tokens. The tokens let the game show the upgrade preview. Never write a number directly
    if a builder holds that number. Put keyword names and zone names in `[gold]…[/gold]`.
@@ -57,6 +66,7 @@ conventions, and its docs directory usually has a worked example.
 ## How to change an existing card
 
 Find the three files for the card. Change all three files together:
+
 - the number or the text in the card class builders,
 - the related keys in `cards.json`,
 - the row in `cards.csv`.
@@ -120,6 +130,18 @@ python3 scripts/tests/run_suite.py <name>   # run just your scenario while itera
 ```
 
 A new card or a changed card is complete only when these three conditions are true:
+
 - The `lint` passes.
 - The game shows the card correctly.
 - A scenario covers the card (when the repo has a suite).
+
+## Framework knowledge lives in the guides
+
+Do not re-derive these. Call `get_modding_guide` with the topic:
+
+- `cards` for the card model, builders and the play pipeline
+- `dynamic_vars` for values that must survive a save and reload
+- `smart_format` for the `{Var:diff()}` token vocabulary in the loc text
+- `enchantments` for Infuse-style modifiers and their lifecycle
+- `pools` for rarity pools and how a card is filtered in or out
+- `mechanics` for the design patterns behind a new keyword

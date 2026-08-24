@@ -43,16 +43,15 @@ as part of the build.
 
 ## Live tests against the game (bridge)
 
-The `testing` and `troubleshooting` guides in the toolkit list the hazards. The ones that
-cost the most time:
+The **playtest** skill owns this. It carries the safe loop, the spare-profile rule, the
+publish-before-you-launch ordering, and the recovery steps. Do not restate those here, and
+do not drive the live game without it. The toolkit's `testing` and `troubleshooting` guides
+(`get_modding_guide`) hold the underlying mechanics.
 
-- Use a **new game process** with a **spare save profile** (Profile 3 by convention).
-  Never abandon a run during a combat; use the `die` console command instead.
-- A custom entity needs the **full model id**, for example `card MYMOD-MY_CARD`. The
-  short name does nothing, and it shows no error. Use the console command `dump` to find
-  a model id.
-- For the console commands `power` and `damage`, the target index `0` is the player and
-  `1` is the first enemy: one more than the `target_index` of `play_card`.
-- **Hot reload** (tier 2 and tier 3) works only from the main menu, and only **before the
-  first combat** in the session.
-- On macOS, a screen transition can stop while the game window does not have the focus.
+## Which skill for what
+
+- **card**: add, change, rename or retire a card.
+- **playtest**: anything that touches the running game, including the regression suite.
+- **run-history**: read finished run data for balance work.
+- **changelog**: write or curate a `CHANGELOG.md` entry.
+- **release**: cut a release, promote a branch, upload to the Workshop.
