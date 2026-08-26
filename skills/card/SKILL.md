@@ -89,6 +89,18 @@ Then change the class name and file name, the loc keys, the csv row, the portrai
 filename, references from other cards, and any test scenario. Run the grep again after
 the edit. Zero hits on the old name means the rename is complete.
 
+Two more steps that greps do not catch:
+
+- **Check the new name against every title namespace, not only cards.** Compare it against
+  the `.title` values in all of the mod's `localization/eng/*.json` files and the base
+  game's cards, potions, relics and powers. A card and a potion cannot share a display
+  name (an Alchemist card named Solvent collided with the mod's own Solvent potion, and
+  the compiler found it before the check did).
+- **When the OLD id ever shipped in a release, add a save-map entry.** If the repo has a
+  `SaveRenamePatches`-style map (retired model id to successor), the rename ships an entry
+  there, or a mid-run save that holds the old id loads it as a blank deprecated card. An id
+  that only ever existed between releases needs no entry.
+
 ## How to retire a card
 
 Remove all of its pieces together: the class file, the loc keys, the csv row, the

@@ -72,3 +72,12 @@ of the SFX and the VFX.
 There is a second problem. `bridge_autoslay_configure` reports `applied: {max_floor: 2}`,
 but the next run logs `Config maxFloor = 49`. Thus the override does not reach
 `AutoSlayConfig`, and a short test run is not possible.
+
+## Bridge card cost reads Canonical, not the live cost (2026-08-25)
+
+`bridge_get_combat_state` and `bridge_get_card_piles` report
+`energy_cost = (int)c.EnergyCost.Canonical` (BridgeHandler.cs, three sites). A card whose
+cost changed in combat (Vitriol's per-tick discount, Melancholy-style modifiers,
+SetToFreeThisTurn) still reports its printed cost. This cost a debugging detour: the
+discount worked, and the only way to see it was the energy-spent delta after a play.
+Fix: report `EnergyCost.GetResolved()` (and keep `canonical` as a second field).
