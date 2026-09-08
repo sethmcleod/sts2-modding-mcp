@@ -203,6 +203,7 @@ public static class BridgeHandler
                 "hot_reload" => MainThreadDispatcher.Invoke(() => HotReload(root)),
                 "reload_localization" => MainThreadDispatcher.Invoke(() => ReloadLocalization()),
                 "reload_history" => GetReloadHistory(),
+                "delete_run_history" => MainThreadDispatcher.Invoke(() => DeleteRunHistory(root)),
                 "hot_reload_progress" => new { step = _hotReloadProgress, in_progress = !string.IsNullOrEmpty(_hotReloadProgress), mod_key = _activeHotReloadModKey },
                 "refresh_live_instances" => MainThreadDispatcher.Invoke(() => RefreshLiveInstances()),
                 "get_exceptions" => GetExceptions(root),
@@ -5873,6 +5874,90 @@ public static class BridgeHandler
         {
             ModEntry.WriteLog($"[HotReload] Localization reload error: {ex}");
             ExceptionMonitor.Record(ex, "ReloadLocalization");
+            return new { error = ex.Message };
+        }
+    }
+
+    // ─── Run History ─────────────────────────────────────────────────────────
+
+    // Deletes run history files through the game's own save store, so the local file
+    // and the Steam cloud copy go together. A file removed from disk alone returns on
+    // the next launch: SaveManager.SyncCloudToLocal copies back anything still in the
+    // cloud cache. Params: files (["1234567890.run", ...]), profile (int, default: the
+    // active profile), modded (bool, default: true), dry_run (bool, default: false).
+    private static object DeleteRunHistory(JsonElement root)
+    {
+        try
+        {
+            var saveManager = SaveManager.Instance;
+            int profile = saveManager.IsProfileInitialized ? saveManager.CurrentProfileId : 1;
+            bool modded = true;
+            bool dryRun = false;
+            var files = new List<string>();
+            if (root.TryGetProperty("params", out var p))
+            {
+                if (p.TryGetProperty("profile", out var pr)) profile = pr.GetInt32();
+                if (p.TryGetProperty("modded", out var md)) modded = md.GetBoolean();
+                if (p.TryGetProperty("dry_run", out var dr)) dryRun = dr.GetBoolean();
+                if (p.TryGetProperty("files", out var fs) && fs.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var f in fs.EnumerateArray())
+                    {
+                        var name = f.GetString();
+                        if (!string.IsNullOrEmpty(name)) files.Add(name);
+                    }
+                }
+            }
+            if (files.Count == 0)
+                return new { error = "No files given. Pass files: [\"1234567890.run\", ...]" };
+
+            var storeField = typeof(SaveManager).GetField("_saveStore", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (storeField?.GetValue(saveManager) is not ISaveStore store)
+                return new { error = "SaveManager._saveStore not found" };
+            var cloudStore = store as CloudSaveStore;
+
+            string dir = MegaCrit.Sts2.Core.Saves.Managers.RunHistorySaveManager.GetHistoryPath(profile, modded);
+            var matched = new List<string>();
+            var missing = new List<string>();
+            var rejected = new List<string>();
+            foreach (var name in files)
+            {
+                if (!name.EndsWith(".run") || name.Contains('/') || name.Contains('\\') || name.Contains(".."))
+                {
+                    rejected.Add(name);
+                    continue;
+                }
+                string path = dir + "/" + name;
+                bool local = store.FileExists(path);
+                bool cloud = false;
+                try { cloud = cloudStore?.CloudStore.FileExists(path) ?? false; }
+                catch (Exception ex) { ModEntry.WriteLog($"[RunHistory] cloud lookup failed for {path}: {ex.Message}"); }
+                if (!local && !cloud)
+                {
+                    missing.Add(name);
+                    continue;
+                }
+                if (!dryRun) store.DeleteFile(path);
+                matched.Add(name);
+            }
+            int deletedCount = dryRun ? 0 : matched.Count;
+            ModEntry.WriteLog($"[RunHistory] {(dryRun ? "dry run, " : "")}deleted {deletedCount} of {files.Count} in {dir} (cloud store: {cloudStore != null})");
+            EventTracker.Record("delete_run_history", $"{deletedCount} deleted in {dir}");
+            return new
+            {
+                success = true,
+                dry_run = dryRun,
+                directory = dir,
+                cloud_store = cloudStore != null,
+                deleted_count = deletedCount,
+                matched,
+                missing,
+                rejected,
+            };
+        }
+        catch (Exception ex)
+        {
+            ExceptionMonitor.Record(ex, "DeleteRunHistory");
             return new { error = ex.Message };
         }
     }

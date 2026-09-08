@@ -660,6 +660,16 @@ def reload_history() -> dict:
     return send_request("reload_history")
 
 
+def delete_run_history(
+    files: list[str], profile: int | None = None, modded: bool = True, dry_run: bool = False
+) -> dict:
+    """Delete run history files through the game's save store, so the Steam cloud copy goes too."""
+    params: dict = {"files": files, "modded": modded, "dry_run": dry_run}
+    if profile is not None:
+        params["profile"] = profile
+    return send_request("delete_run_history", params)
+
+
 def hot_reload_progress() -> dict:
     """Get the current hot reload step (if a reload is in progress)."""
     return send_request("hot_reload_progress")

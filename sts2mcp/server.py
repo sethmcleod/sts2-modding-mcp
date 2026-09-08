@@ -2174,6 +2174,39 @@ async def list_tools() -> list[types.Tool]:
             inputSchema={"type": "object", "properties": {}},
         ),
         types.Tool(
+            name="bridge_delete_run_history",
+            description=(
+                "Delete run history (.run) files through the game's own save store, so the "
+                "local file and the Steam cloud copy are removed together. A file deleted on "
+                "disk alone comes back on the next launch. Pass dry_run to list matches first."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "files": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "File names, e.g. [\"1234567890.run\"]",
+                    },
+                    "profile": {
+                        "type": "integer",
+                        "description": "Profile number 1-3 (default: the active profile)",
+                    },
+                    "modded": {
+                        "type": "boolean",
+                        "description": "Use the modded save tree (default true)",
+                        "default": True,
+                    },
+                    "dry_run": {
+                        "type": "boolean",
+                        "description": "Report matches without deleting",
+                        "default": False,
+                    },
+                },
+                "required": ["files"],
+            },
+        ),
+        types.Tool(
             name="bridge_hot_reload_progress",
             description=(
                 "Get the current step of an in-progress hot reload. Returns the step name "
@@ -4268,6 +4301,16 @@ async def _handle_tool(name: str, args: dict):
     elif name == "bridge_reload_history":
         from . import bridge_client
         return await _call_bridge(bridge_client.reload_history)
+
+    elif name == "bridge_delete_run_history":
+        from . import bridge_client
+        return await _call_bridge(
+            bridge_client.delete_run_history,
+            args.get("files", []),
+            args.get("profile"),
+            args.get("modded", True),
+            args.get("dry_run", False),
+        )
 
     elif name == "bridge_hot_reload_progress":
         from . import bridge_client
